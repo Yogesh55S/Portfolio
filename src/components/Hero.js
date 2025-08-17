@@ -22,14 +22,14 @@ const forms = [
   {
     key: "base",
     role: "Developer",
-    image: "/goku_base.jpeg",
+    image: "/goku_base.png",
     bg: "/bg_normal.gif",
     glowRing: "shadow-[0_0_38px_rgba(96,165,250,0.8)]",
   },
   {
     key: "ssj",
     role: "Frontend Developer",
-    image: "/goku_ssj.png",
+    image: "/goku_ssj.jpeg",
     bg: "/bg_ssj.gif",
     glowRing: "shadow-[0_0_42px_rgba(251,191,36,0.95)]",
   },
