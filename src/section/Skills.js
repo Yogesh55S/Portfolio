@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { SiJavascript, SiReact, SiNextdotjs, SiTailwindcss, SiNodedotjs, SiMongodb, SiMysql, SiPhp, SiPython, SiSupabase, SiC, SiCplusplus } from "react-icons/si";
 
 const skills = [
@@ -44,19 +44,19 @@ const skills = [
     name: "Next.js", 
     icon: <SiNextdotjs size={48} />, 
     color: "text-black",
-    percentage: 85
+    percentage: 82
   },
   { 
     name: "TailwindCSS", 
     icon: <SiTailwindcss size={48} />, 
     color: "text-teal-500",
-    percentage: 90
+    percentage: 95
   },
   { 
     name: "Node.js", 
     icon: <SiNodedotjs size={48} />, 
     color: "text-green-600",
-    percentage: 82
+    percentage: 85
   },
   { 
     name: "Supabase", 
@@ -80,7 +80,11 @@ const skills = [
 
 export default function Skills() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedSkill, setSelectedSkill] = useState(null);
+  const [clickedIndex, setClickedIndex] = useState(null);
+
+  const handleClick = (index) => {
+    setClickedIndex(clickedIndex === index ? null : index);
+  };
 
   const containerVariants = {
     hidden: {},
@@ -118,8 +122,18 @@ export default function Skills() {
     }
   };
 
-  const handleSkillClick = (skill, index) => {
-    setSelectedSkill(selectedSkill?.name === skill.name ? null : { ...skill, index });
+  const getPercentageColor = (percentage) => {
+    if (percentage >= 90) return "text-green-400";
+    if (percentage >= 75) return "text-yellow-400";
+    if (percentage >= 60) return "text-orange-400";
+    return "text-red-400";
+  };
+
+  const getProgressBarColor = (percentage) => {
+    if (percentage >= 90) return "from-green-400 to-green-600";
+    if (percentage >= 75) return "from-yellow-400 to-yellow-600";
+    if (percentage >= 60) return "from-orange-400 to-orange-600";
+    return "from-red-400 to-red-600";
   };
 
   return (
@@ -176,7 +190,7 @@ export default function Skills() {
                 p-6 rounded-2xl border-2 cursor-pointer
                 transition-all duration-300 ease-out
                 group overflow-hidden
-                ${selectedSkill?.index === index ? 'ring-2 ring-gray-400 shadow-lg' : ''}
+                ${clickedIndex === index ? 'ring-2 ring-blue-400 bg-gray-700' : ''}
               `}
               variants={itemVariants}
               whileHover={{ 
@@ -187,12 +201,8 @@ export default function Skills() {
               whileTap={{ scale: 0.95 }}
               onHoverStart={() => setHoveredIndex(index)}
               onHoverEnd={() => setHoveredIndex(null)}
-              onClick={() => handleSkillClick(skill, index)}
-              style={{
-                boxShadow: selectedSkill?.index === index ? 
-                  '0 0 20px rgba(156, 163, 175, 0.3)' : 
-                  hoveredIndex === index ? '0 0 15px rgba(156, 163, 175, 0.2)' : 'none'
-              }}
+              onClick={() => handleClick(index)}
+              layout
             >
               {/* Gradient overlay on hover */}
               <motion.div
@@ -200,65 +210,94 @@ export default function Skills() {
                 initial={false}
               />
               
-              {/* Icon with animation */}
+              {/* Icon with rotation animation */}
               <motion.div
                 className={`${skill.color} relative z-10 mb-3`}
-                animate={hoveredIndex === index ? {
-                  rotateY: [0, 360],
-                  transition: { duration: 0.8, ease: "easeInOut" }
-                } : selectedSkill?.index === index ? {
-                  scale: [1, 1.1, 1],
-                  transition: { duration: 1, repeat: Infinity, repeatDelay: 2 }
-                } : {}}
+                animate={
+                  clickedIndex === index 
+                    ? { rotateY: 360, scale: [1, 1.2, 1] }
+                    : hoveredIndex === index 
+                      ? { rotateY: [0, 360], transition: { duration: 0.8, ease: "easeInOut" } }
+                      : {}
+                }
+                transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 {skill.icon}
               </motion.div>
 
-              {/* Skill name */}
-              <motion.p
-                className="text-gray-200 font-semibold text-sm md:text-base text-center relative z-10 mb-2"
-                animate={hoveredIndex === index ? {
-                  y: [-2, 2, -2],
-                  transition: { duration: 0.5, repeat: Infinity }
-                } : {}}
-              >
-                {skill.name}
-              </motion.p>
+              {/* Skill name and percentage */}
+              <motion.div className="relative z-10 text-center">
+                <motion.p
+                  className="text-gray-200 font-semibold text-sm md:text-base mb-2"
+                  animate={hoveredIndex === index ? {
+                    y: [-2, 2, -2],
+                    transition: { duration: 0.5, repeat: Infinity }
+                  } : {}}
+                >
+                  {skill.name}
+                </motion.p>
 
-              {/* Percentage display */}
-              <motion.div
-                className="relative z-10 w-full"
-                initial={{ opacity: 0, height: 0 }}
-                animate={{
-                  opacity: selectedSkill?.index === index ? 1 : 0,
-                  height: selectedSkill?.index === index ? 'auto' : 0
-                }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-              >
-                {selectedSkill?.index === index && (
-                  <motion.div
-                    className="text-center"
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                  >
-                    <div className="text-2xl font-bold text-white mb-2">
-                      {skill.percentage}%
-                    </div>
-                    <div className="w-full bg-gray-600 rounded-full h-2 overflow-hidden">
+                {/* Percentage display with animation */}
+                <AnimatePresence>
+                  {clickedIndex === index && (
+                    <motion.div
+                      className="mt-2"
+                      initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.5, y: 10 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    >
+                      <motion.span
+                        className={`text-2xl font-bold ${getPercentageColor(skill.percentage)}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2, duration: 0.4 }}
+                      >
+                        {skill.percentage}%
+                      </motion.span>
+                      
+                      {/* Circular progress indicator */}
                       <motion.div
-                        className="h-full bg-gradient-to-r from-gray-400 to-gray-500 rounded-full"
-                        initial={{ width: "0%" }}
-                        animate={{ width: `${skill.percentage}%` }}
-                        transition={{ 
-                          duration: 1.2, 
-                          ease: "easeOut",
-                          delay: 0.2
-                        }}
-                      />
-                    </div>
-                  </motion.div>
-                )}
+                        className="relative w-12 h-12 mx-auto mt-2"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
+                      >
+                        <svg className="w-12 h-12 transform -rotate-90">
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            fill="none"
+                            className="text-gray-600"
+                          />
+                          <motion.circle
+                            cx="24"
+                            cy="24"
+                            r="20"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            fill="none"
+                            strokeLinecap="round"
+                            className={getPercentageColor(skill.percentage)}
+                            strokeDasharray={`${2 * Math.PI * 20}`}
+                            initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
+                            animate={{ 
+                              strokeDashoffset: 2 * Math.PI * 20 * (1 - skill.percentage / 100) 
+                            }}
+                            transition={{ 
+                              delay: 0.4, 
+                              duration: 1, 
+                              ease: "easeOut" 
+                            }}
+                          />
+                        </svg>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
 
               {/* Hover effect - shine */}
@@ -267,59 +306,28 @@ export default function Skills() {
                 transition={{ duration: 0.6 }}
               />
 
-              {/* Progress bar on hover (bottom) */}
+              {/* Progress bar at bottom */}
               <motion.div
-                className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full"
+                className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${
+                  clickedIndex === index 
+                    ? getProgressBarColor(skill.percentage)
+                    : 'from-gray-400 to-gray-600'
+                } rounded-full`}
                 initial={{ width: "0%" }}
-                animate={hoveredIndex === index ? { width: "100%" } : { width: "0%" }}
-                transition={{ duration: 0.5 }}
+                animate={
+                  clickedIndex === index 
+                    ? { width: `${skill.percentage}%` }
+                    : hoveredIndex === index 
+                      ? { width: "100%" } 
+                      : { width: "0%" }
+                }
+                transition={{ 
+                  duration: clickedIndex === index ? 1 : 0.5,
+                  ease: "easeOut" 
+                }}
               />
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Selected skill details */}
-        <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{
-            opacity: selectedSkill ? 1 : 0,
-            y: selectedSkill ? 0 : 20
-          }}
-          transition={{ duration: 0.4 }}
-        >
-          {selectedSkill && (
-            <motion.div
-              className="bg-gray-800 border border-gray-600 rounded-2xl p-6 max-w-md mx-auto"
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                boxShadow: '0 0 25px rgba(156, 163, 175, 0.15)'
-              }}
-            >
-              <div className={`${selectedSkill.color} mb-4 flex justify-center`}>
-                {selectedSkill.icon}
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">
-                {selectedSkill.name}
-              </h3>
-              <div className="text-3xl font-bold text-white mb-4">
-                {selectedSkill.percentage}%
-              </div>
-              <p className="text-gray-300 text-sm">
-                Proficiency Level
-              </p>
-              <motion.button
-                className="mt-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors duration-200"
-                onClick={() => setSelectedSkill(null)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Close
-              </motion.button>
-            </motion.div>
-          )}
         </motion.div>
 
         {/* Additional decorative elements */}

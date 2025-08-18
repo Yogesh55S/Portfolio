@@ -1,6 +1,7 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 // Add your logo image path here
 const logoSrc = "/logo2.png";
@@ -15,42 +16,223 @@ const navItems = [
 ];
 
 export default function Navbar() {
-  return (
-    <motion.nav
-      className="fixed top-0 w-full z-50 backdrop-blur bg-black/40 border-b border-gray-800"
-      initial={{ y: -80 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
-        {/* Logo */}
-        <a href="#home" className="flex items-center">
-          <motion.img
-            src={logoSrc}
-            alt="Yogesh logo"
-            className="h-10 w-10 object-contain drop-shadow-lg"
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4 }}
-            draggable={false}
-          />
-        </a>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-        {/* Links */}
-        <div className="hidden md:flex space-x-8">
-          {navItems.map((item, i) => (
-            <motion.a
-              key={i}
-              href={item.href}
-              className="text-gray-300 hover:text-blue-400 transition relative group"
-              whileHover={{ scale: 1.1 }}
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Close menu when clicking on nav items
+  const handleNavClick = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
+  return (
+    <>
+      <motion.nav
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrolled 
+            ? 'backdrop-blur-md bg-black/60 border-b border-gray-700 shadow-lg' 
+            : 'backdrop-blur-sm bg-black/40 border-b border-gray-800'
+        }`}
+        initial={{ y: -80 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-3 sm:py-4">
+            {/* Logo */}
+            <motion.a 
+              href="#home" 
+              className="flex items-center z-50 relative"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              {item.name}
-              <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-blue-400 group-hover:w-full transition-all duration-300"></span>
+              <motion.img
+                src={logoSrc}
+                alt="Yogesh logo"
+                className="h-8 w-8 sm:h-10 sm:w-10 object-contain drop-shadow-lg"
+                initial={{ opacity: 0, scale: 0.6 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+                draggable={false}
+              />
             </motion.a>
-          ))}
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {navItems.map((item, i) => (
+                <motion.a
+                  key={i}
+                  href={item.href}
+                  className="text-gray-300 hover:text-blue-400 transition-colors duration-300 relative group font-medium"
+                  whileHover={{ scale: 1.05 }}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.1 }}
+                >
+                  {item.name}
+                  <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
+                </motion.a>
+              ))}
+              
+              {/* GitHub Link - Desktop */}
+              <motion.a
+                href="https://github.com/Yogesh55S" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-blue-400 transition-colors duration-300 p-2 rounded-full hover:bg-gray-800/50"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: navItems.length * 0.1 }}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </motion.a>
+            </div>
+
+            {/* Mobile & Tablet Menu Button */}
+            <div className="lg:hidden flex items-center space-x-4">
+              {/* GitHub Link - Mobile/Tablet */}
+              <motion.a
+                href="https://github.com/yourusername" // Replace with your GitHub URL
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-blue-400 transition-colors duration-300 p-2 rounded-full hover:bg-gray-800/50"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+              </motion.a>
+
+              {/* Hamburger Menu Button */}
+              <motion.button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="relative z-50 p-2 text-gray-300 hover:text-blue-400 transition-colors duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Toggle menu"
+              >
+                <div className="w-6 h-6 flex flex-col justify-center items-center">
+                  <motion.span
+                    className={`bg-current block h-0.5 w-6 rounded-sm transition-all duration-300 ${
+                      isMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-1'
+                    }`}
+                  />
+                  <motion.span
+                    className={`bg-current block h-0.5 w-6 rounded-sm transition-all duration-300 ${
+                      isMenuOpen ? 'opacity-0' : 'opacity-100'
+                    }`}
+                  />
+                  <motion.span
+                    className={`bg-current block h-0.5 w-6 rounded-sm transition-all duration-300 ${
+                      isMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-1'
+                    }`}
+                  />
+                </div>
+              </motion.button>
+            </div>
+          </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsMenuOpen(false)}
+            />
+
+            {/* Slide-out Menu */}
+            <motion.div
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-gray-900/95 backdrop-blur-lg border-l border-gray-700 z-50 lg:hidden shadow-2xl"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            >
+              <div className="flex flex-col h-full pt-20 pb-8 px-6">
+                {/* Navigation Items */}
+                <div className="flex-1 space-y-2">
+                  {navItems.map((item, i) => (
+                    <motion.a
+                      key={i}
+                      href={item.href}
+                      onClick={handleNavClick}
+                      className="block px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-800/50 rounded-lg transition-all duration-300 font-medium group"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1, duration: 0.3 }}
+                      whileHover={{ x: 8 }}
+                    >
+                      <span className="flex items-center">
+                        {item.name}
+                        <motion.span
+                          className="ml-auto w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-4 transition-all duration-300"
+                        />
+                      </span>
+                    </motion.a>
+                  ))}
+                </div>
+
+                {/* GitHub Link in Mobile Menu */}
+                <motion.div
+                  className="pt-4 border-t border-gray-700"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: navItems.length * 0.1 + 0.2, duration: 0.3 }}
+                >
+                  <a
+                    href="https://github.com/yourusername" // Replace with your GitHub URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center px-4 py-3 text-gray-300 hover:text-blue-400 hover:bg-gray-800/50 rounded-lg transition-all duration-300 font-medium group"
+                    onClick={handleNavClick}
+                  >
+                    <svg className="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                    <motion.span
+                      className="ml-auto w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-4 transition-all duration-300"
+                    />
+                  </a>
+                </motion.div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

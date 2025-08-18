@@ -6,61 +6,57 @@ const forms = [
   {
     key: "base",
     role: "Developer",
-    title: "Base Form",
-    description: "The foundation of all power",
-    image: "/goku_.png",
-    bg: "/bg_normal.gif",
+    image: "/goku_normal_form.png",
+    // bg: "/bg_normal.gif",
     glowColor: "rgba(96,165,250,0.8)",
     particleColor: "#60a5fa",
     textColor: "text-blue-400",
     bgOverlay: "bg-gradient-to-br from-blue-900/30 to-purple-900/20",
     energy: 25,
+    description: "Building amazing digital experiences"
   },
   {
     key: "ssj",
     role: "Frontend Developer",
-    title: "Super Saiyan",
-    description: "Golden power unleashed",
-    image: "/goku_ssj.png",
-    bg: "/bg_ssj.gif",
+    image: "/super_saiyan.png",
+    // bg: "/bg_ssj.gif",
     glowColor: "rgba(251,191,36,0.95)",
     particleColor: "#fbbf24",
     textColor: "text-yellow-400",
     bgOverlay: "bg-gradient-to-br from-yellow-900/30 to-orange-900/20",
     energy: 50,
+    description: "Crafting beautiful user interfaces"
   },
   {
     key: "ssb",
     role: "Backend Developer",
-    title: "Super Saiyan Blue",
-    description: "Divine power of the gods",
-    image: "/goku_blue.png",
-    bg: "/bg_blue.gif",
+    image: "/goku_2nd_form.png",
+    // bg: "/bg_blue.gif",
     glowColor: "rgba(59,130,246,0.95)",
     particleColor: "#3b82f6",
     textColor: "text-cyan-400",
     bgOverlay: "bg-gradient-to-br from-cyan-900/30 to-blue-900/20",
     energy: 75,
+    description: "Powering robust server solutions"
   },
   {
     key: "ui",
     role: "Full-Stack Developer",
-    title: "Ultra Instinct",
-    description: "The ultimate form transcended",
     image: "/goku.png",
-    bg: "/bg_ui.gif",
+    // bg: "/bg_ui.gif",
     glowColor: "rgba(226,232,240,1)",
     particleColor: "#e2e8f0",
     textColor: "text-slate-200",
     bgOverlay: "bg-gradient-to-br from-slate-800/30 to-gray-900/20",
     energy: 100,
+    description: "Complete end-to-end solutions"
   },
 ];
 
 // Floating particle component
 const Particle = ({ color, delay = 0 }) => (
   <motion.div
-    className="absolute w-2 h-2 rounded-full opacity-70"
+    className="absolute w-1 h-1 sm:w-2 sm:h-2 rounded-full opacity-70"
     style={{ backgroundColor: color }}
     animate={{
       x: [0, Math.random() * 200 - 100],
@@ -79,12 +75,12 @@ const Particle = ({ color, delay = 0 }) => (
 
 // Energy bar component
 const EnergyBar = ({ energy, color }) => (
-  <div className="w-full max-w-md mx-auto mt-6">
+  <div className="w-full max-w-xs sm:max-w-md mx-auto mt-4 sm:mt-6">
     <div className="flex justify-between items-center mb-2">
-      <span className="text-sm text-gray-300">Power Level</span>
-      <span className="text-sm text-gray-300">{energy}%</span>
+      <span className="text-xs sm:text-sm text-gray-300">Power Level</span>
+      <span className="text-xs sm:text-sm text-gray-300">{energy}%</span>
     </div>
-    <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+    <div className="w-full bg-gray-700 rounded-full h-1.5 sm:h-2 overflow-hidden">
       <motion.div
         className="h-full rounded-full"
         style={{ backgroundColor: color }}
@@ -115,18 +111,18 @@ const SkillOrbs = ({ form }) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-3 mt-6 justify-center">
+    <div className="flex flex-wrap gap-2 sm:gap-3 mt-4 sm:mt-6 justify-center">
       {skills[form.key]?.map((skill, index) => (
         <motion.div
           key={skill}
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           transition={{ delay: index * 0.2, duration: 0.6, ease: "backOut" }}
-          className="px-4 py-2 rounded-full border backdrop-blur-sm text-sm font-medium"
+          className="px-2 py-1 sm:px-4 sm:py-2 rounded-full border backdrop-blur-sm text-xs sm:text-sm font-medium"
           style={{
             borderColor: form.particleColor,
             backgroundColor: `${form.particleColor}20`,
-            boxShadow: `0 0 20px ${form.particleColor}40`
+            boxShadow: `0 0 15px ${form.particleColor}40`
           }}
         >
           {skill}
@@ -147,14 +143,16 @@ export default function EnhancedHero() {
     forms.forEach((f) => {
       const img = new window.Image();
       img.src = f.image;
-      const bg = new window.Image();
-      bg.src = f.bg;
+      if (f.bg) {
+        const bg = new window.Image();
+        bg.src = f.bg;
+      }
     });
   }, []);
 
   // Generate particles on transformation
   const generateParticles = useCallback(() => {
-    const newParticles = Array.from({ length: 20 }, (_, i) => ({
+    const newParticles = Array.from({ length: 15 }, (_, i) => ({
       id: Math.random(),
       delay: i * 0.1,
     }));
@@ -162,7 +160,7 @@ export default function EnhancedHero() {
     setTimeout(() => setParticles([]), 5000);
   }, []);
 
-  // Transform function with enhanced effects
+  // Transform function with enhanced effects (REMOVED AUTO-CYCLE)
   const transform = useCallback(() => {
     if (isTransforming) return;
     
@@ -187,11 +185,7 @@ export default function EnhancedHero() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [transform]);
 
-  // Auto-cycle transformation
-  useEffect(() => {
-    const interval = setInterval(transform, 8000);
-    return () => clearInterval(interval);
-  }, [transform]);
+  // REMOVED AUTO-CYCLE INTERVAL
 
   // Animation variants
   const fadeVariants = {
@@ -248,7 +242,7 @@ export default function EnhancedHero() {
   };
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 sm:px-6 lg:px-8">
       {/* Enhanced Background with multiple layers */}
       <div className="absolute inset-0 -z-20">
         <AnimatePresence mode="wait">
@@ -260,7 +254,7 @@ export default function EnhancedHero() {
             exit="exit"
             className="absolute inset-0"
             style={{
-              backgroundImage: `url(${current.bg})`,
+              backgroundImage: current.bg ? `url(${current.bg})` : undefined,
               backgroundSize: "cover",
               backgroundPosition: "center",
               filter: "brightness(0.7) saturate(1.2) contrast(1.1)",
@@ -282,13 +276,13 @@ export default function EnhancedHero() {
         
         {/* Animated grid overlay */}
         <motion.div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-5 sm:opacity-10"
           style={{
             backgroundImage: `linear-gradient(${current.particleColor} 1px, transparent 1px), linear-gradient(90deg, ${current.particleColor} 1px, transparent 1px)`,
-            backgroundSize: "50px 50px",
+            backgroundSize: "30px 30px sm:50px 50px",
           }}
           animate={{
-            backgroundPosition: ["0 0", "50px 50px"],
+            backgroundPosition: ["0 0", "30px 30px", "0 0"],
           }}
           transition={{
             duration: 20,
@@ -315,10 +309,10 @@ export default function EnhancedHero() {
       </div>
 
       {/* Main content */}
-      <div className="mx-auto flex w-11/12 max-w-7xl flex-col-reverse items-center justify-between gap-12 lg:flex-row">
+      <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-8 sm:gap-12 lg:flex-row">
         
         {/* Left: Enhanced Text Section */}
-        <div className="max-w-2xl text-center lg:text-left">
+        <div className="max-w-full lg:max-w-2xl text-center lg:text-left flex-1">
           <AnimatePresence mode="wait">
             <motion.div
               key={`content-${current.key}`}
@@ -326,22 +320,17 @@ export default function EnhancedHero() {
               initial="initial"
               animate="enter"
               exit="exit"
-              className="space-y-6"
+              className="space-y-4 sm:space-y-6"
             >
               <motion.div variants={textVariants}>
-                <motion.p 
-                  className="text-sm uppercase tracking-widest text-gray-400 mb-2"
-                  style={{ color: current.particleColor }}
-                >
-                  {current.title}
-                </motion.p>
-                <motion.h1 className="text-5xl font-black leading-tight md:text-7xl lg:text-8xl">
+               
+                <motion.h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight">
                   <span className="text-white drop-shadow-2xl">Hi, I'm</span>
                   <br />
                   <span 
                     className={`${current.textColor} drop-shadow-2xl`}
                     style={{
-                      textShadow: `0 0 30px ${current.particleColor}, 0 0 60px ${current.particleColor}40`
+                      textShadow: `0 0 20px ${current.particleColor}, 0 0 40px ${current.particleColor}40`
                     }}
                   >
                     Yogesh
@@ -350,10 +339,10 @@ export default function EnhancedHero() {
               </motion.div>
 
               <motion.div variants={textVariants}>
-                <motion.p className="text-2xl md:text-3xl font-bold text-gray-200 mb-2">
+                <motion.p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-200 mb-2">
                   {current.role}
                 </motion.p>
-                <motion.p className="text-lg text-gray-400 max-w-md">
+                <motion.p className="text-sm sm:text-base lg:text-lg text-gray-400 max-w-md mx-auto lg:mx-0">
                   {current.description}
                 </motion.p>
               </motion.div>
@@ -368,11 +357,11 @@ export default function EnhancedHero() {
 
               <motion.div 
                 variants={textVariants}
-                className="flex flex-col sm:flex-row gap-4 pt-8"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 sm:pt-8"
               >
                 <motion.a
                   href="#projects"
-                  className="group relative overflow-hidden rounded-xl px-8 py-4 font-bold text-black transition-all duration-300"
+                  className="group relative overflow-hidden rounded-xl px-6 py-3 sm:px-8 sm:py-4 font-bold text-black transition-all duration-300 text-sm sm:text-base"
                   style={{ backgroundColor: current.particleColor }}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -388,7 +377,7 @@ export default function EnhancedHero() {
                 
                 <motion.a
                   href="#contact"
-                  className="group rounded-xl border-2 px-8 py-4 font-bold text-white transition-all duration-300 backdrop-blur-sm"
+                  className="group rounded-xl border-2 px-6 py-3 sm:px-8 sm:py-4 font-bold text-white transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
                   style={{ 
                     borderColor: current.particleColor,
                     backgroundColor: `${current.particleColor}10`
@@ -409,7 +398,7 @@ export default function EnhancedHero() {
         </div>
 
         {/* Right: Enhanced Character Section */}
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <motion.button
             onClick={transform}
             className="group relative isolate outline-none"
@@ -419,12 +408,12 @@ export default function EnhancedHero() {
             whileTap={{ scale: 0.98 }}
             disabled={isTransforming}
           >
-            {/* Multi-layered glow effect */}
+            {/* Multi-layered glow effect - Responsive */}
             <motion.div
-              className="absolute -inset-12 -z-10 rounded-full opacity-60"
+              className="absolute -inset-6 sm:-inset-8 lg:-inset-12 -z-10 rounded-full opacity-60"
               style={{
                 background: `radial-gradient(circle, ${current.glowColor} 0%, transparent 70%)`,
-                filter: "blur(20px)",
+                filter: "blur(15px) sm:blur(20px)",
               }}
               animate={{
                 scale: [1, 1.1, 1],
@@ -438,10 +427,10 @@ export default function EnhancedHero() {
             />
             
             <motion.div
-              className="absolute -inset-8 -z-10 rounded-full opacity-40"
+              className="absolute -inset-4 sm:-inset-6 lg:-inset-8 -z-10 rounded-full opacity-40"
               style={{
                 background: `radial-gradient(circle, ${current.glowColor} 0%, transparent 60%)`,
-                filter: "blur(40px)",
+                filter: "blur(30px) sm:blur(40px)",
               }}
               animate={{
                 scale: [1.1, 1, 1.1],
@@ -454,7 +443,7 @@ export default function EnhancedHero() {
               }}
             />
 
-            {/* Character image with enhanced animations */}
+            {/* Character image with enhanced animations - Responsive */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={current.image}
@@ -467,9 +456,9 @@ export default function EnhancedHero() {
                 <motion.img
                   src={current.image}
                   alt={`${current.role} form`}
-                  className="pointer-events-none select-none w-96 h-96 md:w-[500px] md:h-[500px] object-contain"
+                  className="pointer-events-none select-none w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain"
                   style={{
-                    filter: `drop-shadow(0 0 20px ${current.glowColor}) drop-shadow(0 0 40px ${current.glowColor}40)`,
+                    filter: `drop-shadow(0 0 15px ${current.glowColor}) drop-shadow(0 0 30px ${current.glowColor}40)`,
                   }}
                   animate={{
                     y: [-5, 5, -5],
@@ -499,16 +488,16 @@ export default function EnhancedHero() {
               </motion.div>
             </AnimatePresence>
 
-            {/* Interactive transformation indicator */}
+            {/* Interactive transformation indicator - Responsive */}
             <motion.div
-              className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2"
+              className="absolute -bottom-6 sm:-bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-1.5 sm:gap-2"
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
               {forms.map((_, i) => (
                 <div
                   key={i}
-                  className="w-2 h-2 rounded-full border"
+                  className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full border"
                   style={{
                     backgroundColor: i === idx ? current.particleColor : "transparent",
                     borderColor: current.particleColor,
@@ -516,24 +505,18 @@ export default function EnhancedHero() {
                 />
               ))}
             </motion.div>
+
+            {/* Mobile tap instruction */}
+            <motion.div
+              className="absolute -bottom-12 sm:-bottom-14 left-1/2 -translate-x-1/2 text-xs sm:text-sm text-gray-400 text-center lg:hidden"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              Tap to Transform
+            </motion.div>
           </motion.button>
         </div>
       </div>
-
-      {/* Enhanced instruction text */}
-      <motion.div 
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center pointer-events-none"
-        animate={{ opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 3, repeat: Infinity }}
-      >
-        <p className="text-sm text-gray-300 mb-1">
-          Click the character or press Space/Enter to transform
-        </p>
-        <p className="text-xs text-gray-400">
-          Auto-transforms every 8 seconds
-        </p>
-      </motion.div>
-
     </section>
   );
 }
