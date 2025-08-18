@@ -22,7 +22,7 @@ const forms = [
   {
     key: "base",
     role: "Developer",
-    image: "/goku_base.png",
+    image: "/goku_.png",
     bg: "/bg_normal.gif",
     glowRing: "shadow-[0_0_38px_rgba(96,165,250,0.8)]",
   },

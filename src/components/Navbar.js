@@ -2,6 +2,9 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 
+// Add your logo image path here
+const logoSrc = "/logo2.png";
+
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "Skills", href: "#skills" },
@@ -21,9 +24,17 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center py-4">
         {/* Logo */}
-        <h1 className="text-2xl font-bold text-blue-400 drop-shadow-[0_0_10px_#60a5fa]">
-          Yogesh<span className="text-white">.</span>
-        </h1>
+        <a href="#home" className="flex items-center">
+          <motion.img
+            src={logoSrc}
+            alt="Yogesh logo"
+            className="h-10 w-10 object-contain drop-shadow-lg"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            draggable={false}
+          />
+        </a>
 
         {/* Links */}
         <div className="hidden md:flex space-x-8">
