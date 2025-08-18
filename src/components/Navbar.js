@@ -116,7 +116,7 @@ export default function Navbar() {
             <div className="lg:hidden flex items-center space-x-4">
               {/* GitHub Link - Mobile/Tablet */}
               <motion.a
-                href="https://github.com/yourusername" // Replace with your GitHub URL
+                href="https://github.com/Yogesh55S" // Replace with your GitHub URL
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-blue-400 transition-colors duration-300 p-2 rounded-full hover:bg-gray-800/50"
