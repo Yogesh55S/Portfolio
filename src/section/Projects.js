@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const projects = [
@@ -41,8 +41,23 @@ const projects = [
   },
 ];
 
+// Pre-defined positions to avoid hydration mismatch
+const particlePositions = [
+  { left: 15, top: 20 },
+  { left: 85, top: 60 },
+  { left: 30, top: 80 },
+  { left: 70, top: 25 },
+  { left: 50, top: 45 },
+  { left: 90, top: 35 }
+];
+
 export default function Projects() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const containerVariants = {
     hidden: {},
@@ -104,14 +119,14 @@ export default function Projects() {
         <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-gray-500 to-gray-700 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
       </div>
 
-      {/* Floating particles */}
-      {[...Array(6)].map((_, i) => (
+      {/* Floating particles - only render after mount */}
+      {isMounted && particlePositions.map((position, i) => (
         <motion.div
           key={i}
           className="absolute w-2 h-2 bg-gray-400 rounded-full opacity-20"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            left: `${position.left}%`,
+            top: `${position.top}%`,
           }}
           animate={{
             y: [-20, 20, -20],
@@ -119,7 +134,7 @@ export default function Projects() {
             scale: [1, 1.5, 1]
           }}
           transition={{
-            duration: 3 + Math.random() * 2,
+            duration: 3 + (i % 3),
             repeat: Infinity,
             delay: i * 0.5
           }}
@@ -137,7 +152,7 @@ export default function Projects() {
         >
           <motion.h2
             className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-6 relative"
-            animate={floatingAnimation}
+            animate={isMounted ? floatingAnimation : {}}
           >
             My Projects
             {/* Glowing underline */}
@@ -172,10 +187,10 @@ export default function Projects() {
               <motion.div
                 key={i}
                 className="w-3 h-3 bg-gray-500 rounded-full"
-                animate={{
+                animate={isMounted ? {
                   scale: [1, 1.5, 1],
                   opacity: [0.5, 1, 0.5]
-                }}
+                } : {}}
                 transition={{
                   duration: 2,
                   repeat: Infinity,
@@ -199,11 +214,11 @@ export default function Projects() {
               key={index}
               className="group relative"
               variants={cardVariants}
-              whileHover={{ 
+              whileHover={isMounted ? { 
                 scale: 1.02,
                 rotateY: 5,
                 z: 50
-              }}
+              } : {}}
               onHoverStart={() => setHoveredIndex(index)}
               onHoverEnd={() => setHoveredIndex(null)}
             >
@@ -216,7 +231,7 @@ export default function Projects() {
                     className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full"
                     variants={shimmerVariants}
                     initial="initial"
-                    animate={hoveredIndex === index ? "animate" : "initial"}
+                    animate={isMounted && hoveredIndex === index ? "animate" : "initial"}
                   />
                 </div>
 
@@ -249,7 +264,7 @@ export default function Projects() {
                 {/* Title */}
                 <motion.h3
                   className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight"
-                  animate={hoveredIndex === index ? {
+                  animate={isMounted && hoveredIndex === index ? {
                     x: [0, 5, 0],
                     transition: { duration: 0.5 }
                   } : {}}
@@ -305,7 +320,7 @@ export default function Projects() {
                 <motion.div
                   className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-gray-400 via-gray-500 to-gray-400 rounded-full"
                   initial={{ width: "0%" }}
-                  animate={hoveredIndex === index ? { width: "100%" } : { width: "0%" }}
+                  animate={isMounted && hoveredIndex === index ? { width: "100%" } : { width: "0%" }}
                   transition={{ duration: 0.6 }}
                 />
               </div>
@@ -325,10 +340,10 @@ export default function Projects() {
             <motion.div
               key={i}
               className="w-1 h-8 bg-gradient-to-t from-gray-600 to-transparent rounded-full"
-              animate={{
+              animate={isMounted ? {
                 scaleY: [1, 1.5, 1],
                 opacity: [0.3, 0.8, 0.3]
-              }}
+              } : {}}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,

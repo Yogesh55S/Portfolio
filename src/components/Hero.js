@@ -48,7 +48,7 @@ const forms = [
     gradient: "from-slate-400 via-gray-500 to-zinc-600"
   },
 ];
-//Nothing
+
 // Enhanced floating particle component
 const Particle = ({ color, delay = 0 }) => (
   <motion.div
@@ -137,47 +137,73 @@ const SkillOrbs = ({ form }) => {
   );
 };
 
-// New animated background component
-const AnimatedBackground = ({ current }) => (
-  <div className="absolute inset-0 overflow-hidden">
-    {/* Animated gradient orbs */}
-    {[...Array(6)].map((_, i) => (
-      <motion.div
-        key={i}
-        className="absolute rounded-full opacity-20 blur-3xl"
-        style={{
-          background: `radial-gradient(circle, ${current.particleColor} 0%, transparent 70%)`,
-          width: `${200 + i * 100}px`,
-          height: `${200 + i * 100}px`,
-        }}
-        animate={{
-          x: [Math.random() * window.innerWidth, Math.random() * window.innerWidth],
-          y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight],
-        }}
-        transition={{
-          duration: 20 + i * 5,
-          repeat: Infinity,
-          repeatType: "reverse",
-          ease: "linear"
-        }}
-        initial={{
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-        }}
-      />
-    ))}
-  </div>
-);
+// Fixed animated background component with SSR compatibility
+const AnimatedBackground = ({ current }) => {
+  const [dimensions, setDimensions] = useState({ width: 1200, height: 800 });
+
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+      
+      const handleResize = () => {
+        setDimensions({ width: window.innerWidth, height: window.innerHeight });
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Animated gradient orbs */}
+      {[...Array(6)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full opacity-20 blur-3xl"
+          style={{
+            background: `radial-gradient(circle, ${current.particleColor} 0%, transparent 70%)`,
+            width: `${200 + i * 100}px`,
+            height: `${200 + i * 100}px`,
+          }}
+          animate={{
+            x: [Math.random() * dimensions.width, Math.random() * dimensions.width],
+            y: [Math.random() * dimensions.height, Math.random() * dimensions.height],
+          }}
+          transition={{
+            duration: 20 + i * 5,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "linear"
+          }}
+          initial={{
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default function EnhancedHero() {
   const [idx, setIdx] = useState(0);
   const [isTransforming, setIsTransforming] = useState(false);
   const [particles, setParticles] = useState([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMounted, setIsMounted] = useState(false);
   const current = forms[idx];
+
+  // Handle client-side mounting
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Mouse tracking for interactive effects
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleMouseMove = (e) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 100,
@@ -187,10 +213,12 @@ export default function EnhancedHero() {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [isMounted]);
 
   // Preload all assets
   useEffect(() => {
+    if (!isMounted) return;
+    
     forms.forEach((f) => {
       const img = new window.Image();
       img.src = f.image;
@@ -199,7 +227,7 @@ export default function EnhancedHero() {
         bg.src = f.bg;
       }
     });
-  }, []);
+  }, [isMounted]);
 
   // Enhanced particle generation
   const generateParticles = useCallback(() => {
@@ -226,6 +254,8 @@ export default function EnhancedHero() {
 
   // Keyboard controls
   useEffect(() => {
+    if (!isMounted) return;
+    
     const handleKey = (e) => {
       if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
@@ -234,7 +264,7 @@ export default function EnhancedHero() {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [transform]);
+  }, [transform, isMounted]);
 
   // Enhanced animation variants
   const fadeVariants = {
@@ -292,6 +322,37 @@ export default function EnhancedHero() {
       transition: { duration: 0.6, ease: "easeIn" },
     },
   };
+
+  // Don't render interactive elements until mounted on client
+  if (!isMounted) {
+    return (
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 -z-20 bg-black/50" />
+        <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-8 sm:gap-12 lg:flex-row">
+          <div className="max-w-full lg:max-w-2xl text-center lg:text-left flex-1">
+            <div className="space-y-4 sm:space-y-6">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-white">
+                Hi, I'm<br />
+                <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+                  Yogesh
+                </span>
+              </h1>
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-400">
+                Developer
+              </p>
+            </div>
+          </div>
+          <div className="relative flex-shrink-0">
+            <img
+              src="/goku_normal_form.png"
+              alt="Developer form"
+              className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain"
+            />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 sm:px-6 lg:px-8">
@@ -639,5 +700,4 @@ export default function EnhancedHero() {
       </div>
     </section>
   );
-  
-} 
+}
