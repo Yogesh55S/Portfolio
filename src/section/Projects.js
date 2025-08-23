@@ -1,358 +1,291 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+'use client';
+import React, { useState } from 'react';
 
-const projects = [
+const projectsData = [
   {
-    title: "Blood Donation Management System",
-    date: "Oct 2021",
-    description:
-      "A system built for my college's annual blood donation fair to store and manage donor information easily.",
-    tech: "HTML, CSS, JavaScript, Bootstrap, PHP, MySQL",
-    category: "Healthcare",
+    id: 1,
+    name: "BLOOD DONATION",
+    subtitle: "Management System",
+    type: "Healthcare Platform",
+    year: "Oct 2021",
+    description: "A comprehensive system built for my college's annual blood donation fair to efficiently store and manage donor information. Features include donor registration, blood type tracking, and donation history management.",
+    technologies: ["HTML", "CSS", "JavaScript", "Bootstrap", "PHP", "MySQL"],
+    github: "https://github.com/yourusername/blood-donation",
+    live: "https://your-blood-donation-demo.com",
     status: "Completed"
   },
   {
-    title: "Billing System with Python",
-    date: "Oct 2022",
-    description:
-      "A billing application that provides product details like quantity, quality, and price simultaneously.",
-    tech: "Python, Tkinter, MySQL",
-    category: "Desktop App",
+    id: 2,
+    name: "BILLING SYSTEM",
+    subtitle: "Python Application",
+    type: "Desktop Application",
+    year: "Oct 2022",
+    description: "A comprehensive billing application built with Python that provides detailed product information including quantity, quality, and pricing simultaneously. Features invoice generation and inventory tracking.",
+    technologies: ["Python", "Tkinter", "MySQL"],
+    github: "https://github.com/yourusername/billing-system",
+    live: "#",
     status: "Completed"
   },
   {
-    title: "Agri-Farma (Full-Stack Platform)",
-    date: "Nov 2024",
-    description:
-      "A platform for farmers to buy farm medicines and access the latest government information & offers.",
-    tech: "React.js, Node.js, MongoDB, Vite, Bootstrap",
-    category: "Agriculture",
+    id: 3,
+    name: "AGRI-FARMA",
+    subtitle: "Full-Stack Platform",
+    type: "Agriculture Platform",
+    year: "Nov 2024",
+    description: "A comprehensive platform designed for farmers to purchase farm medicines and access the latest government information and offers. Features include product catalog, order management, and government schemes integration.",
+    technologies: ["React.js", "Node.js", "MongoDB", "Vite", "Bootstrap"],
+    github: "https://github.com/yourusername/agri-farma",
+    live: "https://your-agri-farma-demo.com",
     status: "Completed"
   },
   {
-    title: "Rabbit Auto Care",
-    date: "2025",
-    description:
-      "An innovative car care platform offering services, product management, and modern dashboards for customers and admins.",
-    tech: "Next.js, TailwindCSS, Supabase, Node.js",
-    category: "Automotive",
-    status: "In Progress"
-  },
+    id: 4,
+    name: "RABBIT AUTO CARE",
+    subtitle: "Car Care Platform",
+    type: "Automotive Services",
+    year: "2025",
+    description: "An innovative car care platform offering comprehensive services, product management, and modern dashboards for both customers and administrators. Features booking system and service tracking.",
+    technologies: ["Next.js", "TailwindCSS", "Supabase", "Node.js"],
+    github: "https://github.com/yourusername/rabbit-auto-care",
+    live: "https://your-rabbit-auto-care-demo.com",
+    status: "Completed"
+  }
 ];
 
-// Pre-defined positions to avoid hydration mismatch
-const particlePositions = [
-  { left: 15, top: 20 },
-  { left: 85, top: 60 },
-  { left: 30, top: 80 },
-  { left: 70, top: 25 },
-  { left: 50, top: 45 },
-  { left: 90, top: 35 }
-];
+export default function ProjectsPage() {
+  const [currentProject, setCurrentProject] = useState(0);
+  const [showTech, setShowTech] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-export default function Projects() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const currentProjectData = projectsData[currentProject];
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.3
-      }
-    }
+  const nextProject = () => {
+    setCurrentProject((prev) => (prev + 1) % projectsData.length);
+    setShowTech(false);
+    setShowInfo(false);
+    setIsFlipped(false);
   };
 
-  const cardVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 60,
-      scale: 0.9,
-      rotateX: -15
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94]
-      }
-    }
+  const prevProject = () => {
+    setCurrentProject((prev) => (prev - 1 + projectsData.length) % projectsData.length);
+    setShowTech(false);
+    setShowInfo(false);
+    setIsFlipped(false);
   };
 
-  const floatingAnimation = {
-    y: [-8, 8, -8],
-    transition: {
-      duration: 4,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
+  const handleTechClick = () => {
+    setShowTech(!showTech);
   };
 
-  const shimmerVariants = {
-    initial: { x: "-100%" },
-    animate: { 
-      x: "100%",
-      transition: {
-        duration: 1.5,
-        ease: "easeInOut",
-        repeat: Infinity,
-        repeatDelay: 3
-      }
+  const handleInfoClick = () => {
+    if (!showInfo) {
+      setIsFlipped(true);
+      setTimeout(() => setShowInfo(true), 300);
+    } else {
+      setShowInfo(false);
+      setTimeout(() => setIsFlipped(false), 300);
     }
   };
 
   return (
-    <section id="projects" className="py-20 px-8 md:px-16 bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-gray-600 to-gray-800 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-gray-700 to-gray-500 rounded-full mix-blend-multiply filter blur-2xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-gray-500 to-gray-700 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
+      {/* Background texture overlay - matching home page */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
       </div>
 
-      {/* Floating particles - only render after mount */}
-      {isMounted && particlePositions.map((position, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-gray-400 rounded-full opacity-20"
-          style={{
-            left: `${position.left}%`,
-            top: `${position.top}%`,
-          }}
-          animate={{
-            y: [-20, 20, -20],
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.5, 1]
-          }}
-          transition={{
-            duration: 3 + (i % 3),
-            repeat: Infinity,
-            delay: i * 0.5
-          }}
-        />
-      ))}
-
-      <div className="relative z-10">
-        {/* Header Section */}
-        <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: -40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <motion.h2
-            className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent mb-6 relative"
-            animate={isMounted ? floatingAnimation : {}}
-          >
-            My Projects
-            {/* Glowing underline */}
-            <motion.div
-              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 h-1 bg-gradient-to-r from-transparent via-gray-400 to-transparent rounded-full"
-              initial={{ width: "0%" }}
-              whileInView={{ width: "60%" }}
-              transition={{ duration: 1.2, delay: 0.5 }}
-              viewport={{ once: true }}
-            />
-          </motion.h2>
+      <div className="w-full max-w-6xl mx-auto relative">
+        
+        {/* Main content container - improved mobile layout */}
+        <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4 md:px-8 min-h-[70vh] sm:min-h-0">
+          {/* Small label */}
+          <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 md:mb-6 font-light">
+            Project {currentProject + 1} of {projectsData.length}
+          </div>
           
-          <motion.p
-            className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-          >
-            A showcase of innovative solutions and technical expertise across various domains
-          </motion.p>
-
-          {/* Decorative elements */}
-          <motion.div
-            className="flex justify-center mt-8 space-x-4"
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            viewport={{ once: true }}
-          >
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="w-3 h-3 bg-gray-500 rounded-full"
-                animate={isMounted ? {
-                  scale: [1, 1.5, 1],
-                  opacity: [0.5, 1, 0.5]
-                } : {}}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.4
+          {/* Main project name with flip effect - better mobile sizing */}
+          <div className="relative mb-3 sm:mb-4 md:mb-6 max-w-xs sm:max-w-sm md:max-w-2xl mx-auto" style={{ perspective: '1000px' }}>
+            <div 
+              className="transition-transform duration-700"
+              style={{ 
+                transformStyle: 'preserve-3d',
+                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+              }}
+            >
+              {/* Front - Project Name */}
+              <div 
+                className="backface-hidden"
+                style={{ backfaceVisibility: 'hidden' }}
+              >
+                <h1 className="text-white font-light text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-wider mb-1 sm:mb-2 leading-tight">
+                  {currentProjectData.name}
+                </h1>
+                <div className="text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg font-light tracking-wide">
+                  {currentProjectData.subtitle}
+                </div>
+              </div>
+              
+              {/* Back - Project Info - better mobile text */}
+              <div 
+                className="absolute inset-0 backface-hidden"
+                style={{ 
+                  backfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)'
                 }}
+              >
+                {showInfo && (
+                  <div className="text-white font-light text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed px-2 sm:px-4 max-h-[40vh] overflow-y-auto">
+                    {currentProjectData.description}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          
+          {/* Project type and year - smaller on mobile */}
+          <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-light mb-4 sm:mb-6">
+            {currentProjectData.type} • {currentProjectData.year}
+          </div>
+        </div>
+
+        {/* Left side - GitHub, Live, Tech icons - better mobile positioning */}
+        <div className="absolute left-1 sm:left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 sm:space-y-4 md:space-y-6 z-40">
+          {/* GitHub Link */}
+          <a 
+            href={currentProjectData.github} 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+            aria-label="GitHub Repository"
+          >
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
+            </svg>
+          </a>
+          
+          {/* Live Demo Link */}
+          {currentProjectData.live !== "#" && (
+            <a 
+              href={currentProjectData.live} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+              aria-label="Live Demo"
+            >
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          )}
+          
+          {/* Tech Stack Toggle - improved mobile popup */}
+          <button
+            onClick={handleTechClick}
+            className="text-gray-400 hover:text-white transition-colors duration-300 group relative p-1"
+            aria-label="View Technologies"
+          >
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            
+            {/* Tech Stack Popup - better mobile positioning */}
+            {showTech && (
+              <div className="absolute left-full ml-2 sm:ml-4 top-1/2 transform -translate-y-1/2 bg-slate-800/95 backdrop-blur-sm border border-gray-600 rounded-lg p-2 sm:p-3 min-w-[180px] sm:min-w-[200px] z-50 max-w-[250px]">
+                <div className="text-gray-300 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider font-light mb-2">
+                  Technologies Used
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  {currentProjectData.technologies.map((tech, index) => (
+                    <span
+                      key={index}
+                      className="bg-gray-700/50 text-gray-300 text-[8px] sm:text-[9px] md:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-gray-600 font-light"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </button>
+        </div>
+
+        {/* Right side - Info icon - better mobile positioning */}
+        <div className="absolute right-1 sm:right-2 md:right-4 lg:right-8 top-1/2 transform -translate-y-1/2 z-40">
+          <button
+            onClick={handleInfoClick}
+            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+            aria-label="Project Information"
+          >
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation arrows - moved to avoid overlap */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 z-50">
+          <button
+            onClick={prevProject}
+            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+            aria-label="Previous Project"
+          >
+            <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          {/* Project indicators */}
+          <div className="flex space-x-2">
+            {projectsData.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentProject(index);
+                  setShowTech(false);
+                  setShowInfo(false);
+                  setIsFlipped(false);
+                }}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  currentProject === index ? 'bg-white' : 'bg-gray-600 hover:bg-gray-400'
+                }`}
               />
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+          
+          <button
+            onClick={nextProject}
+            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+            aria-label="Next Project"
+          >
+            <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
 
-        {/* Projects Grid */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          {projects.map((project, index) => (
-            <motion.div
-              key={index}
-              className="group relative"
-              variants={cardVariants}
-              whileHover={isMounted ? { 
-                scale: 1.02,
-                rotateY: 5,
-                z: 50
-              } : {}}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-            >
-              {/* Card */}
-              <div className="relative bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm p-8 rounded-3xl border border-gray-700/50 overflow-hidden transition-all duration-500 ease-out group-hover:border-gray-500/70 text-left h-full">
-                
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full"
-                    variants={shimmerVariants}
-                    initial="initial"
-                    animate={isMounted && hoveredIndex === index ? "animate" : "initial"}
-                  />
-                </div>
-
-                {/* Status Badge */}
-                <motion.div
-                  className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-semibold ${
-                    project.status === "Completed" 
-                      ? "bg-green-500/20 text-green-400 border border-green-500/30" 
-                      : "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30"
-                  }`}
-                  initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {project.status}
-                </motion.div>
-
-                {/* Category Tag */}
-                <motion.span
-                  className="inline-block mb-4 px-3 py-1 bg-gray-700/50 text-gray-300 text-sm rounded-full border border-gray-600/30"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {project.category}
-                </motion.span>
-
-                {/* Title */}
-                <motion.h3
-                  className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight"
-                  animate={isMounted && hoveredIndex === index ? {
-                    x: [0, 5, 0],
-                    transition: { duration: 0.5 }
-                  } : {}}
-                >
-                  {project.title}
-                </motion.h3>
-
-                {/* Date */}
-                <motion.p
-                  className="text-gray-400 text-sm mb-4 font-medium"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  📅 {project.date}
-                </motion.p>
-
-                {/* Description */}
-                <motion.p
-                  className="text-gray-300 mb-6 leading-relaxed text-base"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  {project.description}
-                </motion.p>
-
-                {/* Tech Stack */}
-                <motion.div
-                  className="border-t border-gray-700/50 pt-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <p className="text-sm">
-                    <span className="font-bold text-gray-200 mb-2 block">🔧 Technologies Used:</span>
-                    <span className="text-gray-400 leading-relaxed">{project.tech}</span>
-                  </p>
-                </motion.div>
-
-                {/* Hover glow effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.02) 100%)'
-                  }}
-                />
-
-                {/* Bottom accent line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-gray-400 via-gray-500 to-gray-400 rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={isMounted && hoveredIndex === index ? { width: "100%" } : { width: "0%" }}
-                  transition={{ duration: 0.6 }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Bottom decoration */}
-        <motion.div
-          className="flex justify-center mt-16 space-x-2"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-1 h-8 bg-gradient-to-t from-gray-600 to-transparent rounded-full"
-              animate={isMounted ? {
-                scaleY: [1, 1.5, 1],
-                opacity: [0.3, 0.8, 0.3]
-              } : {}}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.2
-              }}
-            />
-          ))}
-        </motion.div>
+        {/* Status indicator - better mobile positioning */}
+        <div className="absolute top-2 sm:top-4 md:top-8 right-2 sm:right-4 md:right-8 z-40">
+          <div className={`text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider font-light px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border ${
+            currentProjectData.status === 'Completed' 
+              ? 'text-green-400 border-green-400/50 bg-green-400/5' 
+              : 'text-yellow-400 border-yellow-400/50 bg-yellow-400/5'
+          }`}>
+            {currentProjectData.status}
+          </div>
+        </div>
       </div>
-    </section>
+
+      <style jsx>{`
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+      `}</style>
+    </div>
   );
 }

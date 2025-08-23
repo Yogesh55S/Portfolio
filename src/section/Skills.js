@@ -1,362 +1,218 @@
-"use client";
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SiJavascript, SiReact, SiNextdotjs, SiTailwindcss, SiNodedotjs, SiMongodb, SiMysql, SiPhp, SiPython, SiSupabase, SiC, SiCplusplus } from "react-icons/si";
+'use client';
+import React, { useState } from 'react';
 
-const skills = [
-  { 
-    name: "C", 
-    icon: <SiC size={48} />, 
-    color: "text-blue-600",
-    percentage: 85
-  },
-  { 
-    name: "C++", 
-    icon: <SiCplusplus size={48} />, 
-    color: "text-blue-700",
-    percentage: 80
-  },
-  { 
-    name: "Python", 
-    icon: <SiPython size={48} />, 
-    color: "text-yellow-500",
-    percentage: 90
-  },
-  { 
-    name: "PHP", 
-    icon: <SiPhp size={48} />, 
-    color: "text-purple-600",
-    percentage: 75
-  },
-  { 
-    name: "JavaScript", 
-    icon: <SiJavascript size={48} />, 
-    color: "text-yellow-400",
-    percentage: 92
-  },
-  { 
-    name: "React.js", 
-    icon: <SiReact size={48} />, 
-    color: "text-cyan-500",
-    percentage: 88
-  },
-  { 
-    name: "Next.js", 
-    icon: <SiNextdotjs size={48} />, 
-    color: "text-black",
-    percentage: 82
-  },
-  { 
-    name: "TailwindCSS", 
-    icon: <SiTailwindcss size={48} />, 
-    color: "text-teal-500",
-    percentage: 95
-  },
-  { 
-    name: "Node.js", 
-    icon: <SiNodedotjs size={48} />, 
-    color: "text-green-600",
-    percentage: 85
-  },
-  { 
-    name: "Supabase", 
-    icon: <SiSupabase size={48} />, 
-    color: "text-green-500",
-    percentage: 78
-  },
-  { 
-    name: "MongoDB", 
-    icon: <SiMongodb size={48} />, 
-    color: "text-green-600",
-    percentage: 83
-  },
-  { 
-    name: "MySQL", 
-    icon: <SiMysql size={48} />, 
-    color: "text-orange-500",
-    percentage: 87
-  },
+const skillsData = [
+  { name: "JavaScript", percentage: 92, category: "Frontend" },
+  { name: "React.js", percentage: 88, category: "Frontend" },
+  { name: "Next.js", percentage: 82, category: "Frontend" },
+  { name: "TailwindCSS", percentage: 95, category: "Frontend" },
+  { name: "Node.js", percentage: 85, category: "Backend" },
+  { name: "Python", percentage: 90, category: "Backend" },
+  { name: "PHP", percentage: 75, category: "Backend" },
+  { name: "MongoDB", percentage: 83, category: "Database" },
+  { name: "MySQL", percentage: 87, category: "Database" },
+  { name: "Supabase", percentage: 78, category: "Database" },
+  { name: "C", percentage: 85, category: "Languages" },
+  { name: "C++", percentage: 80, category: "Languages" }
 ];
 
 export default function Skills() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [clickedIndex, setClickedIndex] = useState(null);
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [showAll, setShowAll] = useState(false);
+  const categories = ['All', 'Frontend', 'Backend', 'Database', 'Languages'];
 
-  const handleClick = (index) => {
-    setClickedIndex(clickedIndex === index ? null : index);
-  };
+  const filteredSkills = activeCategory === 'All' 
+    ? skillsData 
+    : skillsData.filter(skill => skill.category === activeCategory);
 
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
+  const displayedSkills = activeCategory === 'All' && !showAll 
+    ? filteredSkills.slice(0, 4)
+    : filteredSkills;
 
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 30,
-      scale: 0.8
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut"
-      }
-    }
-  };
-
-  const floatingAnimation = {
-    y: [-5, 5, -5],
-    transition: {
-      duration: 3,
-      repeat: Infinity,
-      ease: "easeInOut"
-    }
-  };
-
-  const getPercentageColor = (percentage) => {
-    if (percentage >= 90) return "text-green-400";
-    if (percentage >= 75) return "text-yellow-400";
-    if (percentage >= 60) return "text-orange-400";
-    return "text-red-400";
-  };
-
-  const getProgressBarColor = (percentage) => {
-    if (percentage >= 90) return "from-green-400 to-green-600";
-    if (percentage >= 75) return "from-yellow-400 to-yellow-600";
-    if (percentage >= 60) return "from-orange-400 to-orange-600";
-    return "from-red-400 to-red-600";
-  };
+  const shouldShowMoreButton = activeCategory === 'All' && !showAll && filteredSkills.length > 4;
 
   return (
-    <section id="skills" className="py-20 px-8 md:px-16 bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-gray-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-gray-600 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-gray-400 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
+      {/* Background texture overlay - matching home page */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
       </div>
 
-      <div className="relative z-10">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <motion.h2
-            className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-white via-gray-200 to-gray-300 bg-clip-text text-transparent mb-4"
-            animate={floatingAnimation}
-          >
-            Skills & Technologies
-          </motion.h2>
-          <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-gray-400 to-gray-600 mx-auto rounded-full"
-            initial={{ width: 0 }}
-            whileInView={{ width: 96 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            viewport={{ once: true }}
-          />
-          <p className="mt-6 text-gray-300 text-lg max-w-2xl mx-auto">
-            Here are the technologies and tools I work with to bring ideas to life
-          </p>
-          <p className="mt-2 text-gray-400 text-sm">
-            Click on any skill to see my proficiency level
-          </p>
-        </motion.div>
-
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 max-w-6xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              className={`
-                relative flex flex-col items-center justify-center 
-                bg-gray-800 border-gray-600 hover:bg-gray-700
-                p-6 rounded-2xl border-2 cursor-pointer
-                transition-all duration-300 ease-out
-                group overflow-hidden
-                ${clickedIndex === index ? 'ring-2 ring-blue-400 bg-gray-700' : ''}
-              `}
-              variants={itemVariants}
-              whileHover={{ 
-                scale: 1.05,
-                rotateY: 5,
-                z: 50
-              }}
-              whileTap={{ scale: 0.95 }}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-              onClick={() => handleClick(index)}
-              layout
-            >
-              {/* Gradient overlay on hover */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-gray-700/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={false}
-              />
-              
-              {/* Icon with rotation animation */}
-              <motion.div
-                className={`${skill.color} relative z-10 mb-3`}
-                animate={
-                  clickedIndex === index 
-                    ? { rotateY: 360, scale: [1, 1.2, 1] }
-                    : hoveredIndex === index 
-                      ? { rotateY: [0, 360], transition: { duration: 0.8, ease: "easeInOut" } }
-                      : {}
-                }
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
-                {skill.icon}
-              </motion.div>
-
-              {/* Skill name and percentage */}
-              <motion.div className="relative z-10 text-center">
-                <motion.p
-                  className="text-gray-200 font-semibold text-sm md:text-base mb-2"
-                  animate={hoveredIndex === index ? {
-                    y: [-2, 2, -2],
-                    transition: { duration: 0.5, repeat: Infinity }
-                  } : {}}
-                >
-                  {skill.name}
-                </motion.p>
-
-                {/* Percentage display with animation */}
-                <AnimatePresence>
-                  {clickedIndex === index && (
-                    <motion.div
-                      className="mt-2"
-                      initial={{ opacity: 0, scale: 0.5, y: 10 }}
-                      animate={{ opacity: 1, scale: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.5, y: 10 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    >
-                      <motion.span
-                        className={`text-2xl font-bold ${getPercentageColor(skill.percentage)}`}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2, duration: 0.4 }}
-                      >
-                        {skill.percentage}%
-                      </motion.span>
-                      
-                      {/* Circular progress indicator */}
-                      <motion.div
-                        className="relative w-12 h-12 mx-auto mt-2"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.3, duration: 0.4, ease: "easeOut" }}
-                      >
-                        <svg className="w-12 h-12 transform -rotate-90">
-                          <circle
-                            cx="24"
-                            cy="24"
-                            r="20"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            fill="none"
-                            className="text-gray-600"
-                          />
-                          <motion.circle
-                            cx="24"
-                            cy="24"
-                            r="20"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            fill="none"
-                            strokeLinecap="round"
-                            className={getPercentageColor(skill.percentage)}
-                            strokeDasharray={`${2 * Math.PI * 20}`}
-                            initial={{ strokeDashoffset: 2 * Math.PI * 20 }}
-                            animate={{ 
-                              strokeDashoffset: 2 * Math.PI * 20 * (1 - skill.percentage / 100) 
-                            }}
-                            transition={{ 
-                              delay: 0.4, 
-                              duration: 1, 
-                              ease: "easeOut" 
-                            }}
-                          />
-                        </svg>
-                      </motion.div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-
-              {/* Hover effect - shine */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-0 -translate-x-full group-hover:translate-x-full group-hover:opacity-20"
-                transition={{ duration: 0.6 }}
-              />
-
-              {/* Progress bar at bottom */}
-              <motion.div
-                className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${
-                  clickedIndex === index 
-                    ? getProgressBarColor(skill.percentage)
-                    : 'from-gray-400 to-gray-600'
-                } rounded-full`}
-                initial={{ width: "0%" }}
-                animate={
-                  clickedIndex === index 
-                    ? { width: `${skill.percentage}%` }
-                    : hoveredIndex === index 
-                      ? { width: "100%" } 
-                      : { width: "0%" }
-                }
-                transition={{ 
-                  duration: clickedIndex === index ? 1 : 0.5,
-                  ease: "easeOut" 
-                }}
-              />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Additional decorative elements */}
-        <motion.div
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <div className="flex space-x-2">
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="w-2 h-2 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full"
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [0.5, 1, 0.5]
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.3
-                }}
-              />
-            ))}
+      <div className="w-full max-w-6xl mx-auto relative">
+        
+        {/* Header Section - matching home page style with better mobile spacing */}
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <div className="text-gray-400 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] sm:tracking-widest mb-4 sm:mb-6 font-light">
+            My Technical
           </div>
-        </motion.div>
+          <h1 className="text-white font-light text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-wider mb-2 sm:mb-3">
+            SKILLS
+          </h1>
+          <div className="text-gray-400 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] sm:tracking-widest font-light">
+            & Technologies
+          </div>
+        </div>
+
+        {/* Category Filter - better mobile layout */}
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 px-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => {
+                setActiveCategory(category);
+                setShowAll(false);
+              }}
+              className={`
+                px-3 sm:px-6 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light
+                transition-all duration-300 border border-gray-600
+                ${activeCategory === category 
+                  ? 'text-white bg-white/5 border-gray-400' 
+                  : 'text-gray-400 hover:text-white hover:border-gray-400'
+                }
+              `}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Skills Grid - better mobile spacing and text sizes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12 px-2 sm:px-0">
+          {displayedSkills.map((skill, index) => (
+            <div
+              key={skill.name}
+              className="group"
+              style={{
+                animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
+              }}
+            >
+              {/* Skill Header - better mobile text sizes */}
+              <div className="flex justify-between items-end mb-3 sm:mb-4">
+                <div>
+                  <h3 className="text-white text-sm sm:text-lg md:text-xl font-light tracking-wide uppercase">
+                    {skill.name}
+                  </h3>
+                  <div className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-[0.1em] sm:tracking-wider font-light mt-1">
+                    {skill.category}
+                  </div>
+                </div>
+                <div className="text-gray-400 text-xs sm:text-sm font-light">
+                  {skill.percentage}%
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="relative">
+                {/* Background line */}
+                <div className="w-full h-px bg-gray-600"></div>
+                
+                {/* Progress line */}
+                <div 
+                  className="absolute top-0 left-0 h-px bg-white transition-all duration-1000 ease-out"
+                  style={{
+                    width: `${skill.percentage}%`,
+                    animationDelay: `${index * 0.1 + 0.5}s`
+                  }}
+                ></div>
+
+                {/* Progress indicator dot */}
+                <div 
+                  className="absolute top-0 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full transform -translate-y-1/2 transition-all duration-1000 ease-out"
+                  style={{
+                    left: `${skill.percentage}%`,
+                    marginLeft: '-3px',
+                    animationDelay: `${index * 0.1 + 0.8}s`
+                  }}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Show More Button - only for All section */}
+        {shouldShowMoreButton && (
+          <div className="text-center mb-8 sm:mb-12">
+            <button
+              onClick={() => setShowAll(true)}
+              className="px-6 sm:px-8 py-2 sm:py-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light text-gray-400 hover:text-white border border-gray-600 hover:border-gray-400 transition-all duration-300"
+            >
+              Show More Skills
+            </button>
+          </div>
+        )}
+
+        {/* Show Less Button - when all skills are shown */}
+        {activeCategory === 'All' && showAll && (
+          <div className="text-center mb-8 sm:mb-12">
+            <button
+              onClick={() => setShowAll(false)}
+              className="px-6 sm:px-8 py-2 sm:py-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light text-gray-400 hover:text-white border border-gray-600 hover:border-gray-400 transition-all duration-300"
+            >
+              Show Less
+            </button>
+          </div>
+        )}
+
+        {/* Stats Section - better mobile layout */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 border-t border-gray-600 pt-6 sm:pt-12 px-2 sm:px-0">
+          <div className="text-center">
+            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
+              12+
+            </div>
+            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
+              Technologies
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
+              4
+            </div>
+            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
+              Categories
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
+              3+
+            </div>
+            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
+              Years Experience
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
+              50+
+            </div>
+            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
+              Projects
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom instruction - matching home page style */}
+        <div className="text-center mt-8 sm:mt-12">
+          <div className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light">
+            {activeCategory === 'All' ? 'Explore My Technical Skills' : `${activeCategory} Technologies`}
+          </div>
+        </div>
       </div>
-    </section>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
   );
 }

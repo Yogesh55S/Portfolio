@@ -1,703 +1,87 @@
-"use client";
-import { useEffect, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React from 'react';
 
-const forms = [
-  {
-    key: "base",
-    role: "Developer",
-    image: "/goku_normal_form.png",
-    glowColor: "rgba(96,165,250,0.8)",
-    particleColor: "#60a5fa",
-    textColor: "text-blue-400",
-    bgOverlay: "bg-gradient-to-br from-blue-900/30 to-purple-900/20",
-    description: "Building amazing digital experiences",
-    gradient: "from-blue-400 via-blue-500 to-purple-600"
-  },
-  {
-    key: "ssj",
-    role: "Frontend Developer",
-    image: "/super_saiyan.png",
-    glowColor: "rgba(251,191,36,0.95)",
-    particleColor: "#fbbf24",
-    textColor: "text-yellow-400",
-    bgOverlay: "bg-gradient-to-br from-yellow-900/30 to-orange-900/20",
-    description: "Crafting beautiful user interfaces",
-    gradient: "from-yellow-400 via-orange-500 to-red-600"
-  },
-  {
-    key: "ssb",
-    role: "Backend Developer",
-    image: "/goku_2nd_form.png",
-    glowColor: "rgba(59,130,246,0.95)",
-    particleColor: "#3b82f6",
-    textColor: "text-cyan-400",
-    bgOverlay: "bg-gradient-to-br from-cyan-900/30 to-blue-900/20",
-    description: "Powering robust server solutions",
-    gradient: "from-cyan-400 via-blue-500 to-indigo-600"
-  },
-  {
-    key: "ui",
-    role: "Full-Stack Developer",
-    image: "/goku.png",
-    glowColor: "rgba(226,232,240,1)",
-    particleColor: "#e2e8f0",
-    textColor: "text-slate-200",
-    bgOverlay: "bg-gradient-to-br from-slate-800/30 to-gray-900/20",
-    description: "Complete end-to-end solutions",
-    gradient: "from-slate-400 via-gray-500 to-zinc-600"
-  },
-];
-
-// Enhanced floating particle component
-const Particle = ({ color, delay = 0 }) => (
-  <motion.div
-    className="absolute w-1 h-1 sm:w-2 sm:h-2 rounded-full opacity-70"
-    style={{ backgroundColor: color }}
-    animate={{
-      x: [0, Math.random() * 300 - 150],
-      y: [0, -150 - Math.random() * 300],
-      opacity: [0.7, 0.9, 0],
-      scale: [1, 1.5, 0],
-      rotate: [0, 360],
-    }}
-    transition={{
-      duration: 4 + Math.random() * 3,
-      delay: delay,
-      repeat: Infinity,
-      ease: "easeOut",
-    }}
-  />
-);
-
-// Enhanced skill orbs component
-const SkillOrbs = ({ form }) => {
-  const skills = {
-    base: ["JavaScript", "HTML", "CSS"],
-    ssj: ["React", "Next", "Angular"],
-    ssb: ["Node.js", "Python", "Database", "Supabase"],
-    ui: ["Full-Stack", "Data-Structure", "Architecture"]
-  };
-
+export default function PortfolioHero() {
   return (
-    <div className="flex flex-wrap gap-3 sm:gap-4 mt-6 sm:mt-8 justify-center lg:justify-start">
-      {skills[form.key]?.map((skill, index) => (
-        <motion.div
-          key={skill}
-          initial={{ opacity: 0, scale: 0, rotate: -180, y: 50 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0, y: 0 }}
-          exit={{ opacity: 0, scale: 0, rotate: 180, y: -50 }}
-          transition={{ 
-            delay: index * 0.15, 
-            duration: 0.8, 
-            ease: "backOut",
-            type: "spring",
-            stiffness: 200
-          }}
-          whileHover={{ 
-            scale: 1.1, 
-            y: -5,
-            transition: { duration: 0.2 }
-          }}
-          className={`px-4 py-2 sm:px-5 sm:py-3 rounded-full border-2 backdrop-blur-md text-sm sm:text-base font-semibold cursor-pointer relative overflow-hidden group ${form.textColor}`}
-          style={{
-            borderColor: form.particleColor,
-            backgroundColor: `${form.particleColor}20`,
-            boxShadow: `0 0 25px ${form.particleColor}40, inset 0 0 20px ${form.particleColor}10`
-          }}
-        >
-          {/* Animated background on hover */}
-          <motion.div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 rounded-full"
-            style={{ 
-              backgroundColor: form.particleColor,
-              opacity: 0.15
-            }}
-            initial={{ scale: 0 }}
-            whileHover={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-          
-          {/* Shimmer effect */}
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full rounded-full"
-            animate={{ x: ["-100%", "200%"] }}
-            transition={{ 
-              duration: 2.5,
-              repeat: Infinity,
-              repeatDelay: 4,
-              ease: "linear"
-            }}
-          />
-          
-          <span className="relative z-10 font-bold">{skill}</span>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-// Fixed animated background component with SSR compatibility
-const AnimatedBackground = ({ current }) => {
-  const [dimensions, setDimensions] = useState({ width: 1200, height: 800 });
-
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window !== 'undefined') {
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background texture overlay */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
+          backgroundSize: '50px 50px'
+        }}></div>
+      </div>
       
-      const handleResize = () => {
-        setDimensions({ width: window.innerWidth, height: window.innerHeight });
-      };
+      {/* Main content container */}
+      <div className="w-full max-w-6xl mx-auto relative">
 
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, []);
+        {/* Hero content */}
+        <div className="flex flex-col items-center justify-center text-center px-4 md:px-8">
+          {/* Small label */}
+          <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest mb-6 md:mb-8 font-light">
+            I Am
+          </div>
+          
+          {/* Main heading */}
+          <h1 className="text-white font-light text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl tracking-wider mb-3 md:mb-4">
+            YOGESH
+          </h1>
+          
+          {/* Subtitle */}
+          <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest font-light">
+            Full-Stack Developer
+          </div>
+        </div>
 
-  return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Animated gradient orbs */}
-      {[...Array(6)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full opacity-20 blur-3xl"
-          style={{
-            background: `radial-gradient(circle, ${current.particleColor} 0%, transparent 70%)`,
-            width: `${200 + i * 100}px`,
-            height: `${200 + i * 100}px`,
-          }}
-          animate={{
-            x: [Math.random() * dimensions.width, Math.random() * dimensions.width],
-            y: [Math.random() * dimensions.height, Math.random() * dimensions.height],
-          }}
-          transition={{
-            duration: 20 + i * 5,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "linear"
-          }}
-          initial={{
-            x: Math.random() * dimensions.width,
-            y: Math.random() * dimensions.height,
-          }}
-        />
-      ))}
+        {/* Social links - left side */}
+        <div className="absolute left-4 md:left-8 bottom-8 flex flex-col space-y-4">
+          {/* GitHub Link */}
+          <a 
+            href="https://github.com/Yogesh55S" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors duration-300 group"
+            aria-label="GitHub Profile"
+          >
+            <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
+            </svg>
+          </a>
+          
+          {/* LinkedIn Link */}
+          <a 
+            href="https://www.linkedin.com/in/yogesh-kumar-983840226/" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors duration-300 group"
+            aria-label="LinkedIn Profile"
+          >
+            <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          
+          {/* WhatsApp Link */}
+          <a 
+            href="https://wa.me/9350161043" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-400 hover:text-white transition-colors duration-300 group"
+            aria-label="WhatsApp Contact"
+          >
+            <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.520-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+            </svg>
+          </a>
+        </div>
+
+        {/* Contact info - right side */}
+        <div className="absolute right-8 bottom-8 text-right">
+          <div className="text-gray-400 text-xs uppercase tracking-wide font-light transform rotate-90 origin-bottom-right">
+            Get In Touch
+          </div>
+        </div>
+      </div>
     </div>
-  );
-};
-
-export default function EnhancedHero() {
-  const [idx, setIdx] = useState(0);
-  const [isTransforming, setIsTransforming] = useState(false);
-  const [particles, setParticles] = useState([]);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isMounted, setIsMounted] = useState(false);
-  const current = forms[idx];
-
-  // Handle client-side mounting
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Mouse tracking for interactive effects
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [isMounted]);
-
-  // Preload all assets
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    forms.forEach((f) => {
-      const img = new window.Image();
-      img.src = f.image;
-      if (f.bg) {
-        const bg = new window.Image();
-        bg.src = f.bg;
-      }
-    });
-  }, [isMounted]);
-
-  // Enhanced particle generation
-  const generateParticles = useCallback(() => {
-    const newParticles = Array.from({ length: 25 }, (_, i) => ({
-      id: Math.random(),
-      delay: i * 0.08,
-    }));
-    setParticles(newParticles);
-    setTimeout(() => setParticles([]), 6000);
-  }, []);
-
-  // Enhanced transform function
-  const transform = useCallback(() => {
-    if (isTransforming) return;
-    
-    setIsTransforming(true);
-    generateParticles();
-    
-    setTimeout(() => {
-      setIdx((i) => (i + 1) % forms.length);
-      setIsTransforming(false);
-    }, 400);
-  }, [isTransforming, generateParticles]);
-
-  // Keyboard controls
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    const handleKey = (e) => {
-      if (e.code === "Space" || e.code === "Enter") {
-        e.preventDefault();
-        transform();
-      }
-    };
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [transform, isMounted]);
-
-  // Enhanced animation variants
-  const fadeVariants = {
-    initial: { opacity: 0 },
-    enter: { 
-      opacity: 1, 
-      transition: { duration: 1.2, ease: "easeOut" } 
-    },
-    exit: { 
-      opacity: 0, 
-      transition: { duration: 0.6, ease: "easeIn" } 
-    },
-  };
-
-  const textVariants = {
-    initial: { opacity: 0, y: 40, filter: "blur(10px)" },
-    enter: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { 
-        duration: 1, 
-        ease: "easeOut",
-        staggerChildren: 0.15
-      },
-    },
-    exit: {
-      opacity: 0,
-      y: -30,
-      filter: "blur(8px)",
-      transition: { duration: 0.5, ease: "easeIn" },
-    },
-  };
-
-  const imageVariants = {
-    initial: { opacity: 0, scale: 0.7, rotateY: 90, z: -100 },
-    enter: {
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      z: 0,
-      transition: { 
-        duration: 1.2, 
-        ease: "backOut",
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      rotateY: -90,
-      z: -100,
-      transition: { duration: 0.6, ease: "easeIn" },
-    },
-  };
-
-  // Don't render interactive elements until mounted on client
-  if (!isMounted) {
-    return (
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 -z-20 bg-black/50" />
-        <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-8 sm:gap-12 lg:flex-row">
-          <div className="max-w-full lg:max-w-2xl text-center lg:text-left flex-1">
-            <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-white">
-                Hi, I'm<br />
-                <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  Yogesh
-                </span>
-              </h1>
-              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-blue-400">
-                Developer
-              </p>
-            </div>
-          </div>
-          <div className="relative flex-shrink-0">
-            <img
-              src="/goku_normal_form.png"
-              alt="Developer form"
-              className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain"
-            />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-4 sm:px-6 lg:px-8">
-      {/* Enhanced Background with multiple layers */}
-      <div className="absolute inset-0 -z-20">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current.bg}
-            variants={fadeVariants}
-            initial="initial"
-            animate="enter"
-            exit="exit"
-            className="absolute inset-0"
-            style={{
-              backgroundImage: current.bg ? `url(${current.bg})` : undefined,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "brightness(0.6) saturate(1.3) contrast(1.2)",
-            }}
-          />
-        </AnimatePresence>
-        
-        {/* Animated background orbs */}
-        <AnimatedBackground current={current} />
-        
-        {/* Dynamic overlay with mouse interaction */}
-        <motion.div 
-          key={`overlay-${current.key}`}
-          className={`absolute inset-0 ${current.bgOverlay}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
-          style={{
-            background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${current.particleColor}20 0%, transparent 50%)`
-          }}
-        />
-        
-        {/* Base dark overlay */}
-        <div className="absolute inset-0 bg-black/50" />
-        
-        {/* Enhanced animated grid overlay */}
-        <motion.div
-          className="absolute inset-0 opacity-5 sm:opacity-10"
-          style={{
-            backgroundImage: `linear-gradient(${current.particleColor} 1px, transparent 1px), linear-gradient(90deg, ${current.particleColor} 1px, transparent 1px)`,
-            backgroundSize: "40px 40px sm:60px 60px",
-          }}
-          animate={{
-            backgroundPosition: ["0 0", "40px 40px", "0 0"],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        />
-
-        {/* New: Floating geometric shapes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(8)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 border border-white/20"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                rotate: `${Math.random() * 360}deg`,
-              }}
-              animate={{
-                y: [0, -100, 0],
-                x: [0, Math.random() * 50 - 25, 0],
-                rotate: [0, 360],
-                opacity: [0.2, 0.6, 0.2],
-              }}
-              transition={{
-                duration: 15 + Math.random() * 10,
-                repeat: Infinity,
-                delay: Math.random() * 5,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Enhanced floating particles */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        {particles.map((particle) => (
-          <div
-            key={particle.id}
-            className="absolute"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          >
-            <Particle color={current.particleColor} delay={particle.delay} />
-          </div>
-        ))}
-      </div>
-
-      {/* Main content */}
-      <div className="mx-auto flex w-full max-w-7xl flex-col-reverse items-center justify-between gap-8 sm:gap-12 lg:flex-row">
-        
-        {/* Enhanced Text Section */}
-        <div className="max-w-full lg:max-w-2xl text-center lg:text-left flex-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`content-${current.key}`}
-              variants={textVariants}
-              initial="initial"
-              animate="enter"
-              exit="exit"
-              className="space-y-4 sm:space-y-6"
-            >
-              <motion.div variants={textVariants}>
-                <motion.h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight">
-                  <motion.span 
-                    className="text-white drop-shadow-2xl inline-block"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Hi, I'm
-                  </motion.span>
-                  <br />
-                  <motion.span 
-                    className={`bg-gradient-to-r ${current.gradient} bg-clip-text text-transparent drop-shadow-2xl inline-block`}
-                    style={{
-                      textShadow: `0 0 30px ${current.particleColor}, 0 0 60px ${current.particleColor}40`
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Yogesh
-                  </motion.span>
-                </motion.h1>
-              </motion.div>
-
-              <motion.div variants={textVariants}>
-                <motion.div className="space-y-2">
-                  <motion.p 
-                    className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r ${current.gradient} bg-clip-text text-transparent`}
-                    initial={{ backgroundSize: "0% 100%" }}
-                    animate={{ backgroundSize: "100% 100%" }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    style={{
-                      textShadow: `0 0 20px ${current.particleColor}60`,
-                    }}
-                  >
-                    {current.role}
-                  </motion.p>
-                  <motion.p 
-                    className="text-base sm:text-lg lg:text-xl text-gray-300 max-w-md mx-auto lg:mx-0 font-medium"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8, duration: 0.8 }}
-                  >
-                    {current.description}
-                  </motion.p>
-                </motion.div>
-              </motion.div>
-
-              <motion.div variants={textVariants}>
-                <SkillOrbs form={current} />
-              </motion.div>
-
-              <motion.div 
-                variants={textVariants}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6 sm:pt-8"
-              >
-                <motion.a
-                  href="#projects"
-                  className="group relative overflow-hidden rounded-2xl px-6 py-3 sm:px-8 sm:py-4 font-bold text-black transition-all duration-300 text-sm sm:text-base"
-                  style={{ backgroundColor: current.particleColor }}
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-white/20 via-white/40 to-white/20"
-                    initial={{ x: "-100%", skewX: -15 }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.8 }}
-                  />
-                  <span className="relative z-10">View Projects</span>
-                  
-                  {/* Glow effect */}
-                  <motion.div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100"
-                    style={{
-                      boxShadow: `0 0 30px ${current.particleColor}80`,
-                    }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.a>
-                
-                <motion.a
-                  href="#contact"
-                  className="group relative overflow-hidden rounded-2xl border-2 px-6 py-3 sm:px-8 sm:py-4 font-bold text-white transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
-                  style={{ 
-                    borderColor: current.particleColor,
-                    backgroundColor: `${current.particleColor}10`
-                  }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    y: -3,
-                    backgroundColor: `${current.particleColor}20`,
-                    borderColor: current.particleColor,
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-20"
-                    style={{ 
-                      background: `linear-gradient(90deg, transparent, ${current.particleColor}, transparent)`
-                    }}
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: "100%" }}
-                    transition={{ duration: 0.6 }}
-                  />
-                  <span className="relative z-10">Contact Me</span>
-                </motion.a>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Enhanced Character Section */}
-        <div className="relative flex-shrink-0">
-          <motion.button
-            onClick={transform}
-            className="group relative isolate outline-none focus:ring-4 focus:ring-white/20 rounded-full"
-            aria-label="Transform character"
-            title="Click to Transform (or press Space/Enter)"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            disabled={isTransforming}
-          >
-            {/* Enhanced multi-layered glow effect */}
-            <motion.div
-              className="absolute -inset-8 sm:-inset-12 lg:-inset-16 -z-10 rounded-full"
-              style={{
-                background: `radial-gradient(circle, ${current.glowColor} 0%, ${current.particleColor}40 30%, transparent 70%)`,
-                filter: "blur(20px)",
-              }}
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.6, 1, 0.6],
-                rotate: [0, 180, 360],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            
-            <motion.div
-              className="absolute -inset-6 sm:-inset-8 lg:-inset-12 -z-10 rounded-full"
-              style={{
-                background: `conic-gradient(from 0deg, ${current.particleColor}, transparent, ${current.particleColor})`,
-                filter: "blur(15px)",
-              }}
-              animate={{
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            />
-
-            {/* Character image with enhanced animations */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={current.image}
-                variants={imageVariants}
-                initial="initial"
-                animate="enter"
-                exit="exit"
-                className="relative"
-              >
-                <motion.img
-                  src={current.image}
-                  alt={`${current.role} form`}
-                  className="pointer-events-none select-none w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] object-contain"
-                  style={{
-                    filter: `drop-shadow(0 0 20px ${current.glowColor}) drop-shadow(0 0 40px ${current.glowColor}60) drop-shadow(0 10px 30px rgba(0,0,0,0.5))`,
-                  }}
-                  animate={{
-                    y: [-8, 8, -8],
-                    rotateY: [-2, 2, -2],
-                    rotateX: [-1, 1, -1],
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                
-                {/* Enhanced transformation effect overlay */}
-                <AnimatePresence>
-                  {isTransforming && (
-                    <>
-                      <motion.div
-                        className="absolute inset-0 rounded-full"
-                        style={{
-                          background: `radial-gradient(circle, ${current.glowColor} 0%, transparent 70%)`,
-                        }}
-                        initial={{ scale: 0, opacity: 1, rotate: 0 }}
-                        animate={{ scale: 4, opacity: 0, rotate: 180 }}
-                        exit={{ scale: 5, opacity: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
-                      />
-                      <motion.div
-                        className="absolute inset-0 border-4 rounded-full"
-                        style={{ borderColor: current.particleColor }}
-                        initial={{ scale: 1, opacity: 1 }}
-                        animate={{ scale: 3, opacity: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                      />
-                    </>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Pulse ring indicator */}
-            <motion.div
-              className="absolute inset-0 rounded-full border-2 opacity-30"
-              style={{ borderColor: current.particleColor }}
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.6, 0.3],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </motion.button>
-        </div>
-      </div>
-    </section>
   );
 }
