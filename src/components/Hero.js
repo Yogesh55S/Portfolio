@@ -1,6 +1,96 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 
 export default function PortfolioHero() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [connections, setConnections] = useState([]);
+  
+  // Generate stars with random positions
+  const stars = [
+    { id: 0, x: 60.97, y: 16.22, r: 2.69 },
+    { id: 1, x: 68.7, y: 8.17, r: 2.45 },
+    { id: 2, x: 82.14, y: 87.1, r: 2.15 },
+    { id: 3, x: 65.06, y: 54.06, r: 3.44 },
+    { id: 4, x: 8.27, y: 34.35, r: 2.08 },
+    { id: 5, x: 39.68, y: 2.43, r: 2.91 },
+    { id: 6, x: 74.37, y: 43.1, r: 2.43 },
+    { id: 7, x: 26.16, y: 96.92, r: 2.62 },
+    { id: 8, x: 53.68, y: 50.31, r: 2.74 },
+    { id: 9, x: 5.6, y: 61.12, r: 2.91 },
+    { id: 10, x: 21.78, y: 43.29, r: 2.36 },
+    { id: 11, x: 11.48, y: 57.59, r: 2.72 },
+    { id: 12, x: 64.24, y: 78.6, r: 2.48 },
+    { id: 13, x: 5.17, y: 85.75, r: 2.45 },
+    { id: 14, x: 14.97, y: 91.24, r: 2.03 },
+    { id: 15, x: 83.75, y: 83.53, r: 2.28 },
+    { id: 16, x: 90.81, y: 55.04, r: 3.43 },
+    { id: 17, x: 79.3, y: 62.05, r: 3.01 },
+    { id: 18, x: 24.97, y: 27.63, r: 2.63 },
+    { id: 19, x: 47.93, y: 51.41, r: 2.37 },
+    { id: 20, x: 50.68, y: 22.3, r: 3.37 },
+    { id: 21, x: 5.48, y: 35.02, r: 2.43 },
+    { id: 22, x: 46.8, y: 51.33, r: 2.75 },
+    { id: 23, x: 22.82, y: 18.32, r: 2.12 },
+    { id: 24, x: 39.97, y: 86.64, r: 2.41 },
+    { id: 25, x: 44.73, y: 19.63, r: 2.24 },
+    { id: 26, x: 59.84, y: 39.61, r: 2.92 },
+    { id: 27, x: 24.78, y: 34.49, r: 2.09 },
+    { id: 28, x: 16.53, y: 35.83, r: 2.59 },
+    { id: 29, x: 82.82, y: 30.93, r: 2.02 }
+  ];
+
+  // Track mouse movement
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const mouseX = (e.clientX / window.innerWidth) * 100;
+      const mouseY = (e.clientY / window.innerHeight) * 100;
+      setMousePosition({ x: mouseX, y: mouseY });
+      
+      // Find nearby stars within 15% of mouse cursor
+      const nearbyStars = stars.filter(star => {
+        const distance = Math.sqrt(
+          Math.pow(star.x - mouseX, 2) + Math.pow(star.y - mouseY, 2)
+        );
+        return distance < 15;
+      });
+      
+      // Create connections between nearby stars
+      const newConnections = [];
+      for (let i = 0; i < nearbyStars.length; i++) {
+        for (let j = i + 1; j < nearbyStars.length; j++) {
+          newConnections.push({
+            from: nearbyStars[i],
+            to: nearbyStars[j],
+            id: `${nearbyStars[i].id}-${nearbyStars[j].id}`
+          });
+        }
+        
+        // Also connect each star to mouse position
+        newConnections.push({
+          from: nearbyStars[i],
+          to: { x: mouseX, y: mouseY },
+          id: `mouse-${nearbyStars[i].id}`
+        });
+      }
+      
+      setConnections(newConnections);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Handle resume download
+  const handleResumeDownload = () => {
+    // Create a link element and trigger download
+    const link = document.createElement('a');
+    link.href = '/intern.pdf'; 
+    link.download = 'intern.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background texture overlay */}
@@ -10,6 +100,88 @@ export default function PortfolioHero() {
           backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
           backgroundSize: '50px 50px'
         }}></div>
+      </div>
+
+      {/* Star Constellation Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="starGlow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge> 
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="rgba(56, 189, 248, 0.6)" />
+              <stop offset="100%" stopColor="rgba(147, 197, 253, 0.3)" />
+            </linearGradient>
+          </defs>
+          
+          {/* Star connections */}
+          <g className="opacity-60">
+            {connections.map((connection) => (
+              <line
+                key={connection.id}
+                x1={`${connection.from.x}%`}
+                y1={`${connection.from.y}%`}
+                x2={`${connection.to.x}%`}
+                y2={`${connection.to.y}%`}
+                stroke="url(#connectionGradient)"
+                strokeWidth="1"
+                filter="url(#starGlow)"
+              />
+            ))}
+          </g>
+
+          {/* Stars */}
+          <g>
+            {stars.map((star) => {
+              // Check if this star is near mouse
+              const distance = Math.sqrt(
+                Math.pow(star.x - mousePosition.x, 2) + 
+                Math.pow(star.y - mousePosition.y, 2)
+              );
+              const isNearMouse = distance < 15;
+              
+              return (
+                <circle
+                  key={star.id}
+                  cx={`${star.x}%`}
+                  cy={`${star.y}%`}
+                  r={star.r}
+                  fill={isNearMouse ? "rgba(56, 189, 248, 0.9)" : "rgba(255, 255, 255, 0.7)"}
+                  filter="url(#starGlow)"
+                  style={{ 
+                    opacity: isNearMouse ? 1 : 0.6,
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <animate 
+                    attributeName="opacity" 
+                    values="0.4;0.8;0.4"
+                    dur={`${3 + star.id * 0.1}s`} 
+                    repeatCount="indefinite" 
+                  />
+                </circle>
+              );
+            })}
+          </g>
+
+          {/* Mouse cursor indicator */}
+          <circle
+            cx={`${mousePosition.x}%`}
+            cy={`${mousePosition.y}%`}
+            r="4"
+            fill="rgba(56, 189, 248, 0.3)"
+            filter="url(#starGlow)"
+            style={{ 
+              opacity: connections.length > 0 ? 0.8 : 0,
+              transition: 'opacity 0.3s ease'
+            }}
+          />
+        </svg>
       </div>
       
       {/* Main content container */}
@@ -70,16 +242,22 @@ export default function PortfolioHero() {
             aria-label="WhatsApp Contact"
           >
             <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.520-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
             </svg>
           </a>
         </div>
 
-        {/* Contact info - right side */}
+        {/* Resume Button - right side (Changed from "Get In Touch") */}
         <div className="absolute right-8 bottom-8 text-right">
-          <div className="text-gray-400 text-xs uppercase tracking-wide font-light transform rotate-90 origin-bottom-right">
-            Get In Touch
-          </div>
+          <button
+            onClick={handleResumeDownload}
+            className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 cursor-pointer group"
+            aria-label="Download Resume"
+          >
+            <div className="text-xs uppercase tracking-wide font-light transform rotate-90 origin-bottom-right group-hover:scale-110 transition-transform duration-300">
+              Resume
+            </div>
+          </button>
         </div>
       </div>
     </div>

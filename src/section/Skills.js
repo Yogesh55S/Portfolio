@@ -177,15 +177,15 @@ export default function Skills() {
           </div>
           <div className="text-center">
             <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              3+
+              3
             </div>
             <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
-              Years Experience
+              Month Experience
             </div>
           </div>
           <div className="text-center">
             <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              50+
+              4
             </div>
             <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
               Projects
