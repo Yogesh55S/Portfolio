@@ -19,14 +19,14 @@ export default function Home() {
         <Skills />
       </section>
 
-      <section id="projects" >
+     <section id="projects" >
         <Projects />
-      </section>
-
-      <section id="experience" >
+      </section> 
+ 
+       <section id="experience" >
         <Experience />
       </section>
-
+ 
       <section id="achievements">
         <Achievements />
       </section>

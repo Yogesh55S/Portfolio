@@ -32,8 +32,19 @@ export default function Skills() {
   const shouldShowMoreButton = activeCategory === 'All' && !showAll && filteredSkills.length > 4;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
-      {/* Background texture overlay - matching home page */}
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url(/skill.jpg)',
+        }}
+      ></div>
+      
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/60"></div>
+      
+      {/* Additional texture overlay */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
         <div className="absolute inset-0" style={{

@@ -46,8 +46,18 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 relative overflow-hidden">
-      {/* Background texture overlay - matching hero */}
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Background Image with Overlay */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/ex.jpg')`
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      {/* Background texture overlay */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
         <div className="absolute inset-0" style={{
@@ -57,7 +67,7 @@ export default function Experience() {
       </div>
 
       {/* Animated Network Lines Background */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden opacity-30">
         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -79,7 +89,6 @@ export default function Experience() {
             </filter>
           </defs>
           
-          {/* Horizontal flowing lines */}
           <g className="opacity-60">
             <line x1="0" y1="20%" x2="100%" y2="25%" stroke="url(#lineGradient1)" strokeWidth="1" filter="url(#glow)">
               <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
@@ -95,7 +104,6 @@ export default function Experience() {
             </line>
           </g>
 
-          {/* Vertical flowing lines */}
           <g className="opacity-50">
             <line x1="15%" y1="0" x2="20%" y2="100%" stroke="url(#lineGradient2)" strokeWidth="1" filter="url(#glow)">
               <animate attributeName="opacity" values="0.2;0.7;0.2" dur="4.5s" repeatCount="indefinite" />
@@ -111,7 +119,6 @@ export default function Experience() {
             </line>
           </g>
 
-          {/* Network nodes */}
           <g className="opacity-40">
             <circle cx="15%" cy="25%" r="2" fill="rgba(56, 189, 248, 0.6)" filter="url(#glow)">
               <animate attributeName="r" values="1;3;1" dur="3s" repeatCount="indefinite" />
@@ -131,7 +138,6 @@ export default function Experience() {
             </circle>
           </g>
 
-          {/* Connection lines between nodes */}
           <g className="opacity-30">
             <line x1="15%" y1="25%" x2="85%" y2="40%" stroke="rgba(56, 189, 248, 0.3)" strokeWidth="0.5" filter="url(#glow)" strokeDasharray="5,5">
               <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite" />
@@ -154,45 +160,38 @@ export default function Experience() {
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 py-8 sm:py-12 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           
           {/* Header */}
-          <div className="text-center mb-16 sm:mb-20 lg:mb-24">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-24">
             <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest mb-4 font-light">
               My Journey
             </div>
-            <h2 className="text-white font-light text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-wider">
+            <h2 className="text-white font-light text-2xl sm:text-4xl md:text-6xl lg:text-7xl tracking-wider">
               EXPERIENCE
             </h2>
           </div>
 
-          {/* Timeline */}
-          <div className="relative">
-            {/* Desktop timeline line */}
-            <div className="hidden lg:block absolute left-1/2 transform -translate-x-0.5 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
+          {/* Desktop Timeline View (Hidden on mobile) */}
+          <div className="hidden lg:block relative">
+            <div className="absolute left-1/2 transform -translate-x-0.5 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
             
-            {/* Mobile timeline line */}
-            <div className="lg:hidden absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
-
-            <div className="space-y-12 sm:space-y-16 lg:space-y-20">
+            <div className="space-y-20">
               {experiences.map((exp, index) => (
-                <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'lg:justify-start' : 'lg:justify-end'}`}>
+                <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
                   
-                  {/* Timeline dot */}
-                  <div className="absolute left-8 lg:left-1/2 lg:transform lg:-translate-x-1/2 w-4 h-4 bg-gradient-to-br from-slate-600 to-slate-800 border-2 border-gray-400 rounded-full z-10">
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gradient-to-br from-slate-600 to-slate-800 border-2 border-gray-400 rounded-full z-10">
                     {exp.status === 'current' && (
-                      <div className="absolute inset-0 rounded-full bg-cyan-400 animate-pulse"></div>
+                      <div className="absolute inset-0 rounded-full bg-gray-400 animate-pulse"></div>
                     )}
                   </div>
 
-                  {/* Content card */}
-                  <div className={`ml-16 lg:ml-0 lg:w-5/12 ${index % 2 === 0 ? 'lg:mr-8' : 'lg:ml-8'} group`}>
-                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-lg p-6 sm:p-8 hover:bg-slate-700/50 transition-all duration-300 hover:border-slate-500/50">
+                  <div className={`w-5/12 ${index % 2 === 0 ? 'mr-8' : 'ml-8'} group`}>
+                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-lg p-8 hover:bg-slate-700/50 transition-all duration-300 hover:border-slate-500/50">
                       
-                      {/* Date badge */}
                       <div className="flex items-center justify-between mb-4">
-                        <span className="inline-block px-3 py-1 bg-slate-700/50 text-gray-300 text-xs sm:text-sm font-light tracking-wide rounded-full border border-slate-600/50">
+                        <span className="inline-block px-3 py-1 bg-slate-700/50 text-gray-300 text-sm font-light tracking-wide rounded-full border border-slate-600/50">
                           {exp.date}
                         </span>
                         {exp.status === 'current' && (
@@ -202,20 +201,17 @@ export default function Experience() {
                         )}
                       </div>
 
-                      {/* Role and Company */}
-                      <h3 className="text-white font-light text-xl sm:text-2xl mb-2 tracking-wide group-hover:text-gray-100 transition-colors duration-300">
+                      <h3 className="text-white font-light text-2xl mb-2 tracking-wide group-hover:text-gray-100 transition-colors duration-300">
                         {exp.role}
                       </h3>
-                      <p className="text-gray-400 font-light text-sm sm:text-base mb-4 tracking-wide">
+                      <p className="text-gray-400 font-light text-base mb-4 tracking-wide">
                         {exp.company}
                       </p>
 
-                      {/* Description */}
-                      <p className="text-gray-300 font-light leading-relaxed mb-6 text-sm sm:text-base">
+                      <p className="text-gray-300 font-light leading-relaxed mb-6 text-base">
                         {exp.description}
                       </p>
 
-                      {/* Technologies */}
                       <div className="flex flex-wrap gap-2">
                         {exp.tech.map((tech, techIndex) => (
                           <span 
@@ -228,16 +224,92 @@ export default function Experience() {
                       </div>
                     </div>
 
-                    {/* Connector line for desktop */}
-                    <div className={`hidden lg:block absolute top-1/2 w-8 h-px bg-gray-600 ${index % 2 === 0 ? 'right-full' : 'left-full'}`}></div>
+                    <div className={`absolute top-1/2 w-8 h-px bg-gray-600 ${index % 2 === 0 ? 'right-full' : 'left-full'}`}></div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Mobile Card Stack View (Visible only on mobile/tablet) */}
+          <div className="lg:hidden space-y-6">
+            {experiences.map((exp, index) => (
+              <div key={index} className="relative group">
+                
+                {/* Mobile Card Design */}
+                <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-md border border-slate-600/40 rounded-2xl p-6 hover:from-slate-700/60 hover:to-slate-800/60 transition-all duration-300 hover:border-slate-500/50 hover:shadow-2xl hover:shadow-cyan-500/10">
+                  
+                  {/* Header with date and status */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                      {/* Position indicator */}
+                      <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center border-2 border-slate-500/50">
+                        <span className="text-gray-300 text-xs font-bold">{index + 1}</span>
+                        {exp.status === 'current' && (
+                          <div className="absolute inset-0 rounded-full bg-cyan-400/30 animate-ping"></div>
+                        )}
+                      </div>
+                      
+                      {/* Date */}
+                      <span className="text-gray-400 text-sm font-light tracking-wide">
+                        {exp.date}
+                      </span>
+                    </div>
+
+                    {/* Current status badge */}
+                    {exp.status === 'current' && (
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span className="text-green-300 text-xs font-light tracking-wide">
+                          Current
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Role and Company */}
+                  <div className="mb-4">
+                    <h3 className="text-white font-medium text-lg sm:text-xl mb-1 tracking-wide group-hover:text-gray-100 transition-colors duration-300">
+                      {exp.role}
+                    </h3>
+                    <p className="text-cyan-300 font-light text-sm sm:text-base tracking-wide">
+                      {exp.company}
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <p className="text-gray-300 font-light leading-relaxed mb-5 text-sm sm:text-base">
+                    {exp.description}
+                  </p>
+
+                  {/* Technologies */}
+                  <div className="flex flex-wrap gap-2">
+                    {exp.tech.map((tech, techIndex) => (
+                      <span 
+                        key={techIndex}
+                        className="px-3 py-1.5 bg-gradient-to-r from-slate-600/40 to-slate-700/40 text-gray-300 text-xs font-light rounded-full border border-slate-500/30 hover:from-slate-500/40 hover:to-slate-600/40 transition-all duration-200 backdrop-blur-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Decorative element */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-cyan-500/5 to-transparent rounded-2xl"></div>
+                </div>
+
+                {/* Connection line between cards (except last one) */}
+                {index < experiences.length - 1 && (
+                  <div className="flex justify-center py-2">
+                    <div className="w-px h-4 bg-gradient-to-b from-gray-600 to-transparent"></div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
           {/* Bottom section */}
-          <div className="text-center mt-16 sm:mt-20 lg:mt-24">
+          <div className="text-center mt-12 sm:mt-16 lg:mt-24">
             <div className="w-12 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent mx-auto mb-8"></div>
             <p className="text-gray-400 font-light text-sm tracking-wide">
               Building tomorrow's web experiences, one line of code at a time

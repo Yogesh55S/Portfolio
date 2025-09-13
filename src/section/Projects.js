@@ -4,6 +4,42 @@ import React, { useState } from 'react';
 const projectsData = [
   {
     id: 1,
+    name: "NIDAS PURE",
+    subtitle: "E-commerce Platform",
+    type: "E-commerce Website",
+    year: "2025",
+    description: "A premium e-commerce platform for pure and organic products. Features include product catalog, shopping cart, secure checkout, user authentication, order management, and admin dashboard. Built with modern technologies for optimal performance and user experience.",
+    technologies: ["React.js", "Next.js", "TailwindCSS", "Node.js", "MongoDB", "Stripe API"],
+    github: "#",
+    live: "https://nidaspure.com/",
+    status: "Completed"
+  },
+  {
+    id: 2,
+    name: "GENESIS CLASSES",
+    subtitle: "Educational Platform",
+    type: "Learning Management System",
+    year: "2025",
+    description: "An advanced educational platform designed for online learning and course management. Features include course enrollment, video streaming, assignment submission, progress tracking, and interactive learning tools for students and educators.",
+    technologies: ["React.js", "Next.js", "TailwindCSS", "Node.js", "PostgreSQL", "Video.js"],
+    github: "#",
+    live: "https://genesisclasses.net/",
+    status: "Completed"
+  },
+  {
+    id: 3,
+    name: "HOUSE OF AWERAWAT",
+    subtitle: "Business Website",
+    type: "Corporate Website",
+    year: "2025",
+    description: "A professional corporate website showcasing business services and company portfolio. Features include service catalog, company information, contact forms, testimonials, and responsive design optimized for all devices.",
+    technologies: ["React.js", "Next.js", "TailwindCSS", "Framer Motion", "EmailJS"],
+    github: "#",
+    live: "#",
+    status: "Completed"
+  },
+  {
+    id: 4,
     name: "BLOOD DONATION",
     subtitle: "Management System",
     type: "Healthcare Platform",
@@ -15,7 +51,7 @@ const projectsData = [
     status: "Completed"
   },
   {
-    id: 2,
+    id: 5,
     name: "BILLING SYSTEM",
     subtitle: "Python Application",
     type: "Desktop Application",
@@ -27,7 +63,7 @@ const projectsData = [
     status: "Completed"
   },
   {
-    id: 3,
+    id: 6,
     name: "AGRI-FARMA",
     subtitle: "Full-Stack Platform",
     type: "Agriculture Platform",
@@ -39,7 +75,7 @@ const projectsData = [
     status: "Completed"
   },
   {
-    id: 4,
+    id: 7,
     name: "RABBIT AUTO CARE",
     subtitle: "Car Care Platform",
     type: "Automotive Services",
@@ -47,7 +83,7 @@ const projectsData = [
     description: "An innovative car care platform offering comprehensive services, product management, and modern dashboards for both customers and administrators. Features booking system and service tracking.",
     technologies: ["Next.js", "TailwindCSS", "Supabase", "Node.js"],
     github: "https://github.com/yourusername/rabbit-auto-care",
-    live: "https://your-rabbit-auto-care-demo.com",
+    live: "https://rabbitautocare.com/",
     status: "Completed"
   }
 ];
@@ -89,7 +125,17 @@ export default function ProjectsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
+    <div className="min-h-screen relative flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 overflow-hidden">
+      {/* Background Image with Overlay - replacing the gradient */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/pro.jpg')`
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60"></div>
+      </div>
+
       {/* Background texture overlay - matching home page */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
@@ -99,7 +145,7 @@ export default function ProjectsPage() {
         }}></div>
       </div>
 
-      <div className="w-full max-w-6xl mx-auto relative">
+      <div className="w-full max-w-6xl mx-auto relative z-10">
         
         {/* Main content container - improved mobile layout */}
         <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4 md:px-8 min-h-[70vh] sm:min-h-0">
@@ -156,17 +202,19 @@ export default function ProjectsPage() {
         {/* Left side - GitHub, Live, Tech icons - better mobile positioning */}
         <div className="absolute left-1 sm:left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 sm:space-y-4 md:space-y-6 z-40">
           {/* GitHub Link */}
-          <a 
-            href={currentProjectData.github} 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-            aria-label="GitHub Repository"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
-            </svg>
-          </a>
+          {currentProjectData.github !== "#" && (
+            <a 
+              href={currentProjectData.github} 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
+              aria-label="GitHub Repository"
+            >
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
+              </svg>
+            </a>
+          )}
           
           {/* Live Demo Link */}
           {currentProjectData.live !== "#" && (
@@ -228,8 +276,8 @@ export default function ProjectsPage() {
           </button>
         </div>
 
-        {/* Navigation arrows - moved to avoid overlap */}
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 z-50">
+        {/* Navigation arrows - CHANGED from fixed to absolute positioning */}
+        <div className="absolute top-80 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 z-50">
           <button
             onClick={prevProject}
             className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
