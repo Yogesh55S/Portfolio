@@ -126,7 +126,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 overflow-hidden">
-      {/* Background Image with Overlay - replacing the gradient */}
+      {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
@@ -136,7 +136,7 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
 
-      {/* Background texture overlay - matching home page */}
+      {/* Background texture overlay */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
         <div className="absolute inset-0" style={{
@@ -147,14 +147,14 @@ export default function ProjectsPage() {
 
       <div className="w-full max-w-6xl mx-auto relative z-10">
         
-        {/* Main content container - improved mobile layout */}
-        <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4 md:px-8 min-h-[70vh] sm:min-h-0">
+        {/* Main content container */}
+        <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4 md:px-8 min-h-[60vh] sm:min-h-[50vh]">
           {/* Small label */}
           <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 md:mb-6 font-light">
             Project {currentProject + 1} of {projectsData.length}
           </div>
           
-          {/* Main project name with flip effect - better mobile sizing */}
+          {/* Main project name with flip effect */}
           <div className="relative mb-3 sm:mb-4 md:mb-6 max-w-xs sm:max-w-sm md:max-w-2xl mx-auto" style={{ perspective: '1000px' }}>
             <div 
               className="transition-transform duration-700"
@@ -176,7 +176,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
               
-              {/* Back - Project Info - better mobile text */}
+              {/* Back - Project Info */}
               <div 
                 className="absolute inset-0 backface-hidden"
                 style={{ 
@@ -185,7 +185,7 @@ export default function ProjectsPage() {
                 }}
               >
                 {showInfo && (
-                  <div className="text-white font-light text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed px-2 sm:px-4 max-h-[40vh] overflow-y-auto">
+                  <div className="text-white font-light text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed px-2 sm:px-4 max-h-[30vh] overflow-y-auto">
                     {currentProjectData.description}
                   </div>
                 )}
@@ -193,13 +193,13 @@ export default function ProjectsPage() {
             </div>
           </div>
           
-          {/* Project type and year - smaller on mobile */}
+          {/* Project type and year */}
           <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-light mb-4 sm:mb-6">
             {currentProjectData.type} • {currentProjectData.year}
           </div>
         </div>
 
-        {/* Left side - GitHub, Live, Tech icons - better mobile positioning */}
+        {/* Left side - GitHub, Live, Tech icons */}
         <div className="absolute left-1 sm:left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 sm:space-y-4 md:space-y-6 z-40">
           {/* GitHub Link */}
           {currentProjectData.github !== "#" && (
@@ -231,7 +231,7 @@ export default function ProjectsPage() {
             </a>
           )}
           
-          {/* Tech Stack Toggle - improved mobile popup */}
+          {/* Tech Stack Toggle */}
           <button
             onClick={handleTechClick}
             className="text-gray-400 hover:text-white transition-colors duration-300 group relative p-1"
@@ -242,7 +242,7 @@ export default function ProjectsPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
             
-            {/* Tech Stack Popup - better mobile positioning */}
+            {/* Tech Stack Popup */}
             {showTech && (
               <div className="absolute left-full ml-2 sm:ml-4 top-1/2 transform -translate-y-1/2 bg-slate-800/95 backdrop-blur-sm border border-gray-600 rounded-lg p-2 sm:p-3 min-w-[180px] sm:min-w-[200px] z-50 max-w-[250px]">
                 <div className="text-gray-300 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider font-light mb-2">
@@ -263,7 +263,7 @@ export default function ProjectsPage() {
           </button>
         </div>
 
-        {/* Right side - Info icon - better mobile positioning */}
+        {/* Right side - Info icon */}
         <div className="absolute right-1 sm:right-2 md:right-4 lg:right-8 top-1/2 transform -translate-y-1/2 z-40">
           <button
             onClick={handleInfoClick}
@@ -276,20 +276,20 @@ export default function ProjectsPage() {
           </button>
         </div>
 
-        {/* Navigation arrows - CHANGED from fixed to absolute positioning */}
-        <div className="absolute top-80 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 z-50">
+        {/* Navigation arrows - FIXED positioning for better responsiveness */}
+        <div className="absolute bottom-8 sm:bottom-12 md:bottom-16 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 sm:space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-3 sm:px-4 py-2 z-50">
           <button
             onClick={prevProject}
             className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
             aria-label="Previous Project"
           >
-            <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           {/* Project indicators */}
-          <div className="flex space-x-2">
+          <div className="flex space-x-1 sm:space-x-2">
             {projectsData.map((_, index) => (
               <button
                 key={index}
@@ -299,7 +299,7 @@ export default function ProjectsPage() {
                   setShowInfo(false);
                   setIsFlipped(false);
                 }}
-                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors duration-300 ${
                   currentProject === index ? 'bg-white' : 'bg-gray-600 hover:bg-gray-400'
                 }`}
               />
@@ -311,13 +311,13 @@ export default function ProjectsPage() {
             className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
             aria-label="Next Project"
           >
-            <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
-        {/* Status indicator - better mobile positioning */}
+        {/* Status indicator */}
         <div className="absolute top-2 sm:top-4 md:top-8 right-2 sm:right-4 md:right-8 z-40">
           <div className={`text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider font-light px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border ${
             currentProjectData.status === 'Completed' 
