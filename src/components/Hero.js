@@ -26,7 +26,7 @@ export default function PortfolioHero() {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
         style={{
-          backgroundImage: `url('/mobile2.jpeg')`,
+          backgroundImage: `url('/mobi2.jpg')`,
           transform: 'rotate(0deg)',  // Remove rotation
           height: '100vh',  // Full viewport height
           width: '100%',    // Full width
