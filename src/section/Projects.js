@@ -1,339 +1,197 @@
 'use client';
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const projectsData = [
-  {
-    id: 1,
-    name: "NIDAS PURE",
-    subtitle: "E-commerce Platform",
-    type: "E-commerce Website",
-    year: "2025",
-    description: "A premium e-commerce platform for pure and organic products. Features include product catalog, shopping cart, secure checkout, user authentication, order management, and admin dashboard. Built with modern technologies for optimal performance and user experience.",
-    technologies: ["React.js", "Next.js", "TailwindCSS", "Node.js", "MongoDB", "Stripe API"],
-    github: "#",
-    live: "https://nidaspure.com/",
-    status: "Completed"
-  },
-  {
-    id: 2,
-    name: "GENESIS CLASSES",
-    subtitle: "Educational Platform",
-    type: "Learning Management System",
-    year: "2025",
-    description: "An advanced educational platform designed for online learning and course management. Features include course enrollment, video streaming, assignment submission, progress tracking, and interactive learning tools for students and educators.",
-    technologies: ["React.js", "Next.js", "TailwindCSS", "Node.js", "PostgreSQL", "Video.js"],
-    github: "#",
-    live: "https://genesisclasses.net/",
-    status: "Completed"
-  },
-  {
-    id: 3,
-    name: "HOUSE OF AWERAWAT",
-    subtitle: "Business Website",
-    type: "Corporate Website",
-    year: "2025",
-    description: "A professional corporate website showcasing business services and company portfolio. Features include service catalog, company information, contact forms, testimonials, and responsive design optimized for all devices.",
-    technologies: ["React.js", "Next.js", "TailwindCSS", "Framer Motion", "EmailJS"],
-    github: "#",
-    live: "#",
-    status: "Completed"
-  },
-  {
-    id: 4,
-    name: "BLOOD DONATION",
-    subtitle: "Management System",
-    type: "Healthcare Platform",
-    year: "Oct 2021",
-    description: "A comprehensive system built for my college's annual blood donation fair to efficiently store and manage donor information. Features include donor registration, blood type tracking, and donation history management.",
-    technologies: ["HTML", "CSS", "JavaScript", "Bootstrap", "PHP", "MySQL"],
-    github: "https://github.com/yourusername/blood-donation",
-    live: "https://your-blood-donation-demo.com",
-    status: "Completed"
-  },
-  {
-    id: 5,
-    name: "BILLING SYSTEM",
-    subtitle: "Python Application",
-    type: "Desktop Application",
-    year: "Oct 2022",
-    description: "A comprehensive billing application built with Python that provides detailed product information including quantity, quality, and pricing simultaneously. Features invoice generation and inventory tracking.",
-    technologies: ["Python", "Tkinter", "MySQL"],
-    github: "https://github.com/yourusername/billing-system",
-    live: "#",
-    status: "Completed"
-  },
-  {
-    id: 6,
-    name: "AGRI-FARMA",
-    subtitle: "Full-Stack Platform",
-    type: "Agriculture Platform",
-    year: "Nov 2024",
-    description: "A comprehensive platform designed for farmers to purchase farm medicines and access the latest government information and offers. Features include product catalog, order management, and government schemes integration.",
-    technologies: ["React.js", "Node.js", "MongoDB", "Vite", "Bootstrap"],
-    github: "https://github.com/yourusername/agri-farma",
-    live: "https://your-agri-farma-demo.com",
-    status: "Completed"
-  },
-  {
-    id: 7,
-    name: "RABBIT AUTO CARE",
-    subtitle: "Car Care Platform",
-    type: "Automotive Services",
-    year: "2025",
-    description: "An innovative car care platform offering comprehensive services, product management, and modern dashboards for both customers and administrators. Features booking system and service tracking.",
-    technologies: ["Next.js", "TailwindCSS", "Supabase", "Node.js"],
-    github: "https://github.com/yourusername/rabbit-auto-care",
-    live: "https://rabbitautocare.com/",
-    status: "Completed"
-  }
-];
+// --- Helper Icons ---
+const GithubIcon = () => <svg fill="currentColor" viewBox="0 0 24 24" className="w-5 h-5"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>;
+const LinkIcon = () => <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>;
+const CloseIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>;
+const ChevronRightIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>;
 
-export default function ProjectsPage() {
-  const [currentProject, setCurrentProject] = useState(0);
-  const [showTech, setShowTech] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
-  const [isFlipped, setIsFlipped] = useState(false);
 
-  const currentProjectData = projectsData[currentProject];
+// --- Main Component ---
+export default function FinalProjectsPage() {
+  const [selectedId, setSelectedId] = useState(null);
+  const [mobileIndex, setMobileIndex] = useState(0); // For mobile card stack
 
-  const nextProject = () => {
-    setCurrentProject((prev) => (prev + 1) % projectsData.length);
-    setShowTech(false);
-    setShowInfo(false);
-    setIsFlipped(false);
+  const projectsData = [
+    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "A premium e-commerce platform for pure and organic products.", technologies: ["Next.js", "TailwindCSS", "MongoDB"], image: "/aerawat.jpg", mobileImage: "/aerawat.jpg", github: "/nidaspure", live: "https://nidaspure.com/" },
+    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "An advanced educational platform for online learning.", technologies: ["React.js", "PostgreSQL", "Node.js"], image: "/genesis.jpg", mobileImage: "/genesis.jpg", github: "/genesisclasses", live: "https://genesisclasses.net/" },
+    { id: 3, name: "AERAWAT", subtitle: "Business", description: "A professional corporate website showcasing business services.", technologies: ["React.js", "Framer Motion", "EmailJS"], image: "/aew.jpg", mobileImage: "/aew.jpg", github: "/aerawat", live: "https://rabbitautocare.com/" },
+    { id: 4, name: "RABBIT", subtitle: "Car Care", description: "An innovative car care platform offering comprehensive services.", technologies: ["Next.js", "Supabase"], image: "/rabbit.jpg", mobileImage: "/rabbit.jpg", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
+  ];
+  
+  const selectedProject = selectedId ? projectsData.find(p => p.id === selectedId) : null;
+  const selectedIndex = selectedId ? projectsData.findIndex(p => p.id === selectedId) : -1;
+  
+  const SLANT_AMOUNT = '80px';
+
+  // Mobile pagination
+  const paginate = (newDirection) => {
+    setMobileIndex((prevIndex) => (prevIndex + newDirection + projectsData.length) % projectsData.length);
   };
 
-  const prevProject = () => {
-    setCurrentProject((prev) => (prev - 1 + projectsData.length) % projectsData.length);
-    setShowTech(false);
-    setShowInfo(false);
-    setIsFlipped(false);
-  };
-
-  const handleTechClick = () => {
-    setShowTech(!showTech);
-  };
-
-  const handleInfoClick = () => {
-    if (!showInfo) {
-      setIsFlipped(true);
-      setTimeout(() => setShowInfo(true), 300);
-    } else {
-      setShowInfo(false);
-      setTimeout(() => setIsFlipped(false), 300);
-    }
-  };
+  const currentMobileProject = projectsData[mobileIndex];
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/pro.jpg')`
-        }}
-      >
-        <div className="absolute inset-0 bg-black/60"></div>
-      </div>
+    <div className="w-full min-h-screen bg-white font-sans text-gray-800">
+      
 
-      {/* Background texture overlay */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-          backgroundSize: '50px 50px'
-        }}></div>
-      </div>
-
-      <div className="w-full max-w-6xl mx-auto relative z-10">
+      <div className="relative flex flex-col md:flex-row w-full min-h-screen">
         
-        {/* Main content container */}
-        <div className="flex flex-col items-center justify-center text-center px-2 sm:px-4 md:px-8 min-h-[60vh] sm:min-h-[50vh]">
-          {/* Small label */}
-          <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 md:mb-6 font-light">
-            Project {currentProject + 1} of {projectsData.length}
-          </div>
-          
-          {/* Main project name with flip effect */}
-          <div className="relative mb-3 sm:mb-4 md:mb-6 max-w-xs sm:max-w-sm md:max-w-2xl mx-auto" style={{ perspective: '1000px' }}>
-            <div 
-              className="transition-transform duration-700"
-              style={{ 
-                transformStyle: 'preserve-3d',
-                transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-              }}
-            >
-              {/* Front - Project Name */}
-              <div 
-                className="backface-hidden"
-                style={{ backfaceVisibility: 'hidden' }}
-              >
-                <h1 className="text-white font-light text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl tracking-wider mb-1 sm:mb-2 leading-tight">
-                  {currentProjectData.name}
-                </h1>
-                <div className="text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg font-light tracking-wide">
-                  {currentProjectData.subtitle}
-                </div>
-              </div>
-              
-              {/* Back - Project Info */}
-              <div 
-                className="absolute inset-0 backface-hidden"
+        {/* --- DESKTOP VIEW: DIAGONAL SLICES (Unchanged) --- */}
+        <div className="hidden md:flex flex-1 relative overflow-hidden">
+          <motion.div 
+            className="relative w-2/5 flex flex-col justify-center items-start p-8 bg-gray-50"
+            style={{ clipPath: `polygon(0 0, 100% 0, calc(100% - ${SLANT_AMOUNT}) 100%, 0 100%)` }}
+            variants={{
+              initial: { x: '0%' },
+              selected: { x: '-100%' }
+            }}
+            animate={selectedId ? 'selected' : 'initial'}
+            transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
+          >
+            <h1 className="text-5xl lg:text-6xl font-black text-gray-300 tracking-tighter">PROJECTS</h1>
+            <p className="mt-4 max-w-xs text-gray-600">
+              A selection of my work. Click any project to see details.
+            </p>
+          </motion.div>
+
+          <div className="flex flex-1" style={{ marginLeft: `calc(-${SLANT_AMOUNT} / 2)` }}>
+            {projectsData.map((project, index) => (
+              <motion.div
+                key={project.id}
+                className="group relative flex-1 h-full cursor-pointer overflow-hidden"
                 style={{ 
-                  backfaceVisibility: 'hidden',
-                  transform: 'rotateY(180deg)'
+                  clipPath: `polygon(${SLANT_AMOUNT} 0, 100% 0, calc(100% - ${SLANT_AMOUNT}) 100%, 0 100%)`,
+                  marginLeft: `calc(-${SLANT_AMOUNT} / 2)`,
                 }}
+                onClick={() => setSelectedId(project.id)}
+                variants={{
+                    initial: { x: '0%' },
+                    selected: { x: index < selectedIndex ? '-100vw' : '100vw' }
+                }}
+                animate={selectedId && selectedId !== project.id ? 'selected' : 'initial'}
+                transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
               >
-                {showInfo && (
-                  <div className="text-white font-light text-[10px] sm:text-xs md:text-sm lg:text-base leading-relaxed px-2 sm:px-4 max-h-[30vh] overflow-y-auto">
-                    {currentProjectData.description}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          
-          {/* Project type and year */}
-          <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] font-light mb-4 sm:mb-6">
-            {currentProjectData.type} • {currentProjectData.year}
-          </div>
-        </div>
-
-        {/* Left side - GitHub, Live, Tech icons */}
-        <div className="absolute left-1 sm:left-2 md:left-4 lg:left-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 sm:space-y-4 md:space-y-6 z-40">
-          {/* GitHub Link */}
-          {currentProjectData.github !== "#" && (
-            <a 
-              href={currentProjectData.github} 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-              aria-label="GitHub Repository"
-            >
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd"/>
-              </svg>
-            </a>
-          )}
-          
-          {/* Live Demo Link */}
-          {currentProjectData.live !== "#" && (
-            <a 
-              href={currentProjectData.live} 
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-              aria-label="Live Demo"
-            >
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          )}
-          
-          {/* Tech Stack Toggle */}
-          <button
-            onClick={handleTechClick}
-            className="text-gray-400 hover:text-white transition-colors duration-300 group relative p-1"
-            aria-label="View Technologies"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            
-            {/* Tech Stack Popup */}
-            {showTech && (
-              <div className="absolute left-full ml-2 sm:ml-4 top-1/2 transform -translate-y-1/2 bg-slate-800/95 backdrop-blur-sm border border-gray-600 rounded-lg p-2 sm:p-3 min-w-[180px] sm:min-w-[200px] z-50 max-w-[250px]">
-                <div className="text-gray-300 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider font-light mb-2">
-                  Technologies Used
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-in-out group-hover:scale-110" style={{ backgroundImage: `url(${project.image})` }}/>
+                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+                <div className="relative z-10 w-full h-full flex flex-col justify-end p-8 text-white">
+                  <h2 className="text-3xl font-black opacity-60 drop-shadow-lg">{String(index + 1).padStart(2, '0')}</h2>
+                  <h3 className="text-xl font-bold uppercase tracking-wider drop-shadow-lg">{project.name}</h3>
                 </div>
-                <div className="flex flex-wrap gap-1">
-                  {currentProjectData.technologies.map((tech, index) => (
-                    <span
-                      key={index}
-                      className="bg-gray-700/50 text-gray-300 text-[8px] sm:text-[9px] md:text-[10px] px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-gray-600 font-light"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </button>
-        </div>
-
-        {/* Right side - Info icon */}
-        <div className="absolute right-1 sm:right-2 md:right-4 lg:right-8 top-1/2 transform -translate-y-1/2 z-40">
-          <button
-            onClick={handleInfoClick}
-            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-            aria-label="Project Information"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Navigation arrows - FIXED positioning for better responsiveness */}
-        <div className="absolute bottom-8 sm:bottom-12 md:bottom-16 left-1/2 transform -translate-x-1/2 flex items-center space-x-4 sm:space-x-6 bg-slate-800/80 backdrop-blur-sm border border-gray-600 rounded-full px-3 sm:px-4 py-2 z-50">
-          <button
-            onClick={prevProject}
-            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-            aria-label="Previous Project"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          {/* Project indicators */}
-          <div className="flex space-x-1 sm:space-x-2">
-            {projectsData.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentProject(index);
-                  setShowTech(false);
-                  setShowInfo(false);
-                  setIsFlipped(false);
-                }}
-                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors duration-300 ${
-                  currentProject === index ? 'bg-white' : 'bg-gray-600 hover:bg-gray-400'
-                }`}
-              />
+              </motion.div>
             ))}
           </div>
-          
-          <button
-            onClick={nextProject}
-            className="text-gray-400 hover:text-white transition-colors duration-300 group p-1"
-            aria-label="Next Project"
-          >
-            <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+
+          <AnimatePresence>
+            {selectedProject && (
+              <motion.div 
+                className="absolute inset-0 z-20 flex justify-center items-center p-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { duration: 0.5, delay: 0.5 } }}
+                exit={{ opacity: 0, transition: { duration: 0.5 } }}
+                onClick={() => setSelectedId(null)}
+              >
+                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedProject.image})` }} />
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+                
+                <motion.div
+                  className="relative w-full max-w-2xl bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-8 border border-white/20"
+                  initial={{ scale: 0.9, y: 50 }}
+                  animate={{ scale: 1, y: 0, transition: { duration: 0.5, delay: 0.7 } }}
+                  exit={{ scale: 0.9, y: 50 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex justify-between items-center">
+                    <h1 className="text-3xl font-black text-gray-900">{selectedProject.name}</h1>
+                    <button onClick={() => setSelectedId(null)} className="p-2 rounded-full hover:bg-black/10 transition-colors"><CloseIcon /></button>
+                  </div>
+                  <p className="text-lg text-gray-600 font-semibold mt-1">{selectedProject.subtitle}</p>
+                  <p className="text-gray-700 my-6 leading-relaxed">{selectedProject.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {selectedProject.technologies.map(tech => <span key={tech} className="bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">{tech}</span>)}
+                  </div>
+                  <div className="flex gap-4">
+                    {selectedProject.github !== "#" && <a href={selectedProject.github} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-4 py-2 text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors font-semibold"><GithubIcon /> GitHub</a>}
+                    {selectedProject.live !== "#" && <a href={selectedProject.live} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-4 py-2 text-gray-800 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors font-semibold"><LinkIcon /> Live Demo</a>}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
-        {/* Status indicator */}
-        <div className="absolute top-2 sm:top-4 md:top-8 right-2 sm:right-4 md:right-8 z-40">
-          <div className={`text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-wider font-light px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border ${
-            currentProjectData.status === 'Completed' 
-              ? 'text-green-400 border-green-400/50 bg-green-400/5' 
-              : 'text-yellow-400 border-yellow-400/50 bg-yellow-400/5'
-          }`}>
-            {currentProjectData.status}
+        {/* --- UPDATED MOBILE VIEW --- */}
+        <div className="md:hidden w-full min-h-screen flex flex-col justify-center items-center p-4 pt-16 overflow-hidden">
+          {/* Animated Background Image */}
+          <AnimatePresence>
+            <motion.div
+              key={mobileIndex}
+              className="absolute inset-0 w-full h-full"
+              initial={{ opacity: 0, scale: 1.2 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.2 }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            >
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${currentMobileProject.mobileImage || currentMobileProject.image})` }}/>
+              <div className="absolute inset-0 bg-white/70 "/>
+            </motion.div>
+          </AnimatePresence>
+          
+          <h1 className="text-3xl font-black text-gray-900 text-center mb-4 z-10">My Projects</h1>
+          <div className="relative w-full max-w-xs h-[520px] z-10">
+            <AnimatePresence initial={false}>
+              {projectsData.map((project, i) => {
+                if (i === mobileIndex) {
+                  return (
+                    <motion.div
+                      key={project.id}
+                      className="absolute w-full h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/50 flex flex-col overflow-hidden"
+                      initial={{ scale: 0.8, y: 50, opacity: 0 }}
+                      animate={{ scale: 1, y: 0, opacity: 1 }}
+                      exit={{ scale: 0.8, y: -50, opacity: 0, zIndex: 0 }}
+                      transition={{ duration: 0.4 }}
+                      drag="x"
+                      dragConstraints={{ left: 0, right: 0 }}
+                      dragElastic={0.2}
+                      onDragEnd={(e, { offset, velocity }) => {
+                        if (offset.x < -100 || velocity.x < -500) paginate(1);
+                        if (offset.x > 100 || velocity.x > 500) paginate(-1);
+                      }}
+                    >
+                      <img src={project.mobileImage || project.image} alt={project.name} className="w-full h-48 object-cover" />
+                      <div className="p-5 flex-1 flex flex-col">
+                        <h2 className="text-xl font-bold text-gray-900">{project.name}</h2>
+                        <p className="text-gray-600 text-sm">{project.subtitle}</p>
+                        <p className="text-gray-700 text-sm leading-relaxed mt-4">{project.description}</p>
+                        <div className="flex flex-wrap gap-2 mt-4">
+                            {project.technologies.map(tech => <span key={tech} className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">{tech}</span>)}
+                        </div>
+                      </div>
+                      <div className="px-5 py-4 bg-white/50 border-t border-gray-200">
+                        <div className="flex justify-center gap-8">
+                          {project.github !== "#" && <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-black"><GithubIcon/></a>}
+                          {project.live !== "#" && <a href={project.live} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-black"><LinkIcon/></a>}
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                }
+                return null;
+              })}
+            </AnimatePresence>
           </div>
+
+          {/* <button 
+            onClick={() => paginate(1)} 
+            className="mt-6 bg-white p-3 rounded-full shadow-lg flex items-center justify-center z-10"
+          >
+            <ChevronRightIcon />
+            <span className="ml-2 font-semibold text-sm">Next Project</span>
+          </button> */}
         </div>
       </div>
-
-      <style jsx>{`
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-      `}</style>
     </div>
   );
 }

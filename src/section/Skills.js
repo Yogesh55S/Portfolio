@@ -1,226 +1,117 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 
-const skillsData = [
-  { name: "JavaScript", percentage: 92, category: "Frontend" },
-  { name: "React.js", percentage: 88, category: "Frontend" },
-  { name: "Next.js", percentage: 82, category: "Frontend" },
-  { name: "TailwindCSS", percentage: 95, category: "Frontend" },
-  { name: "Node.js", percentage: 85, category: "Backend" },
-  { name: "Python", percentage: 90, category: "Backend" },
-  { name: "PHP", percentage: 75, category: "Backend" },
-  { name: "MongoDB", percentage: 83, category: "Database" },
-  { name: "MySQL", percentage: 87, category: "Database" },
-  { name: "Supabase", percentage: 78, category: "Database" },
-  { name: "C", percentage: 85, category: "Languages" },
-  { name: "C++", percentage: 80, category: "Languages" }
+// Icon positions - Responsive sizing for different screen sizes
+const iconPositions = [
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", top: "20%", left: "8%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg", top: "15%", left: "20%", size: "w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", top: "10%", left: "38%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg", top: "15%", left: "55%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg", top: "8%", left: "70%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg", top: "25%", left: "85%", size: "w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", top: "45%", left: "22%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", top: "50%", left: "78%", size: "w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg", top: "50%", left: "92%", size: "w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", top: "70%", left: "10%", size: "w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", top: "80%", left: "32%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", top: "70%", left: "48%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg", top: "75%", left: "68%", size: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" },
+  { icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg", top: "68%", left: "82%", size: "w-14 h-14 sm:w-18 sm:h-18 md:w-24 md:h-24" },
 ];
 
 export default function Skills() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [showAll, setShowAll] = useState(false);
-  const categories = ['All', 'Frontend', 'Backend', 'Database', 'Languages'];
-
-  const filteredSkills = activeCategory === 'All' 
-    ? skillsData 
-    : skillsData.filter(skill => skill.category === activeCategory);
-
-  const displayedSkills = activeCategory === 'All' && !showAll 
-    ? filteredSkills.slice(0, 4)
-    : filteredSkills;
-
-  const shouldShowMoreButton = activeCategory === 'All' && !showAll && filteredSkills.length > 4;
-
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12 md:py-16 relative overflow-hidden">
-      {/* Background Image */}
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-white via-white to-indigo-50 px-4 sm:px-6 lg:px-8 group">
+      
+      {/* Background Image with Hover Effect */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-20 transition-opacity duration-700 ease-in-out"
         style={{
-          backgroundImage: 'url(/skill.jpg)',
+          backgroundImage: 'url(/imgs.jpg)',
+          filter: 'blur(0px) group-hover:blur(0px)',
         }}
-      ></div>
+      />
       
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/60"></div>
+      {/* Floating Tech Icons - Responsive sizing */}
+      {iconPositions.map((pos, index) => (
+        <div
+          key={index}
+          className={`absolute ${pos.size} transition-transform duration-300 hover:scale-110`}
+          style={{
+            top: pos.top,
+            left: pos.left,
+            animation: `floatIcon 4s ease-in-out infinite`,
+            animationDelay: `${index * 0.3}s`,
+          }}
+        >
+          <img src={pos.icon} alt="" className="w-full h-full object-contain drop-shadow-2xl opacity-80 hover:opacity-100 transition-opacity" />
+        </div>
+      ))}
       
-      {/* Additional texture overlay */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-          backgroundSize: '50px 50px'
-        }}></div>
-      </div>
-
-      <div className="w-full max-w-6xl mx-auto relative">
-        
-        {/* Header Section - matching home page style with better mobile spacing */}
-        <div className="text-center mb-8 sm:mb-12 md:mb-16">
-          <div className="text-gray-400 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] sm:tracking-widest mb-4 sm:mb-6 font-light">
-            My Technical
-          </div>
-          <h1 className="text-white font-light text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-wider mb-2 sm:mb-3">
-            SKILLS
-          </h1>
-          <div className="text-gray-400 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] sm:tracking-widest font-light">
-            & Technologies
-          </div>
-        </div>
-
-        {/* Category Filter - better mobile layout */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 px-2">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => {
-                setActiveCategory(category);
-                setShowAll(false);
-              }}
-              className={`
-                px-3 sm:px-6 py-1.5 sm:py-2 text-[10px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light
-                transition-all duration-300 border border-gray-600
-                ${activeCategory === category 
-                  ? 'text-white bg-white/5 border-gray-400' 
-                  : 'text-gray-400 hover:text-white hover:border-gray-400'
-                }
-              `}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Skills Grid - better mobile spacing and text sizes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12 px-2 sm:px-0">
-          {displayedSkills.map((skill, index) => (
-            <div
-              key={skill.name}
-              className="group"
-              style={{
-                animation: `fadeInUp 0.6s ease-out ${index * 0.1}s both`
-              }}
-            >
-              {/* Skill Header - better mobile text sizes */}
-              <div className="flex justify-between items-end mb-3 sm:mb-4">
-                <div>
-                  <h3 className="text-white text-sm sm:text-lg md:text-xl font-light tracking-wide uppercase">
-                    {skill.name}
-                  </h3>
-                  <div className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-[0.1em] sm:tracking-wider font-light mt-1">
-                    {skill.category}
-                  </div>
-                </div>
-                <div className="text-gray-400 text-xs sm:text-sm font-light">
-                  {skill.percentage}%
-                </div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="relative">
-                {/* Background line */}
-                <div className="w-full h-px bg-gray-600"></div>
-                
-                {/* Progress line */}
-                <div 
-                  className="absolute top-0 left-0 h-px bg-white transition-all duration-1000 ease-out"
-                  style={{
-                    width: `${skill.percentage}%`,
-                    animationDelay: `${index * 0.1 + 0.5}s`
-                  }}
-                ></div>
-
-                {/* Progress indicator dot */}
-                <div 
-                  className="absolute top-0 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full transform -translate-y-1/2 transition-all duration-1000 ease-out"
-                  style={{
-                    left: `${skill.percentage}%`,
-                    marginLeft: '-3px',
-                    animationDelay: `${index * 0.1 + 0.8}s`
-                  }}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Show More Button - only for All section */}
-        {shouldShowMoreButton && (
-          <div className="text-center mb-8 sm:mb-12">
-            <button
-              onClick={() => setShowAll(true)}
-              className="px-6 sm:px-8 py-2 sm:py-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light text-gray-400 hover:text-white border border-gray-600 hover:border-gray-400 transition-all duration-300"
-            >
-              Show More Skills
-            </button>
-          </div>
-        )}
-
-        {/* Show Less Button - when all skills are shown */}
-        {activeCategory === 'All' && showAll && (
-          <div className="text-center mb-8 sm:mb-12">
-            <button
-              onClick={() => setShowAll(false)}
-              className="px-6 sm:px-8 py-2 sm:py-3 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light text-gray-400 hover:text-white border border-gray-600 hover:border-gray-400 transition-all duration-300"
-            >
-              Show Less
-            </button>
-          </div>
-        )}
-
-        {/* Stats Section - better mobile layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 border-t border-gray-600 pt-6 sm:pt-12 px-2 sm:px-0">
-          <div className="text-center">
-            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              12+
-            </div>
-            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
-              Technologies
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              4
-            </div>
-            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
-              Categories
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              3
-            </div>
-            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
-              Month Experience
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-xl sm:text-2xl md:text-3xl font-light tracking-wider mb-1 sm:mb-2">
-              4
-            </div>
-            <div className="text-gray-400 text-[9px] sm:text-[10px] md:text-xs uppercase tracking-[0.15em] sm:tracking-widest font-light">
-              Projects
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom instruction - matching home page style */}
-        <div className="text-center mt-8 sm:mt-12">
-          <div className="text-gray-400 text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-widest font-light">
-            {activeCategory === 'All' ? 'Explore My Technical Skills' : `${activeCategory} Technologies`}
-          </div>
+      {/* Central Skills Logo */}
+      <div className="text-center z-10 px-4">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-4 text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-wider">
+          <span className="text-teal-500 drop-shadow-lg" style={{ fontSize: '0.8em' }}>&lt;</span>
+          <span className="flex items-center gap-1 sm:gap-2 md:gap-3 relative">
+            <span className="text-gray-600 drop-shadow-md">SK</span>
+            {/* MongoDB Leaf Icon attached to I */}
+            <span className="relative inline-block">
+              <span className="text-gray-600 drop-shadow-md">I</span>
+              <svg className="absolute -top-6 sm:-top-8 md:-top-10 lg:-top-14 left-1/2 transform -translate-x-1/2 w-6 h-10 sm:w-8 sm:h-14 md:w-10 md:h-18 lg:w-12 lg:h-20 text-green-500 drop-shadow-lg" 
+                   viewBox="0 0 24 48" 
+                   fill="currentColor"
+                   style={{ animation: 'leafFloat 3s ease-in-out infinite' }}>
+                <ellipse cx="12" cy="24" rx="8" ry="20" opacity="0.9"/>
+                <path d="M12 4C12 4 8 12 8 24C8 36 12 44 12 44C12 44 16 36 16 24C16 12 12 4 12 4Z" opacity="0.7"/>
+                <path d="M12 44 L12 48 L11 48 L11 44 Z" opacity="0.5"/>
+              </svg>
+            </span>
+            <span className="text-gray-600 drop-shadow-md">LLS</span>
+          </span>
+          <span className="text-teal-500 drop-shadow-lg" style={{ fontSize: '0.8em' }}>/&gt;</span>
         </div>
       </div>
 
       <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
+        @keyframes floatIcon {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg);
           }
-          to {
-            opacity: 1;
-            transform: translateY(0);
+          50% {
+            transform: translateY(-25px) rotate(8deg);
+          }
+        }
+        
+        @keyframes leafFloat {
+          0%, 100% {
+            transform: translateX(-50%) translateY(0px) rotate(0deg);
+          }
+          25% {
+            transform: translateX(-50%) translateY(-8px) rotate(-5deg);
+          }
+          75% {
+            transform: translateX(-50%) translateY(-5px) rotate(5deg);
+          }
+        }
+        
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.2;
+          }
+          50% {
+            opacity: 0.3;
+          }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+          @keyframes floatIcon {
+            0%, 100% {
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+              transform: translateY(-15px) rotate(5deg);
+            }
           }
         }
       `}</style>

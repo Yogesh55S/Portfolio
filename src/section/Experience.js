@@ -46,274 +46,244 @@ const experiences = [
 
 export default function Experience() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Background Image with Overlay */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('/ex.jpg')`
-        }}
-      >
-        <div className="absolute inset-0 bg-black/60"></div>
-      </div>
-
-      {/* Background texture overlay */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-blue-500/10"></div>
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)`,
-          backgroundSize: '50px 50px'
+    <div className="min-h-screen bg-white relative overflow-hidden">
+      {/* Sophisticated background patterns */}
+      <div className="absolute inset-0">
+        {/* Diagonal lines pattern */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #000 60px, #000 61px),
+                            repeating-linear-gradient(-45deg, transparent, transparent 60px, #000 60px, #000 61px)`
         }}></div>
-      </div>
+        
+        {/* Dot grid pattern */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+          backgroundSize: '40px 40px'
+        }}></div>
 
-      {/* Animated Network Lines Background */}
-      <div className="absolute inset-0 overflow-hidden opacity-30">
-        <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="rgba(56, 189, 248, 0)" />
-              <stop offset="50%" stopColor="rgba(56, 189, 248, 0.4)" />
-              <stop offset="100%" stopColor="rgba(56, 189, 248, 0)" />
-            </linearGradient>
-            <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgba(147, 197, 253, 0)" />
-              <stop offset="50%" stopColor="rgba(147, 197, 253, 0.3)" />
-              <stop offset="100%" stopColor="rgba(147, 197, 253, 0)" />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge> 
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          
-          <g className="opacity-60">
-            <line x1="0" y1="20%" x2="100%" y2="25%" stroke="url(#lineGradient1)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
-            </line>
-            <line x1="0" y1="40%" x2="100%" y2="35%" stroke="url(#lineGradient1)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite" />
-            </line>
-            <line x1="0" y1="60%" x2="100%" y2="65%" stroke="url(#lineGradient1)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.4;0.9;0.4" dur="5s" repeatCount="indefinite" />
-            </line>
-            <line x1="0" y1="80%" x2="100%" y2="75%" stroke="url(#lineGradient1)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.6;0.2;0.6" dur="3.5s" repeatCount="indefinite" />
-            </line>
-          </g>
-
-          <g className="opacity-50">
-            <line x1="15%" y1="0" x2="20%" y2="100%" stroke="url(#lineGradient2)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.2;0.7;0.2" dur="4.5s" repeatCount="indefinite" />
-            </line>
-            <line x1="35%" y1="0" x2="30%" y2="100%" stroke="url(#lineGradient2)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.7;0.2;0.7" dur="3.8s" repeatCount="indefinite" />
-            </line>
-            <line x1="65%" y1="0" x2="70%" y2="100%" stroke="url(#lineGradient2)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.2s" repeatCount="indefinite" />
-            </line>
-            <line x1="85%" y1="0" x2="80%" y2="100%" stroke="url(#lineGradient2)" strokeWidth="1" filter="url(#glow)">
-              <animate attributeName="opacity" values="0.5;0.3;0.5" dur="5.2s" repeatCount="indefinite" />
-            </line>
-          </g>
-
-          <g className="opacity-40">
-            <circle cx="15%" cy="25%" r="2" fill="rgba(56, 189, 248, 0.6)" filter="url(#glow)">
-              <animate attributeName="r" values="1;3;1" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.4;0.9;0.4" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="85%" cy="40%" r="2" fill="rgba(147, 197, 253, 0.6)" filter="url(#glow)">
-              <animate attributeName="r" values="2;4;2" dur="4s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="65%" cy="75%" r="2" fill="rgba(56, 189, 248, 0.5)" filter="url(#glow)">
-              <animate attributeName="r" values="1.5;3.5;1.5" dur="3.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.5;0.9;0.5" dur="3.5s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="25%" cy="60%" r="2" fill="rgba(147, 197, 253, 0.4)" filter="url(#glow)">
-              <animate attributeName="r" values="2;4;2" dur="4.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.2;0.7;0.2" dur="4.5s" repeatCount="indefinite" />
-            </circle>
-          </g>
-
-          <g className="opacity-30">
-            <line x1="15%" y1="25%" x2="85%" y2="40%" stroke="rgba(56, 189, 248, 0.3)" strokeWidth="0.5" filter="url(#glow)" strokeDasharray="5,5">
-              <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.1;0.5;0.1" dur="3s" repeatCount="indefinite" />
-            </line>
-            <line x1="85%" y1="40%" x2="65%" y2="75%" stroke="rgba(147, 197, 253, 0.3)" strokeWidth="0.5" filter="url(#glow)" strokeDasharray="3,3">
-              <animate attributeName="stroke-dashoffset" values="0;6" dur="1.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.2;0.6;0.2" dur="4s" repeatCount="indefinite" />
-            </line>
-            <line x1="65%" y1="75%" x2="25%" y2="60%" stroke="rgba(56, 189, 248, 0.2)" strokeWidth="0.5" filter="url(#glow)" strokeDasharray="4,4">
-              <animate attributeName="stroke-dashoffset" values="0;8" dur="2.5s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
-            </line>
-            <line x1="25%" y1="60%" x2="15%" y2="25%" stroke="rgba(147, 197, 253, 0.25)" strokeWidth="0.5" filter="url(#glow)" strokeDasharray="6,6">
-              <animate attributeName="stroke-dashoffset" values="0;12" dur="3s" repeatCount="indefinite" />
-              <animate attributeName="opacity" values="0.15;0.5;0.15" dur="2.8s" repeatCount="indefinite" />
-            </line>
-          </g>
-        </svg>
+        {/* Large geometric shapes */}
+        <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-gray-100 rounded-full"></div>
+        <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-gray-100 rotate-45"></div>
+        <div className="absolute top-1/3 -right-32 w-64 h-64 border border-gray-100"></div>
       </div>
 
       {/* Main content */}
-      <div className="relative z-10 py-8 sm:py-12 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
+      <div className="relative z-10 py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           
-          {/* Header */}
-          <div className="text-center mb-12 sm:mb-16 lg:mb-24">
-            <div className="text-gray-400 text-xs md:text-sm uppercase tracking-widest mb-4 font-light">
-              My Journey
+          {/* Header Section */}
+          <div className="mb-20 sm:mb-28 lg:mb-36">
+            <div className="max-w-4xl">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-px bg-black"></div>
+                <span className="text-gray-500 text-xs tracking-[0.4em] font-semibold uppercase">
+                  Professional Journey
+                </span>
+              </div>
+              
+              <h1 className="text-gray-900 font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-6">
+                Experience
+              </h1>
+              
+              <p className="text-gray-600 text-lg sm:text-xl max-w-2xl leading-relaxed">
+                A chronicle of growth, learning, and building impactful digital solutions across various technologies and platforms.
+              </p>
             </div>
-            <h2 className="text-white font-light text-2xl sm:text-4xl md:text-6xl lg:text-7xl tracking-wider">
-              EXPERIENCE
-            </h2>
           </div>
 
-          {/* Desktop Timeline View (Hidden on mobile) */}
-          <div className="hidden lg:block relative">
-            <div className="absolute left-1/2 transform -translate-x-0.5 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-600 to-transparent"></div>
-            
-            <div className="space-y-20">
-              {experiences.map((exp, index) => (
-                <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                  
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gradient-to-br from-slate-600 to-slate-800 border-2 border-gray-400 rounded-full z-10">
-                    {exp.status === 'current' && (
-                      <div className="absolute inset-0 rounded-full bg-gray-400 animate-pulse"></div>
-                    )}
-                  </div>
+          {/* Desktop Timeline View */}
+          <div className="hidden lg:block">
+            <div className="relative">
+              {/* Year markers on the side */}
+              <div className="absolute -left-32 top-0 space-y-24">
+                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2025</div>
+                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2023</div>
+                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2021</div>
+              </div>
 
-                  <div className={`w-5/12 ${index % 2 === 0 ? 'mr-8' : 'ml-8'} group`}>
-                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-600/50 rounded-lg p-8 hover:bg-slate-700/50 transition-all duration-300 hover:border-slate-500/50">
-                      
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="inline-block px-3 py-1 bg-slate-700/50 text-gray-300 text-sm font-light tracking-wide rounded-full border border-slate-600/50">
-                          {exp.date}
-                        </span>
+              <div className="space-y-32">
+                {experiences.map((exp, index) => (
+                  <div key={index} className="relative group">
+                    {/* Connection line */}
+                    {index < experiences.length - 1 && (
+                      <div className="absolute left-0 top-full h-32 w-px bg-gradient-to-b from-gray-300 to-transparent ml-8"></div>
+                    )}
+
+                    <div className="flex items-start gap-8">
+                      {/* Timeline marker */}
+                      <div className="flex-shrink-0 relative pt-2">
+                        <div className="w-16 h-16 border-4 border-black bg-white relative transition-all duration-300 group-hover:scale-110">
+                          <div className="absolute inset-0 bg-black transform scale-0 transition-transform duration-300 group-hover:scale-100"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-xs font-bold text-black group-hover:text-white relative z-10 transition-colors duration-300">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                          </div>
+                        </div>
                         {exp.status === 'current' && (
-                          <span className="inline-block px-3 py-1 bg-cyan-500/20 text-cyan-300 text-xs font-light tracking-wide rounded-full border border-cyan-500/30">
-                            Current
-                          </span>
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-black"></div>
                         )}
                       </div>
 
-                      <h3 className="text-white font-light text-2xl mb-2 tracking-wide group-hover:text-gray-100 transition-colors duration-300">
-                        {exp.role}
-                      </h3>
-                      <p className="text-gray-400 font-light text-base mb-4 tracking-wide">
-                        {exp.company}
-                      </p>
+                      {/* Content */}
+                      <div className="flex-1 bg-white border-2 border-gray-200 p-10 transition-all duration-300 group-hover:border-black group-hover:-translate-y-2 group-hover:shadow-2xl">
+                        {/* Header */}
+                        <div className="flex items-start justify-between mb-8 pb-6 border-b-2 border-gray-100">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-4 mb-3">
+                              <span className="text-sm font-bold tracking-[0.2em] uppercase text-gray-500">
+                                {exp.date}
+                              </span>
+                              {exp.status === 'current' && (
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 bg-black"></div>
+                                  <span className="text-xs font-bold tracking-[0.2em] uppercase">
+                                    Active Role
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            <h3 className="text-3xl font-bold text-gray-900 tracking-tight mb-2">
+                              {exp.role}
+                            </h3>
+                            <p className="text-lg font-semibold text-gray-600 tracking-wide">
+                              {exp.company}
+                            </p>
+                          </div>
+                        </div>
 
-                      <p className="text-gray-300 font-light leading-relaxed mb-6 text-base">
+                        {/* Description */}
+                        <p className="text-gray-700 text-lg leading-relaxed mb-8">
+                          {exp.description}
+                        </p>
+
+                        {/* Tech Stack */}
+                        <div>
+                          <div className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-4">
+                            Technologies
+                          </div>
+                          <div className="flex flex-wrap gap-3">
+                            {exp.tech.map((tech, techIndex) => (
+                              <span 
+                                key={techIndex}
+                                className="px-4 py-2 bg-gray-900 text-white text-sm font-semibold tracking-wide border-2 border-gray-900 transition-all duration-200 hover:bg-white hover:text-gray-900"
+                              >
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Decorative corner */}
+                        <div className="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-gray-200 -mt-px -mr-px"></div>
+                        <div className="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-gray-200 -mb-px -ml-px"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile/Tablet View */}
+          <div className="lg:hidden">
+            <div className="space-y-12">
+              {experiences.map((exp, index) => (
+                <div key={index} className="relative">
+                  {/* Connection line */}
+                  {index < experiences.length - 1 && (
+                    <div className="absolute left-6 top-full h-12 w-px bg-gradient-to-b from-gray-300 to-transparent"></div>
+                  )}
+
+                  <div className="flex gap-4 sm:gap-6">
+                    {/* Timeline marker */}
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 sm:w-14 sm:h-14 border-3 border-black bg-white relative">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xs font-bold text-black">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                        </div>
+                      </div>
+                      {exp.status === 'current' && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-black"></div>
+                      )}
+                    </div>
+
+                    {/* Content Card */}
+                    <div className="flex-1 bg-white border-2 border-gray-200 p-6 sm:p-8">
+                      {/* Header */}
+                      <div className="mb-6 pb-5 border-b-2 border-gray-100">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500">
+                            {exp.date}
+                          </span>
+                          {exp.status === 'current' && (
+                            <div className="flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 bg-black"></div>
+                              <span className="text-xs font-bold tracking-[0.15em] uppercase">
+                                Active
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
+                          {exp.role}
+                        </h3>
+                        <p className="text-base sm:text-lg font-semibold text-gray-600">
+                          {exp.company}
+                        </p>
+                      </div>
+
+                      {/* Description */}
+                      <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
                         {exp.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2">
-                        {exp.tech.map((tech, techIndex) => (
-                          <span 
-                            key={techIndex}
-                            className="px-2 py-1 bg-slate-600/30 text-gray-300 text-xs font-light rounded border border-slate-500/30 hover:bg-slate-500/30 transition-colors duration-200"
-                          >
-                            {tech}
-                          </span>
-                        ))}
+                      {/* Tech Stack */}
+                      <div>
+                        <div className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-3">
+                          Tech Stack
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {exp.tech.map((tech, techIndex) => (
+                            <span 
+                              key={techIndex}
+                              className="px-3 py-1.5 bg-gray-900 text-white text-xs font-semibold tracking-wide border-2 border-gray-900"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className={`absolute top-1/2 w-8 h-px bg-gray-600 ${index % 2 === 0 ? 'right-full' : 'left-full'}`}></div>
+                      {/* Decorative corners */}
+                      <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-gray-200 -mt-px -mr-px"></div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Mobile Card Stack View (Visible only on mobile/tablet) */}
-          <div className="lg:hidden space-y-6">
-            {experiences.map((exp, index) => (
-              <div key={index} className="relative group">
-                
-                {/* Mobile Card Design */}
-                <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-md border border-slate-600/40 rounded-2xl p-6 hover:from-slate-700/60 hover:to-slate-800/60 transition-all duration-300 hover:border-slate-500/50 hover:shadow-2xl hover:shadow-cyan-500/10">
-                  
-                  {/* Header with date and status */}
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                      {/* Position indicator */}
-                      <div className="w-8 h-8 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center border-2 border-slate-500/50">
-                        <span className="text-gray-300 text-xs font-bold">{index + 1}</span>
-                        {exp.status === 'current' && (
-                          <div className="absolute inset-0 rounded-full bg-cyan-400/30 animate-ping"></div>
-                        )}
-                      </div>
-                      
-                      {/* Date */}
-                      <span className="text-gray-400 text-sm font-light tracking-wide">
-                        {exp.date}
-                      </span>
-                    </div>
-
-                    {/* Current status badge */}
-                    {exp.status === 'current' && (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                        <span className="text-green-300 text-xs font-light tracking-wide">
-                          Current
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Role and Company */}
-                  <div className="mb-4">
-                    <h3 className="text-white font-medium text-lg sm:text-xl mb-1 tracking-wide group-hover:text-gray-100 transition-colors duration-300">
-                      {exp.role}
-                    </h3>
-                    <p className="text-cyan-300 font-light text-sm sm:text-base tracking-wide">
-                      {exp.company}
-                    </p>
-                  </div>
-
-                  {/* Description */}
-                  <p className="text-gray-300 font-light leading-relaxed mb-5 text-sm sm:text-base">
-                    {exp.description}
-                  </p>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2">
-                    {exp.tech.map((tech, techIndex) => (
-                      <span 
-                        key={techIndex}
-                        className="px-3 py-1.5 bg-gradient-to-r from-slate-600/40 to-slate-700/40 text-gray-300 text-xs font-light rounded-full border border-slate-500/30 hover:from-slate-500/40 hover:to-slate-600/40 transition-all duration-200 backdrop-blur-sm"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Decorative element */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-cyan-500/5 to-transparent rounded-2xl"></div>
+          {/* Footer Section */}
+          <div className="mt-28 sm:mt-36 lg:mt-44 border-t-2 border-gray-200 pt-12">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+              <div>
+                <div className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400 mb-2">
+                  Looking Forward
                 </div>
-
-                {/* Connection line between cards (except last one) */}
-                {index < experiences.length - 1 && (
-                  <div className="flex justify-center py-2">
-                    <div className="w-px h-4 bg-gradient-to-b from-gray-600 to-transparent"></div>
-                  </div>
-                )}
+                <p className="text-gray-700 text-lg sm:text-xl font-medium max-w-2xl">
+                  Continuously evolving, learning new technologies, and creating meaningful digital experiences
+                </p>
               </div>
-            ))}
-          </div>
-
-          {/* Bottom section */}
-          <div className="text-center mt-12 sm:mt-16 lg:mt-24">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent mx-auto mb-8"></div>
-            <p className="text-gray-400 font-light text-sm tracking-wide">
-              Building tomorrow's web experiences, one line of code at a time
-            </p>
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-px bg-gray-300"></div>
+                <span className="text-6xl font-bold text-gray-100 tracking-tighter">
+                  {new Date().getFullYear()}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
