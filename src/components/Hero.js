@@ -63,16 +63,16 @@ export default function PortfolioHero() {
       {/* --- START: UNCHANGED DESKTOP-ONLY SECTION --- */}
       <div className="hidden md:block">
         <div 
-          className={`fixed left-18 md:left-18 top-1/2 -translate-y-1/2 z-30 flex-col space-y-6  transition-opacity duration-300 ${isAtTop ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`fixed left-18 md:left-18 top-1/2 -translate-y-1/2 z-30 flex flex-col space-y-8 transition-opacity duration-300 ${isAtTop ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
-          <a href="https://github.com/Yogesh55S" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors duration-300 ">
-            <VscGithubAlt size={20} />
+          <a href="https://github.com/Yogesh55S" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors duration-300">
+            <VscGithubAlt size={24} />
           </a>
           <a href="https://www.linkedin.com/in/yogesh-kumar-983840226/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors duration-300">
-            <FaLinkedinIn size={20} />
+            <FaLinkedinIn size={24} />
           </a>
           <a href="https://wa.me/9350161043" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-black transition-colors duration-300">
-            <FaWhatsapp size={20} />
+            <FaWhatsapp size={24} />
           </a>
         </div>
 

@@ -129,7 +129,7 @@ export default function Contact() {
                       <div className="flex-1">
                         <div className="text-gray-500 text-xs tracking-wider uppercase font-semibold mb-2">Location</div>
                         <p className="text-gray-900 font-medium text-lg">
-                          Sonipat, Haryana, India
+                          Kurukshetra, Haryana, India
                         </p>
                       </div>
                     </div>
