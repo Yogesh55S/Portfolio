@@ -7,6 +7,8 @@ const GithubIcon = () => <svg fill="currentColor" viewBox="0 0 24 24" className=
 const LinkIcon = () => <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>;
 const CloseIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>;
 const ChevronRightIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>;
+{/* --- NEW ICON ADDED --- */}
+const ChevronLeftIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>;
 
 
 // --- Main Component ---
@@ -15,7 +17,7 @@ export default function FinalProjectsPage() {
   const [mobileIndex, setMobileIndex] = useState(0); // For mobile card stack
 
   const projectsData = [
-    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.png", github: "/nidaspure", live: "https://nidaspure.com/" },
+    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", github: "/nidaspure", live: "https://nidaspure.com/" },
     { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js","Next.js", "PostgreSQL", "Node.js","Supabase","Tailwind Css"], image: "/genesis.jpg", mobileImage: "/genesis.jpg", github: "/genesisclasses", live: "https://genesisclasses.net/" },
     { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["React.js", "Framer Motion", "EmailJS"], image: "/aew.jpg", mobileImage: "/aew.jpg", github: "/aerawat", live: "https://rabbitautocare.com/" },
     { id: 4, name: "RABBIT", subtitle: "Car Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase","Tailwind Css","Database","Nodemailer"], image: "/rabbit.jpg", mobileImage: "/rabbit.jpg", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
@@ -124,7 +126,7 @@ export default function FinalProjectsPage() {
 
         {/* --- UPDATED MOBILE VIEW --- */}
         <div className="md:hidden w-full min-h-screen flex flex-col justify-center items-center p-4 pt-16 overflow-hidden">
-          {/* Animated Background Image */}
+          {/* Animated Background Image (Unchanged) */}
           <AnimatePresence>
             <motion.div
               key={mobileIndex}
@@ -140,6 +142,8 @@ export default function FinalProjectsPage() {
           </AnimatePresence>
           
           <h1 className="text-3xl font-black text-gray-900 text-center mb-4 z-10">My Projects</h1>
+          
+          {/* Mobile Card (Unchanged) */}
           <div className="relative w-full max-w-xs h-[520px] z-10">
             <AnimatePresence initial={false}>
               {projectsData.map((project, i) => {
@@ -166,7 +170,7 @@ export default function FinalProjectsPage() {
                         <p className="text-gray-600 text-sm">{project.subtitle}</p>
                         <p className="text-gray-700 text-sm leading-relaxed mt-4">{project.description}</p>
                         <div className="flex flex-wrap gap-2 mt-4">
-                            {project.technologies.map(tech => <span key={tech} className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">{tech}</span>)}
+                          {project.technologies.map(tech => <span key={tech} className="bg-gray-200 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full">{tech}</span>)}
                         </div>
                       </div>
                       <div className="px-5 py-4 bg-white/50 border-t border-gray-200">
@@ -183,6 +187,40 @@ export default function FinalProjectsPage() {
             </AnimatePresence>
           </div>
 
+          {/* --- NEW MOBILE NAVIGATION UI --- */}
+          <div className="z-10 mt-6 w-full max-w-xs">
+            {/* 1. Pagination Dots */}
+            <div className="flex justify-center gap-2 mb-4">
+              {projectsData.map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    mobileIndex === i ? 'bg-gray-900 scale-125' : 'bg-gray-400'
+                  }`}
+                />
+              ))}
+            </div>
+            
+            {/* 2. Navigation Buttons */}
+            <div className="flex justify-between">
+              <button 
+                onClick={() => paginate(-1)} 
+                className="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 text-gray-800"
+                aria-label="Previous project"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <button 
+                onClick={() => paginate(1)} 
+                className="bg-white/80 backdrop-blur-sm p-3 rounded-full shadow-lg flex items-center justify-center transition-transform active:scale-95 text-gray-800"
+                aria-label="Next project"
+              >
+                <ChevronRightIcon />
+              </button>
+            </div>
+          </div>
+
+          {/* Old button removed */}
           {/* <button 
             onClick={() => paginate(1)} 
             className="mt-6 bg-white p-3 rounded-full shadow-lg flex items-center justify-center z-10"
