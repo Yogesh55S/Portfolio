@@ -36,7 +36,7 @@ export default function FinalProjectsPage() {
     { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer","Shiprocket","Razorpay"], image: "/rabbit.jpg", mobileImage: "/rabbit.jpg", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
     { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/SplashScreen.png", mobileImage: "/SplashScreen.png", github: "#", live: "#" },
   ];
-
+ 
   const selectedProject = selectedId ? projectsData.find(p => p.id === selectedId) : null;
   const selectedIndex = selectedId ? projectsData.findIndex(p => p.id === selectedId) : -1;
 
