@@ -31,12 +31,12 @@ export default function FinalProjectsPage() {
 
   const projectsData = [
     { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", github: "/nidaspure", live: "https://nidaspure.com/" },
-    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis.jpg", mobileImage: "/genesis.jpg", github: "/genesisclasses", live: "https://genesisclasses.net/" },
-    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS","Supabase","Tailwind CSS", "Cloudinary","Razorpay"], image: "/aew.jpg", mobileImage: "/aew.jpg", github: "/aerawat", live: "https://houseofaerawat.com/" },
-    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer","Shiprocket","Razorpay"], image: "/rabbit.jpg", mobileImage: "/rabbit.jpg", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
+    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis-logo.png", mobileImage: "/genesis-logo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/genesisclasses", live: "https://genesisclasses.net/" },
+    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/aerawats.jpg", mobileImage: "/aerawats.jpg", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/aerawat", live: "https://houseofaerawat.com/" },
+    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/RabbitLogo.png", mobileImage: "/RabbitLogo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
     { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/SplashScreen.png", mobileImage: "/SplashScreen.png", github: "#", live: "#" },
   ];
- 
+
   const selectedProject = selectedId ? projectsData.find(p => p.id === selectedId) : null;
   const selectedIndex = selectedId ? projectsData.findIndex(p => p.id === selectedId) : -1;
 
@@ -83,7 +83,7 @@ export default function FinalProjectsPage() {
                 animate={selectedId && selectedId !== project.id ? 'selected' : 'initial'}
                 transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
               >
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 ease-in-out group-hover:scale-110" style={{ backgroundImage: `url(${project.image})` }} />
+                <div className={`absolute inset-0 transition-transform duration-500 ease-in-out group-hover:scale-110 ${project.bgClass || 'bg-cover bg-center'}`} style={{ backgroundImage: `url(${project.image})` }} />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
                 <div className="relative z-10 w-full h-full flex flex-col justify-end p-8 text-white">
                   <h2 className="text-3xl font-black opacity-60 drop-shadow-lg">{String(index + 1).padStart(2, '0')}</h2>
@@ -102,7 +102,7 @@ export default function FinalProjectsPage() {
                 exit={{ opacity: 0, transition: { duration: 0.5 } }}
                 onClick={() => setSelectedId(null)}
               >
-                <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${selectedProject.image})` }} />
+                <div className={`absolute inset-0 ${selectedProject.bgClass || 'bg-cover bg-center'}`} style={{ backgroundImage: `url(${selectedProject.image})` }} />
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
                 <motion.div
@@ -147,7 +147,7 @@ export default function FinalProjectsPage() {
             >
               {/* Background Image */}
               <div
-                className="absolute inset-0 bg-cover bg-center"
+                className={`absolute inset-0 ${project.bgClass || 'bg-cover bg-center'}`}
                 style={{ backgroundImage: `url(${project.mobileImage || project.image})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />

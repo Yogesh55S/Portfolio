@@ -75,7 +75,7 @@ export default function PortfolioHero() {
           className={`fixed right-8 md:right-12 top-1/2 -translate-y-1/2 z-30 transition-opacity duration-300 ${isAtTop ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           <a 
-            href="/Yogesh_Resume.pdf" 
+            href="/Yogesh_Resume .pdf" 
             download
             className="text-xs font-semibold text-gray-600 hover:text-black tracking-widest cursor-pointer"
             style={{ writingMode: 'vertical-rl' }}
