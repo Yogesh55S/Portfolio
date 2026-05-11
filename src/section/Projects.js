@@ -14,6 +14,7 @@ const ChevronRightIcon = () => <svg className="w-6 h-6" fill="none" stroke="curr
 // --- Main Component ---
 export default function FinalProjectsPage() {
   const [selectedId, setSelectedId] = useState(null);
+  const [hoveredProject, setHoveredProject] = useState(null);
   const swipeHintRef = useRef(null);
 
   // Use GSAP for the swipe hint animation
@@ -29,13 +30,22 @@ export default function FinalProjectsPage() {
     }
   });
 
+  const targetWord = "PROJECTS";
+  const getHighlightIndex = (name) => {
+    for (let char of name.replace(/[^A-Z]/g, '')) {
+      const idx = targetWord.indexOf(char);
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  };
+
   const projectsData = [
-    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", github: "/nidaspure", live: "https://nidaspure.com/" },
-    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis-logo.png", mobileImage: "/genesis-logo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/genesisclasses", live: "https://genesisclasses.net/" },
-    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/aerawats.jpg", mobileImage: "/aerawats.jpg", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/aerawat", live: "https://houseofaerawat.com/" },
-    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/RabbitLogo.png", mobileImage: "/RabbitLogo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
-    { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/SplashScreen.png", mobileImage: "/SplashScreen.png", github: "#", live: "#" },
-  ];
+    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", hoverColor: "#059669", hoverFont: "Georgia, serif", hoverBgImage: "/loader.png", github: "/nidaspure", live: "https://nidaspure.com/" },
+    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis-logo.png", mobileImage: "/genesis-logo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#2563eb", hoverFont: "Impact, sans-serif", hoverBgImage: "/genesis-logo.png", github: "/genesisclasses", live: "https://genesisclasses.net/" },
+    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/aerawats.jpg", mobileImage: "/aerawats.jpg", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#d97706", hoverFont: "'Brush Script MT', cursive", hoverBgImage: "/Timeline-1.gif", github: "/aerawat", live: "https://houseofaerawat.com/" },
+    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/RabbitLogo.png", mobileImage: "/RabbitLogo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#9333ea", hoverFont: "'Courier New', monospace", hoverBgImage: "/loader.gif", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
+    { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/SplashScreen.png", mobileImage: "/SplashScreen.png", hoverColor: "#f59e0b", hoverFont: "fantasy", hoverBgImage: "/SplashScreen.png", github: "#", live: "#" },
+  ].map(p => ({ ...p, highlightIndex: getHighlightIndex(p.name) }));
 
   const selectedProject = selectedId ? projectsData.find(p => p.id === selectedId) : null;
   const selectedIndex = selectedId ? projectsData.findIndex(p => p.id === selectedId) : -1;
@@ -60,10 +70,45 @@ export default function FinalProjectsPage() {
             animate={selectedId ? 'selected' : 'initial'}
             transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
           >
-            <h1 className="text-5xl lg:text-6xl font-black text-gray-300 tracking-tighter">PROJECTS</h1>
-            <p className="mt-4 max-w-xs text-gray-600">
-              A selection of my work. Click any project to see details.
-            </p>
+            <AnimatePresence>
+              {hoveredProject && hoveredProject.hoverBgImage && (
+                <motion.div
+                  key={hoveredProject.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 0.4, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="absolute inset-0 z-0 bg-contain bg-no-repeat bg-center mix-blend-multiply pointer-events-none"
+                  style={{ backgroundImage: `url(${hoveredProject.hoverBgImage})` }}
+                />
+              )}
+            </AnimatePresence>
+            
+            <div className="relative z-10 flex flex-col items-start">
+              <h1 className="text-5xl lg:text-6xl font-black text-gray-300 tracking-tighter flex">
+                {targetWord.split('').map((char, idx) => {
+                  const isHovered = hoveredProject && hoveredProject.highlightIndex === idx;
+                  return (
+                    <span
+                      key={idx}
+                      style={{
+                        color: isHovered ? hoveredProject.hoverColor : 'inherit',
+                        fontFamily: isHovered ? hoveredProject.hoverFont : 'inherit',
+                        textShadow: isHovered ? `0 0 20px ${hoveredProject.hoverColor}80` : 'none',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        display: 'inline-block',
+                        transform: isHovered ? 'translateY(-6px) scale(1.1)' : 'none',
+                      }}
+                    >
+                      {char}
+                    </span>
+                  );
+                })}
+              </h1>
+              <p className="mt-4 max-w-xs text-gray-600">
+                A selection of my work. Click any project to see details.
+              </p>
+            </div>
           </motion.div>
 
           <div className="flex flex-1 h-full" style={{ marginLeft: `calc(-${SLANT_AMOUNT} / 2)` }}>
@@ -76,6 +121,8 @@ export default function FinalProjectsPage() {
                   marginLeft: `calc(-${SLANT_AMOUNT} / 2)`,
                 }}
                 onClick={() => setSelectedId(project.id)}
+                onMouseEnter={() => setHoveredProject(project)}
+                onMouseLeave={() => setHoveredProject(null)}
                 variants={{
                   initial: { x: '0%' },
                   selected: { x: index < selectedIndex ? '-100vw' : '100vw' }
