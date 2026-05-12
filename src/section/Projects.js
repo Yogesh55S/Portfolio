@@ -40,7 +40,7 @@ export default function FinalProjectsPage() {
   };
 
   const projectsData = [
-    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", hoverColor: "#059669", hoverFont: "Georgia, serif", hoverBgImage: "/loader.png", github: "/nidaspure", live: "https://nidaspure.com/" },
+    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", hoverColor: "#059669", hoverFont: "Georgia, serif", hoverBgImage: "", github: "/nidaspure", live: "https://nidaspure.com/" },
     { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis-logo.png", mobileImage: "/genesis-logo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#2563eb", hoverFont: "Impact, sans-serif", hoverBgImage: "/genesis-logo.png", github: "/genesisclasses", live: "https://genesisclasses.net/" },
     { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/aerawats.jpg", mobileImage: "/aerawats.jpg", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#d97706", hoverFont: "'Brush Script MT', cursive", hoverBgImage: "/Timeline-1.gif", github: "/aerawat", live: "https://houseofaerawat.com/" },
     { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/RabbitLogo.png", mobileImage: "/RabbitLogo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#9333ea", hoverFont: "'Courier New', monospace", hoverBgImage: "/loader.gif", github: "/rabbitautocare", live: "https://rabbitautocare.com/" },
@@ -85,9 +85,12 @@ export default function FinalProjectsPage() {
             </AnimatePresence>
             
             <div className="relative z-10 flex flex-col items-start">
-              <h1 className="text-5xl lg:text-6xl font-black text-gray-300 tracking-tighter flex">
+              <h1 className="text-5xl lg:text-6xl font-black text-gray-300 tracking-tighter flex items-center h-16 lg:h-20">
                 {targetWord.split('').map((char, idx) => {
-                  const isHovered = hoveredProject && hoveredProject.highlightIndex === idx;
+                  const isNidas = hoveredProject?.name === "NIDAS-PURE";
+                  const isHovered = hoveredProject && hoveredProject.highlightIndex === idx && !isNidas;
+                  const visualScale = { 'O': 0.85, 'S': 1.15 }[char] || 1.0;
+                  
                   return (
                     <span
                       key={idx}
@@ -96,11 +99,38 @@ export default function FinalProjectsPage() {
                         fontFamily: isHovered ? hoveredProject.hoverFont : 'inherit',
                         textShadow: isHovered ? `0 0 20px ${hoveredProject.hoverColor}80` : 'none',
                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        display: 'inline-block',
-                        transform: isHovered ? 'translateY(-6px) scale(1.1)' : 'none',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transform: isHovered || isNidas ? 'translateY(-6px) scale(1.1)' : 'none',
+                        position: 'relative',
                       }}
                     >
-                      {char}
+                      {/* Text layer: fades out smoothly */}
+                      <span 
+                        style={{ 
+                          opacity: isNidas ? 0 : 1,
+                          transition: 'opacity 0.4s ease-in-out',
+                          display: 'inline-block'
+                        }}
+                      >
+                        {char}
+                      </span>
+
+                      {/* Image layer: overlaps and crossfades in */}
+                      <img 
+                        src={`/project/${char}.png`} 
+                        alt={char}
+                        className="h-[0.95em] w-auto object-contain pointer-events-none"
+                        style={{
+                          position: 'absolute',
+                          top: '50%',
+                          left: '50%',
+                          transform: `translate(-50%, -50%) scale(${isNidas ? visualScale : 0.8 * visualScale})`,
+                          opacity: isNidas ? 1 : 0,
+                          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
+                      />
                     </span>
                   );
                 })}
