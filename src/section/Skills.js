@@ -27,7 +27,7 @@ export default function Skills() {
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-20 transition-opacity duration-700 ease-in-out"
         style={{
-          backgroundImage: 'url(/imgs.jpg)',
+          backgroundImage: 'url(/used/imgs.jpg)',
           filter: 'blur(0px) group-hover:blur(0px)',
         }}
       />

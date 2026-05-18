@@ -40,11 +40,11 @@ export default function FinalProjectsPage() {
   };
 
   const projectsData = [
-    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/nida.jpeg", mobileImage: "/nida.jpeg", hoverColor: "#059669", hoverFont: "Georgia, serif", hoverBgImage: "", github: "/nidaspure", live: "https://nidaspure.com/" },
-    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/genesis-logo.png", mobileImage: "/genesis-logo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#2563eb", hoverFont: "Impact, sans-serif", hoverBgImage: "", github: "/genesisclasses", live: "https://genesisclasses.net/" },
-    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/aerawats.jpg", mobileImage: "/aerawats.jpg", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#d97706", hoverFont: "'Brush Script MT', cursive", hoverBgImage: "", github: "/aerawat", live: "https://houseofaerawat.com/", customHoverLetterImage: "/project/aerawat.png" },
-    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/RabbitLogo.png", mobileImage: "/RabbitLogo.png", bgClass: "bg-white bg-contain bg-center bg-no-repeat", hoverColor: "#6a2c94", hoverFont: "'Courier New', monospace", hoverBgImage: "", github: "/rabbitautocare", live: "https://rabbitautocare.com/", customHoverLetterImage: "/project/rabbit.png" },
-    { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/SplashScreen.png", mobileImage: "/SplashScreen.png", hoverColor: "#f59e0b", hoverFont: "fantasy", hoverBgImage: "", github: "#", live: "#", customHoverLetterImage: "/project/pawgloo.png" },
+    { id: 1, name: "NIDAS-PURE", subtitle: "E-commerce", description: "Nidas Pure is a fully functional e-commerce website dedicated to 100% natural, handmade Ayurvedic skincare products. The site is designed to provide a seamless and elegant shopping experience, reflecting the brand's commitment to purity and natural beauty. The platform effectively showcases a range of products, from face oils and hair care to specialized soap bars, inviting users to explore and purchase.", technologies: ["Next.js", "TailwindCSS", "Supabase"], image: "/used/nida.jpeg", mobileImage: "/used/nida.jpeg", hoverColor: "#059669", hoverFont: "Georgia, serif", hoverBgImage: "", github: "/nidaspure", live: "https://nidaspure.com/", tagline: "Handcrafted Ayurvedic skincare bringing the pure essence of nature to your beauty ritual." },
+    { id: 2, name: "GENESIS-CLASSES", subtitle: "Education", description: "Genesis Classes is a comprehensive web platform for a leading coaching institute that specializes in preparing students for major competitive exams like IIT-JEE and NEET. The website serves as the central hub for prospective students, enrolled students, and parents, providing vital academic information and access to a suiteC of digital tools.", technologies: ["React.js", "Next.js", "PostgreSQL", "Node.js", "Supabase", "Tailwind CSS"], image: "/used/genesis-logo.png", mobileImage: "/used/genesis-logo.png", bgClass: "bg-white bg-[size:75%] bg-center bg-no-repeat", hoverColor: "#2563eb", hoverFont: "Impact, sans-serif", hoverBgImage: "", github: "/genesisclasses", live: "https://genesisclasses.net/", customHoverLetterImage: "/used/project/genesis.webp", tagline: "Nurturing academic excellence and guiding students towards their dream engineering and medical careers." },
+    { id: 3, name: "AERAWAT", subtitle: "Business", description: "Houese of Aerawat is a clean, modern e-commerce website specializing in 92.5 sterling silver jewellery. The site is designed to create a premium and trustworthy shopping experience, showcasing a wide variety of intricate pieces, from necklaces and pendants to earrings and bracelets.", technologies: ["Next.js", "Framer Motion", "EmailJS", "Supabase", "Tailwind CSS", "Cloudinary", "Razorpay"], image: "/used/aerawats.jpg", mobileImage: "/used/aerawats.jpg", bgClass: "bg-white bg-[size:75%] bg-center bg-no-repeat", hoverColor: "#d97706", hoverFont: "'Brush Script MT', cursive", hoverBgImage: "", github: "/aerawat", live: "https://houseofaerawat.com/", customHoverLetterImage: "/used/project/aerawat.png", tagline: "Sleek, modern e-commerce showcasing premium 92.5 sterling silver jewelry with timeless elegance." },
+    { id: 4, name: "RABBIT", subtitle: " Auto Care", description: "Rabbit AutoCare is a stylish and modern e-commerce platform built to sell a premium line of car detailing and auto-care products. The website is designed with a strong brand identity, focusing on a clean, visual, and user-friendly shopping experience. It effectively translates a niche product into an aspirational brand, targeting car enthusiasts who value quality and aesthetics.", technologies: ["Next.js", "Supabase", "Tailwind CSS", "Database", "Nodemailer", "Shiprocket", "Razorpay"], image: "/used/RabbitLogo.png", mobileImage: "/used/RabbitLogo.png", bgClass: "bg-white bg-[size:75%] bg-center bg-no-repeat", hoverColor: "#6a2c94", hoverFont: "'Courier New', monospace", hoverBgImage: "", github: "/rabbitautocare", live: "https://rabbitautocare.com/", customHoverLetterImage: "/used/project/rabbit.webp", tagline: "Premium car detailing and auto-care products designed to keep your vehicle in pristine, showroom condition." },
+    { id: 5, name: "PAWGLOO", subtitle: "Coming Soon", description: "An exciting new project currently under active development. I am working on it, and it will be launched soon.", technologies: ["Under Development"], image: "/used/SplashScreen.png", mobileImage: "/used/SplashScreen.png", hoverColor: "#f59e0b", hoverFont: "fantasy", hoverBgImage: "", github: "#", live: "#", customHoverLetterImage: "/used/project/pawgloo.png", tagline: "A modern, pet-focused platform designed to connect pet lovers with premium services — coming soon." },
   ].map(p => ({ ...p, highlightIndex: getHighlightIndex(p.name) }));
 
   const selectedProject = selectedId ? projectsData.find(p => p.id === selectedId) : null;
@@ -91,7 +91,7 @@ export default function FinalProjectsPage() {
               <div className="relative flex items-center h-16 lg:h-20">
                 {/* Custom single-project image layer */}
                 <img 
-                  src={hoveredProject?.customHoverLetterImage || "/project/aerawat.png"} 
+                  src={hoveredProject?.customHoverLetterImage || "/used/project/aerawat.png"} 
                   alt={hoveredProject?.name}
                   className="absolute left-0 w-64 lg:w-80 h-auto object-contain pointer-events-none"
                   style={{
@@ -101,9 +101,6 @@ export default function FinalProjectsPage() {
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     transformOrigin: 'left center',
                     zIndex: 2,
-                    filter: hoveredProject?.name === "RABBIT" 
-                      ? `drop-shadow(0 0 4px ${hoveredProject.hoverColor}) drop-shadow(0 0 1px ${hoveredProject.hoverColor})` 
-                      : 'none'
                   }}
                 />
                 
@@ -143,7 +140,7 @@ export default function FinalProjectsPage() {
 
                         {/* Floral layer (Nidas Pure) */}
                         <img 
-                          src={`/project/${char}.png`} 
+                          src={`/used/project/${char}.png`} 
                           alt={char}
                           className="h-[0.95em] w-auto object-contain pointer-events-none"
                           style={{
@@ -160,20 +157,31 @@ export default function FinalProjectsPage() {
                   })}
                 </h1>
               </div>
-              <p className="mt-4 max-w-xs text-gray-600">
-                A selection of my work. Click any project to see details.
-              </p>
+              <div className="mt-4 max-w-xs h-16 relative overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={hoveredProject ? hoveredProject.id : 'default'}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2, ease: "easeInOut" }}
+                    className="text-gray-600 text-sm leading-relaxed"
+                  >
+                    {hoveredProject ? hoveredProject.tagline : "A selection of my work. Click any project to see details."}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
             </div>
           </motion.div>
 
-          <div className="flex flex-1 h-full" style={{ marginLeft: `calc(-${SLANT_AMOUNT} / 2)` }}>
+          <div className="flex flex-1 h-full">
             {projectsData.map((project, index) => (
               <motion.div
                 key={project.id}
                 className="group relative flex-1 h-full cursor-pointer overflow-hidden"
                 style={{
                   clipPath: `polygon(${SLANT_AMOUNT} 0, 100% 0, calc(100% - ${SLANT_AMOUNT}) 100%, 0 100%)`,
-                  marginLeft: `calc(-${SLANT_AMOUNT} / 2)`,
+                  marginLeft: `calc(-${SLANT_AMOUNT})`,
                 }}
                 onClick={() => setSelectedId(project.id)}
                 onMouseEnter={() => setHoveredProject(project)}
@@ -186,7 +194,11 @@ export default function FinalProjectsPage() {
                 transition={{ duration: 0.8, ease: [0.7, 0, 0.3, 1] }}
               >
                 <div className={`absolute inset-0 transition-transform duration-500 ease-in-out group-hover:scale-110 ${project.bgClass || 'bg-cover bg-center'}`} style={{ backgroundImage: `url(${project.image})` }} />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+                <div className={`absolute inset-0 transition-colors duration-300 ${
+                  hoveredProject 
+                    ? (hoveredProject.id === project.id ? 'bg-black/0' : 'bg-black/60') 
+                    : 'bg-black/40'
+                }`} />
                 <div className="relative z-10 w-full h-full flex flex-col justify-end p-8 text-white">
                   <h2 className="text-3xl font-black opacity-60 drop-shadow-lg">{String(index + 1).padStart(2, '0')}</h2>
                   <h3 className="text-xl font-bold uppercase tracking-wider drop-shadow-lg">{project.name}</h3>

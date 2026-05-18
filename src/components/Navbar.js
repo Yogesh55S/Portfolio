@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 // Replace with your actual logo path in the /public folder
-const logoSrc = "/logo.png"; 
+const logoSrc = "/used/logo.png"; 
 
 // --- Configuration for Navigation Items ---
 const navItems = [

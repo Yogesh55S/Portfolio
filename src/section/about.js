@@ -97,7 +97,7 @@ export default function About() {
                         {/* --- Column 1: YK Icon (Left) --- */}
                         <div className="md:col-span-1 flex justify-center mt-3">
                             <img 
-                                src="/logo.png" 
+                                src="/used/logo.png" 
                                 alt="Yogesh" 
                                 className="w-48 h-48 sm:w-64 sm:h-64 rounded-full object-cover border-8 border-white shadow-xl"
                             />
@@ -115,7 +115,7 @@ export default function About() {
                                 </p>
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                                     <a 
-                                        href="/Yogesh_Resume.pdf" 
+                                        href="/used/Yogesh_Resume.pdf" 
                                         download
                                         className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold py-3 px-8 rounded-full hover:bg-slate-700 transition-all duration-300 ease-in-out hover:-translate-y-0.5 shadow-lg text-sm uppercase tracking-widest"
                                     >

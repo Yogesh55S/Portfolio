@@ -32,7 +32,7 @@ export default function PortfolioHero() {
         {/* ... your mobile code remains the same ... */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('/man.png')` }}
+          style={{ backgroundImage: `url('/used/man.png')` }}
         >
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
@@ -75,7 +75,7 @@ export default function PortfolioHero() {
           className={`fixed right-8 md:right-12 top-1/2 -translate-y-1/2 z-30 transition-opacity duration-300 ${isAtTop ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           <a 
-            href="/Yogesh_Resume .pdf" 
+            href="/used/Yogesh_Resume.pdf" 
             download
             className="text-xs font-semibold text-gray-600 hover:text-black tracking-widest cursor-pointer"
             style={{ writingMode: 'vertical-rl' }}
@@ -86,7 +86,7 @@ export default function PortfolioHero() {
         </div>
         
         <img 
-          src="/back.png"
+          src="/used/back.png"
           alt="Anime character of Yogesh" 
           className="absolute left-1/2 -translate-x-1/2 bottom-[-5vh] z-10 w-auto h-[110vh] md:h-[105vh] max-w-none"
         />
