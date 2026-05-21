@@ -12,23 +12,23 @@ export default function Home() {
   return (
     <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900">
         <Navbar />
-       <section id="home" >
+       <section id="home">
         <Hero />
       </section> 
      
-       <section id="about" >
+       <section id="about">
         <About />
       </section>
        
-      <section id="skills" >
+      <section id="skills">
         <Skills />
       </section> 
 
-     <section id="projects" >
+     <section id="projects">
         <Projects />
       </section> 
 
-       <section id="experience" >
+       <section id="experience">
         <Experience />
       </section>  
 

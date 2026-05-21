@@ -78,29 +78,17 @@ export default function HiddenReveal() {
 
     let targetScroll = window.scrollY;
     let currentScroll = window.scrollY;
-    let offsetTop = 0;
-    let totalScrollDistance = 0;
     let rafId;
 
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      targetScroll = scrollY;
-      const container = containerRef.current;
-      if (container) {
-        const rect = container.getBoundingClientRect();
-        const currentAbsoluteTop = rect.top + scrollY;
-        if (currentAbsoluteTop !== offsetTop || rect.height - window.innerHeight !== totalScrollDistance) {
-          offsetTop = currentAbsoluteTop;
-          totalScrollDistance = rect.height - window.innerHeight;
-        }
-      }
+      targetScroll = window.scrollY;
     };
 
     const update = () => {
       const diff = targetScroll - currentScroll;
-      // Butter-smooth damping easing (0.035 cinematic speed)
+      // Butter-smooth damping easing
       if (Math.abs(diff) > 0.05) {
-        currentScroll += diff * 0.035;
+        currentScroll += diff * 0.2;
       } else {
         currentScroll = targetScroll;
       }
@@ -109,15 +97,13 @@ export default function HiddenReveal() {
       if (container) {
         const height = window.innerHeight;
         if (height > 0) {
-          // Progress variables (0 to 1) relative to Projects section offsetTop
-          const localScroll = Math.max(0, Math.min(totalScrollDistance, currentScroll - offsetTop));
-
-          const p1 = Math.max(0, Math.min(1, localScroll / height));
-          const p2 = Math.max(0, Math.min(1, (localScroll - height) / height));
-          const p3 = Math.max(0, Math.min(1, (localScroll - 2 * height) / height));
-          const p4 = Math.max(0, Math.min(1, (localScroll - 3 * height) / height));
-          const p5 = Math.max(0, Math.min(1, (localScroll - 4 * height) / height));
-          const p6 = Math.max(0, Math.min(1, (localScroll - 5 * height) / height));
+          // Progress variables (0 to 1) for the 7 snap zones (6 scrolling phases)
+          const p1 = Math.max(0, Math.min(1, currentScroll / height));
+          const p2 = Math.max(0, Math.min(1, (currentScroll - height) / height));
+          const p3 = Math.max(0, Math.min(1, (currentScroll - 2 * height) / height));
+          const p4 = Math.max(0, Math.min(1, (currentScroll - 3 * height) / height));
+          const p5 = Math.max(0, Math.min(1, (currentScroll - 4 * height) / height));
+          const p6 = Math.max(0, Math.min(1, (currentScroll - 5 * height) / height));
 
           // 1. Slide 2: House of Aerawat (Horizontal split entering from left & right)
           if (sec2LeftRef.current) {
@@ -220,6 +206,20 @@ export default function HiddenReveal() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+        /* Enable snap type on page level globally */
+        html {
+          scroll-snap-type: y mandatory;
+          scroll-behavior: auto;
+          background-color: #f8fafc;
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden;
+          background-color: #f8fafc;
+        }
+
         .hidden-reveal-wrapper {
           background-color: #f8fafc;
           -webkit-font-smoothing: antialiased;
@@ -269,7 +269,7 @@ export default function HiddenReveal() {
           will-change: transform;
         }
 
-        @media (max-width: 1023px) {
+        @media (max-width: 767px) {
           .panel-half {
             width: 100%;
             height: 50vh;
@@ -332,7 +332,7 @@ export default function HiddenReveal() {
           will-change: transform;
         }
 
-        @media (max-width: 1023px) {
+        @media (max-width: 767px) {
           .panel-half-img {
             width: 100% !important;
             height: 35vh !important;
@@ -371,7 +371,7 @@ export default function HiddenReveal() {
             display: none !important;
           }
         }
-        @media (max-width: 1023px) {
+        @media (max-width: 767px) {
           .responsive-desc p:nth-child(2) {
             display: none !important;
           }
@@ -510,7 +510,16 @@ export default function HiddenReveal() {
         }
       `}</style>
 
-
+      {/* Viewport snap target helpers */}
+      <div className="absolute inset-x-0 top-0 h-[700vh] pointer-events-none z-0 flex flex-col">
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+        <div className="h-screen w-full snap-anchor" />
+      </div>
 
       {/* Sticky Main Frame */}
       <div className="sticky top-0 left-0 w-full h-screen overflow-hidden z-10">
@@ -543,7 +552,7 @@ export default function HiddenReveal() {
           className="s-section bg-transparent pointer-events-none"
           style={{ zIndex: 2 }}
         >
-          <div className="flex flex-col lg:flex-row w-full h-full pointer-events-none">
+          <div className="flex flex-col md:flex-row w-full h-full pointer-events-none">
             {/* Left Panel: High-End Product Image (Slides from Left) */}
             <div
               ref={sec2LeftRef}
@@ -568,17 +577,17 @@ export default function HiddenReveal() {
               className="panel-half panel-half-content bg-gradient-to-br from-[#ffffff] to-[#f4f7fc] text-left pointer-events-auto"
               style={{ transform: 'translateX(100%)' }}
             >
-              <div className="w-full max-w-2xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+              <div className="w-full max-w-2xl px-6 md:px-12 py-8 md:py-0 select-text z-10 relative">
                 <span className="project-tag text-[#14397C]/95">
                   <SparkleIcon className="w-4 h-4 text-[#14397C]" /> Sterling Jewelry Boutique
                 </span>
-                <h2 className="font-cinzel responsive-title text-4xl lg:text-5xl font-light text-[#0f172a] tracking-widest uppercase shadow-glow-blue mt-1">
+                <h2 className="font-cinzel responsive-title text-4xl md:text-5xl font-light text-[#0f172a] tracking-widest uppercase shadow-glow-blue mt-1">
                   AERAWAT
                 </h2>
                 <p className="font-cormorant responsive-subtitle text-[#14397C] text-lg italic tracking-wider mt-1 font-light">
                   House of Aerawat
                 </p>
-                <div className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6 space-y-3 lg:space-y-4">
+                <div className="font-cormorant responsive-desc text-neutral-600 text-base md:text-lg font-light leading-relaxed mt-4 md:mt-6 space-y-3 md:space-y-4">
                   <p>
                     House of Aerawat is an ultra-premium digital boutique specializing in exquisite 92.5 sterling silver jewelry. Engineered under strict aesthetic discipline, the platform delivers a high-fidelity visual experience that matches the exceptional craftsmanship of the boutique's custom creations.
                   </p>
@@ -587,7 +596,7 @@ export default function HiddenReveal() {
                   </p>
                 </div>
 
-                <div className="tech-badges mt-5 lg:mt-6">
+                <div className="tech-badges mt-5 md:mt-6">
                   <span className="tech-badge">Next.js 16</span>
                   <span className="tech-badge">React 19</span>
                   <span className="tech-badge">Supabase DB</span>
@@ -627,7 +636,7 @@ export default function HiddenReveal() {
             transform: 'translateY(100%)'
           }}
         >
-          <div className="flex flex-col lg:flex-row w-full h-full pointer-events-none">
+          <div className="flex flex-col md:flex-row w-full h-full pointer-events-none">
             {/* Left Panel: High-End Product Image */}
             <div className="panel-half panel-half-img relative bg-black border-r border-neutral-900 pointer-events-auto overflow-hidden">
               <img
@@ -644,17 +653,17 @@ export default function HiddenReveal() {
 
             {/* Right Panel: Project Details */}
             <div className="panel-half panel-half-content bg-gradient-to-br from-[#faf8ff] via-[#f5f3ff] to-[#ffffff] text-left pointer-events-auto">
-              <div className="w-full max-w-2xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+              <div className="w-full max-w-2xl px-6 md:px-12 py-8 md:py-0 select-text z-10 relative">
                 <span className="project-tag text-[#7c3aed]/95">
                   <WrenchIcon /> Premium Auto Detailing
                 </span>
-                <h2 className="font-space responsive-title text-4xl lg:text-5xl font-bold text-[#1e1b4b] tracking-wider uppercase shadow-glow-purple mt-1">
+                <h2 className="font-space responsive-title text-4xl md:text-5xl font-bold text-[#1e1b4b] tracking-wider uppercase shadow-glow-purple mt-1">
                   RABBIT AUTO CARE
                 </h2>
                 <p className="font-montserrat responsive-subtitle text-neutral-500 text-xs font-semibold tracking-widest uppercase mt-2">
                   Brand & E-commerce Engineering
                 </p>
-                <div className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6 space-y-3 lg:space-y-4">
+                <div className="font-cormorant responsive-desc text-neutral-600 text-base md:text-lg font-light leading-relaxed mt-4 md:mt-6 space-y-3 md:space-y-4">
                   <p>
                     Rabbit AutoCare is a highly polished e-commerce platform engineered to retail premium professional car detailing products. Structured under rigorous performance and transactional standards, it offers a seamless and luxurious digital experience for automotive enthusiasts.
                   </p>
@@ -663,7 +672,7 @@ export default function HiddenReveal() {
                   </p>
                 </div>
 
-                <div className="tech-badges mt-5 lg:mt-6">
+                <div className="tech-badges mt-5 md:mt-6">
                   <span className="tech-badge">Next.js 15</span>
                   <span className="tech-badge">React 19</span>
                   <span className="tech-badge">Supabase SSR</span>
@@ -821,7 +830,7 @@ export default function HiddenReveal() {
           className="s-section bg-transparent pointer-events-none"
           style={{ zIndex: 5 }}
         >
-          <div className="flex flex-col lg:flex-row w-full h-full pointer-events-none">
+          <div className="flex flex-col md:flex-row w-full h-full pointer-events-none">
             {/* Left Panel: Typographic Brand Panel (Slides from Top) */}
             <div
               ref={sec5LeftRef}
@@ -845,17 +854,17 @@ export default function HiddenReveal() {
               className="panel-half panel-half-content bg-gradient-to-br from-[#eff6ff] via-[#f8fafc] to-[#ffffff] text-left pointer-events-auto"
               style={{ transform: 'translateY(100%)' }}
             >
-              <div className="w-full max-w-xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+              <div className="w-full max-w-xl px-6 md:px-12 py-8 md:py-0 select-text z-10 relative">
                 <span className="project-tag text-[#2563eb]/95">
                   <GraduationCapIcon /> Academic Excellence & Elite Coaching
                 </span>
-                <h2 className="font-space responsive-title text-4xl lg:text-5xl font-bold text-[#0f172a] tracking-wider uppercase shadow-glow-blue mt-1">
+                <h2 className="font-space responsive-title text-4xl md:text-5xl font-bold text-[#0f172a] tracking-wider uppercase shadow-glow-blue mt-1">
                   GENESIS CLASSES
                 </h2>
                 <p className="font-montserrat responsive-subtitle text-neutral-500 text-xs font-semibold tracking-widest uppercase mt-2">
                   Elite Education Platform
                 </p>
-                <p className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6">
+                <p className="font-cormorant responsive-desc text-neutral-600 text-base md:text-lg font-light leading-relaxed mt-4 md:mt-6">
                   Genesis Classes is a high-performance academic ecosystem providing elite coaching, digital classroom modules, and comprehensive progress trackers engineered for student excellence.
                 </p>
 
@@ -894,7 +903,7 @@ export default function HiddenReveal() {
             transform: 'translateX(100%)'
           }}
         >
-          <div className="flex flex-col lg:flex-row w-full h-full pointer-events-none">
+          <div className="flex flex-col md:flex-row w-full h-full pointer-events-none">
             {/* Left Panel: Typographic Brand Panel */}
             <div className="panel-half panel-half-img bg-[#ffffff] flex flex-col items-center justify-center relative overflow-hidden pointer-events-auto">
               <img
@@ -910,17 +919,17 @@ export default function HiddenReveal() {
 
             {/* Right Panel: Project Details */}
             <div className="panel-half panel-half-content bg-gradient-to-br from-[#fffdf5] via-[#fffbeb] to-[#ffffff] text-left pointer-events-auto">
-              <div className="w-full max-w-xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+              <div className="w-full max-w-xl px-6 md:px-12 py-8 md:py-0 select-text z-10 relative">
                 <span className="project-tag text-[#b45309]/95">
                   <ClockIcon /> Active Booking Marketplace
                 </span>
-                <h2 className="font-space responsive-title text-4xl lg:text-5xl font-bold text-[#1e293b] tracking-wider uppercase shadow-glow-amber mt-1">
+                <h2 className="font-space responsive-title text-4xl md:text-5xl font-bold text-[#1e293b] tracking-wider uppercase shadow-glow-amber mt-1">
                   PAWGLOO
                 </h2>
                 <p className="font-montserrat responsive-subtitle text-neutral-500 text-xs font-semibold tracking-widest uppercase mt-2">
                   Pet Care Marketplace
                 </p>
-                <p className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6">
+                <p className="font-cormorant responsive-desc text-neutral-600 text-base md:text-lg font-light leading-relaxed mt-4 md:mt-6">
                   Pawgloo is a highly sophisticated, pet-focused platform designed to streamline bookings, connect premium pet service providers, and host retail catalogs. Engineered under high engineering discipline to optimize parent-pet transactions.
                 </p>
 
