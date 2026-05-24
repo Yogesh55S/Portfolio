@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 // Replace with your actual logo path in the /public folder
@@ -23,6 +23,8 @@ export default function MinimalNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
   
   const router = useRouter();
   const pathname = usePathname();
@@ -30,11 +32,22 @@ export default function MinimalNavbar() {
   // --- Effect for Scroll-based Styling & Active Section ---
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + 100; // Offset for better accuracy
-      setScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      
+      // Determine scrolled style
+      setScrolled(currentScrollY > 50);
+
+      // Hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollYRef.current && currentScrollY > 150) {
+        setIsVisible(false); // scrolling down
+      } else {
+        setIsVisible(true); // scrolling up
+      }
+      lastScrollYRef.current = currentScrollY;
 
       // Only run section detection on the homepage
       if (pathname === "/") {
+        const scrollPosition = currentScrollY + 100; // Offset for better accuracy
         let currentSection = "home";
         for (const item of navItems) {
           if (item.type === "scroll") {
@@ -93,8 +106,8 @@ export default function MinimalNavbar() {
       {/* --- Desktop and Mobile Navbar --- */}
       <motion.nav
         initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        animate={{ y: isVisible ? 0 : -100 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? 'bg-black/10 backdrop-blur-lg border-b border-white/10' : 'bg-transparent'
         }`}

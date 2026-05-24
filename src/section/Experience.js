@@ -1,7 +1,14 @@
 "use client";
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useLayoutEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Import the hooks needed for scroll-linked animations
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+
+// Register ScrollTrigger safely
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const experiences = [
   
@@ -287,72 +294,246 @@ const MobileExperienceItem = ({ exp, index, isLast }) => {
 };
 
 
+const DesktopGSAPScroll = () => {
+  const containerRef = useRef(null);
+  const sectionRefs = useRef([]);
+
+  useLayoutEffect(() => {
+    const sections = sectionRefs.current.filter(Boolean);
+    if (!sections.length) return;
+
+    const scrollTriggers = [];
+
+    sections.forEach((section, index) => {
+      if (index === sections.length - 1) return;
+
+      const trigger = ScrollTrigger.create({
+        trigger: section,
+        start: 'top top',
+        end: 'bottom top',
+        pin: true,
+        pinSpacing: false,
+        scrub: true,
+      });
+
+      scrollTriggers.push(trigger);
+
+      // Cinematic transition on the browser mockups
+      const card = section.querySelector('.gsap-card');
+      if (card) {
+        gsap.to(card, {
+          scale: 0.9,
+          opacity: 0.15,
+          y: -60,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      }
+
+      // Fade out and scale down the introductory text
+      const textContent = section.querySelector('.gsap-text-content');
+      if (textContent) {
+        gsap.to(textContent, {
+          scale: 0.9,
+          opacity: 0,
+          y: -50,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      }
+    });
+
+    return () => {
+      scrollTriggers.forEach((trigger) => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative w-full overflow-hidden bg-[#040507]">
+      {/* 1. Intro Panel ("EXPERIENCE") */}
+      <div
+        ref={(el) => (sectionRefs.current[0] = el)}
+        className="w-full h-screen relative overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950"
+        style={{ zIndex: 10 }}
+      >
+        {/* Subtle decorative background grids for premium look */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #ffffff 60px, #ffffff 61px),
+                            repeating-linear-gradient(-45deg, transparent, transparent 60px, #ffffff 60px, #ffffff 61px)`
+        }}></div>
+        <div className="absolute inset-0 opacity-[0.05]" style={{
+          backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
+          backgroundSize: '40px 40px'
+        }}></div>
+        <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-white/5 rounded-full"></div>
+        <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-white/5 rotate-45"></div>
+
+        {/* Text content with GSAP-targeted class */}
+        <div className="gsap-text-content relative z-10 flex flex-col items-center justify-center max-w-4xl text-center px-4">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-px bg-white/40"></div>
+            <span className="text-white/40 text-xs sm:text-sm tracking-[0.4em] font-semibold uppercase">
+              Professional Journey
+            </span>
+            <div className="w-12 h-px bg-white/40"></div>
+          </div>
+          <h1 className="text-white font-extrabold text-6xl sm:text-8xl md:text-9xl tracking-tight uppercase mb-8 drop-shadow-2xl">
+            Experience
+          </h1>
+          <p className="text-white/60 text-lg sm:text-xl max-w-2xl leading-relaxed tracking-wide font-light">
+            A chronicle of growth, learning, and building impactful digital solutions.
+          </p>
+        </div>
+      </div>
+
+      {/* 2. Achievers Technologies Panel */}
+      <div
+        ref={(el) => (sectionRefs.current[1] = el)}
+        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#0c0e15] via-[#090b10] to-[#040507] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
+        style={{ zIndex: 20 }}
+      >
+        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
+          {/* Mockup Browser Tab Bar */}
+          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
+            <div className="flex gap-1.5 flex-shrink-0">
+              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
+              achieverstechnologies.com
+            </div>
+          </div>
+          {/* Mockup Web View Area */}
+          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
+            <img
+              src="/used/experience-desktop-2.webp"
+              alt="Achievers Technologies Website"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 3. Hopping Minds Panel */}
+      <div
+        ref={(el) => (sectionRefs.current[2] = el)}
+        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#0e111a] via-[#0b0c12] to-[#050609] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
+        style={{ zIndex: 30 }}
+      >
+        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
+          {/* Mockup Browser Tab Bar */}
+          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
+            <div className="flex gap-1.5 flex-shrink-0">
+              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
+              hoppingminds.com
+            </div>
+          </div>
+          {/* Mockup Web View Area */}
+          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
+            <img
+              src="/used/experience-desktop-1.webp"
+              alt="Hopping Minds Website"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Indiefluence Panel */}
+      <div
+        ref={(el) => (sectionRefs.current[3] = el)}
+        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#111624] via-[#0d101a] to-[#06070b] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
+        style={{ zIndex: 40 }}
+      >
+        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
+          {/* Mockup Browser Tab Bar */}
+          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
+            <div className="flex gap-1.5 flex-shrink-0">
+              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
+              indiefluence.com
+            </div>
+          </div>
+          {/* Mockup Web View Area */}
+          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
+            <img
+              src="/used/experience-desktop-3.webp"
+              alt="Indiefluence Website"
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Main Component ---
 export default function Experience() {
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Background patterns (Unchanged) */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 opacity-[0.02]" style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px),
-                            repeating-linear-gradient(-45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px)`
-        }}></div>
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `radial-gradient(circle, #9ca3af 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}></div>
-        <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-gray-200 rounded-full"></div>
-        <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-gray-200 rotate-45"></div>
-        <div className="absolute top-1/3 -right-32 w-64 h-64 border border-gray-200"></div>
+    <>
+      {/* Desktop Version (GSAP Overlay Scroll) */}
+      <div className="hidden md:block w-full">
+        <DesktopGSAPScroll />
       </div>
 
-      {/* Main content */}
-      <div className="relative z-10 py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      {/* Mobile Version (Timeline View - Unchanged) */}
+      <div className="md:hidden min-h-screen bg-white relative overflow-hidden">
+        {/* Background patterns (Unchanged) */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 opacity-[0.02]" style={{
+            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px),
+                              repeating-linear-gradient(-45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px)`
+          }}></div>
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: `radial-gradient(circle, #9ca3af 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }}></div>
+          <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-gray-200 rounded-full"></div>
+          <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-gray-200 rotate-45"></div>
+          <div className="absolute top-1/3 -right-32 w-64 h-64 border border-gray-200"></div>
+        </div>
 
-          {/* Header Section (Unchanged) */}
-          <AnimatedSection className="mb-20 sm:mb-28 lg:mb-36">
-            <div className="max-w-4xl">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-px bg-black"></div>
-                <span className="text-gray-500 text-xs tracking-[0.4em] font-semibold uppercase">
-                  Professional Journey
-                </span>
+        {/* Main content */}
+        <div className="relative z-10 py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+
+            {/* Header Section (Unchanged) */}
+            <AnimatedSection className="mb-20 sm:mb-28 lg:mb-36">
+              <div className="max-w-4xl">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-12 h-px bg-black"></div>
+                  <span className="text-gray-500 text-xs tracking-[0.4em] font-semibold uppercase">
+                    Professional Journey
+                  </span>
+                </div>
+                <h1 className="text-gray-900 font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-6">
+                  Experience
+                </h1>
+                <p className="text-gray-600 text-lg sm:text-xl max-w-2xl leading-relaxed">
+                  A chronicle of growth, learning, and building impactful digital solutions across various technologies and platforms.
+                </p>
               </div>
-              <h1 className="text-gray-900 font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-6">
-                Experience
-              </h1>
-              <p className="text-gray-600 text-lg sm:text-xl max-w-2xl leading-relaxed">
-                A chronicle of growth, learning, and building impactful digital solutions across various technologies and platforms.
-              </p>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
 
-          {/* Desktop Timeline View (Now uses new component) */}
-          <div className="hidden lg:block">
-            <div className="relative">
-              {/* Year markers (Unchanged) */}
-              <div className="absolute -left-32 top-0 space-y-24">
-                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2025</div>
-                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2023</div>
-                <div className="text-6xl font-bold text-gray-100 tracking-tighter">2021</div>
-              </div>
-
-              <div className="space-y-32">
-                {experiences.map((exp, index) => (
-                  <DesktopExperienceItem
-                    key={index}
-                    exp={exp}
-                    index={index}
-                    isLast={index === experiences.length - 1}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile/Tablet View (Unchanged) */}
-          <div className="lg:hidden">
+            {/* Mobile/Tablet View (Unchanged) */}
             <div className="space-y-12">
               {experiences.map((exp, index) => (
                 <MobileExperienceItem
@@ -363,29 +544,29 @@ export default function Experience() {
                 />
               ))}
             </div>
-          </div>
 
-          {/* Footer Section (Unchanged) */}
-          <AnimatedSection className="mt-28 sm:mt-36 lg:mt-44 border-t-2 border-gray-200 pt-12">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              <div>
-                <div className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400 mb-2">
-                  Looking Forward
+            {/* Footer Section (Unchanged) */}
+            <AnimatedSection className="mt-28 sm:mt-36 lg:mt-44 border-t-2 border-gray-200 pt-12">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div>
+                  <div className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400 mb-2">
+                    Looking Forward
+                  </div>
+                  <p className="text-gray-700 text-lg sm:text-xl font-medium max-w-2xl">
+                    Continuously evolving, learning new technologies, and creating meaningful digital experiences
+                  </p>
                 </div>
-                <p className="text-gray-700 text-lg sm:text-xl font-medium max-w-2xl">
-                  Continuously evolving, learning new technologies, and creating meaningful digital experiences
-                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-px bg-gray-300"></div>
+                  <span className="text-6xl font-bold text-gray-100 tracking-tighter">
+                    {new Date().getFullYear()}
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-px bg-gray-300"></div>
-                <span className="text-6xl font-bold text-gray-100 tracking-tighter">
-                  {new Date().getFullYear()}
-                </span>
-              </div>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
