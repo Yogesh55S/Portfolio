@@ -296,191 +296,322 @@ const MobileExperienceItem = ({ exp, index, isLast }) => {
 
 const DesktopGSAPScroll = () => {
   const containerRef = useRef(null);
-  const sectionRefs = useRef([]);
+  const slide1Ref = useRef(null);
+  const slide2Ref = useRef(null);
+  const slide3Ref = useRef(null);
+
+  // Refs for the central image wrappers and images to animate the split & scale
+  const imgWrapper1Ref = useRef(null);
+  const imgWrapper2Ref = useRef(null);
+  const imgWrapper3Ref = useRef(null);
+
+  const img1Ref = useRef(null);
+  const img2Ref = useRef(null);
+  const img3Ref = useRef(null);
+
+  // Refs for the scattered background side images wrapper
+  const bgImages1Ref = useRef(null);
+  const bgImages2Ref = useRef(null);
+  const bgImages3Ref = useRef(null);
 
   useLayoutEffect(() => {
-    const sections = sectionRefs.current.filter(Boolean);
-    if (!sections.length) return;
+    if (!containerRef.current) return;
 
-    const scrollTriggers = [];
-
-    sections.forEach((section, index) => {
-      if (index === sections.length - 1) return;
-
-      const trigger = ScrollTrigger.create({
-        trigger: section,
-        start: 'top top',
-        end: 'bottom top',
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top",
+        end: "+=900%", // Cinematic slow-paced scroll depth for elegant split and zoom scrubbing
         pin: true,
-        pinSpacing: false,
         scrub: true,
-      });
-
-      scrollTriggers.push(trigger);
-
-      // Cinematic transition on the browser mockups
-      const card = section.querySelector('.gsap-card');
-      if (card) {
-        gsap.to(card, {
-          scale: 0.9,
-          opacity: 0.15,
-          y: -60,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          }
-        });
-      }
-
-      // Fade out and scale down the introductory text
-      const textContent = section.querySelector('.gsap-text-content');
-      if (textContent) {
-        gsap.to(textContent, {
-          scale: 0.9,
-          opacity: 0,
-          y: -50,
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: true,
-          }
-        });
+        anticipatePin: 1,
       }
     });
 
+    // --- Slide 1: EXPERIENCE ---
+    // 1. First, split the word "EXPERIENCE" by expanding the center image wrapper width from 0 to 24vw
+    tl.fromTo(imgWrapper1Ref.current,
+      { width: "0vw", opacity: 0 },
+      { width: "24vw", opacity: 1, duration: 1.0, ease: "power2.inOut" }
+    );
+    // At the same time, scale up and fade in the inner image to fit the container nicely
+    tl.fromTo(img1Ref.current,
+      { scale: 0.3 },
+      { scale: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // At the exact same time, fade in the scattered background side images as the split opens!
+    tl.fromTo(bgImages1Ref.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // 2. Once the image is perfectly centered at its natural size, perform the dramatic telescope zoom
+    tl.fromTo("#zoom-container-1", 
+      { scale: 1 }, 
+      { scale: 5.2, ease: "power2.inOut", duration: 1.5 }
+    );
+    // 3. Fade out Slide 1 to transition to Slide 2
+    tl.to(slide1Ref.current, {
+      opacity: 0,
+      scale: 1.15,
+      duration: 0.5,
+      ease: "power1.in"
+    });
+
+    // --- Slide 2: HOPPING MINDS ---
+    // 1. Fade in Slide 2
+    tl.fromTo(slide2Ref.current,
+      { opacity: 0, scale: 0.95 },
+      { opacity: 1, scale: 1, duration: 0.5, ease: "power1.out" },
+      "-=0.5"
+    );
+    // 2. Split "HOPPING MINDS" by expanding the center image wrapper
+    tl.fromTo(imgWrapper2Ref.current,
+      { width: "0vw", opacity: 0 },
+      { width: "24vw", opacity: 1, duration: 1.0, ease: "power2.inOut" }
+    );
+    tl.fromTo(img2Ref.current,
+      { scale: 0.3 },
+      { scale: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // At the exact same time, fade in the scattered background side images as the split opens!
+    tl.fromTo(bgImages2Ref.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // 3. Perform the telescope zoom for Slide 2
+    tl.fromTo("#zoom-container-2",
+      { scale: 1 },
+      { scale: 5.2, ease: "power2.inOut", duration: 1.5 }
+    );
+    // 4. Fade out Slide 2
+    tl.to(slide2Ref.current, {
+      opacity: 0,
+      scale: 1.15,
+      duration: 0.5,
+      ease: "power1.in"
+    });
+
+    // --- Slide 3: INDIEFLUENCE ---
+    // 1. Fade in Slide 3
+    tl.fromTo(slide3Ref.current,
+      { opacity: 0, scale: 0.95 },
+      { opacity: 1, scale: 1, duration: 0.5, ease: "power1.out" },
+      "-=0.5"
+    );
+    // 2. Split "INDIEFLUENCE" by expanding the center image wrapper
+    tl.fromTo(imgWrapper3Ref.current,
+      { width: "0vw", opacity: 0 },
+      { width: "24vw", opacity: 1, duration: 1.0, ease: "power2.inOut" }
+    );
+    tl.fromTo(img3Ref.current,
+      { scale: 0.3 },
+      { scale: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // At the exact same time, fade in the scattered background side images as the split opens!
+    tl.fromTo(bgImages3Ref.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+      "<"
+    );
+    // 3. Perform the telescope zoom for Slide 3
+    tl.fromTo("#zoom-container-3",
+      { scale: 1 },
+      { scale: 5.2, ease: "power2.inOut", duration: 1.5 }
+    );
+
     return () => {
-      scrollTriggers.forEach((trigger) => trigger.kill());
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      ScrollTrigger.getAll().forEach(st => st.kill());
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full overflow-hidden bg-[#040507]">
-      {/* 1. Intro Panel ("EXPERIENCE") */}
-      <div
-        ref={(el) => (sectionRefs.current[0] = el)}
-        className="w-full h-screen relative overflow-hidden flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950"
-        style={{ zIndex: 10 }}
-      >
-        {/* Subtle decorative background grids for premium look */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #ffffff 60px, #ffffff 61px),
-                            repeating-linear-gradient(-45deg, transparent, transparent 60px, #ffffff 60px, #ffffff 61px)`
-        }}></div>
-        <div className="absolute inset-0 opacity-[0.05]" style={{
-          backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '40px 40px'
-        }}></div>
-        <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-white/5 rounded-full"></div>
-        <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-white/5 rotate-45"></div>
-
-        {/* Text content with GSAP-targeted class */}
-        <div className="gsap-text-content relative z-10 flex flex-col items-center justify-center max-w-4xl text-center px-4">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-12 h-px bg-white/40"></div>
-            <span className="text-white/40 text-xs sm:text-sm tracking-[0.4em] font-semibold uppercase">
-              Professional Journey
-            </span>
-            <div className="w-12 h-px bg-white/40"></div>
-          </div>
-          <h1 className="text-white font-extrabold text-6xl sm:text-8xl md:text-9xl tracking-tight uppercase mb-8 drop-shadow-2xl">
-            Experience
-          </h1>
-          <p className="text-white/60 text-lg sm:text-xl max-w-2xl leading-relaxed tracking-wide font-light">
-            A chronicle of growth, learning, and building impactful digital solutions.
-          </p>
-        </div>
-      </div>
-
-      {/* 2. Achievers Technologies Panel */}
-      <div
-        ref={(el) => (sectionRefs.current[1] = el)}
-        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#0c0e15] via-[#090b10] to-[#040507] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
-        style={{ zIndex: 20 }}
-      >
-        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
-          {/* Mockup Browser Tab Bar */}
-          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
-            <div className="flex gap-1.5 flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-            </div>
-            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
-              achieverstechnologies.com
-            </div>
-          </div>
-          {/* Mockup Web View Area */}
-          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
-            <img
-              src="/used/experience-desktop-2.webp"
-              alt="Achievers Technologies Website"
-              className="w-full h-full object-contain"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Hopping Minds Panel */}
-      <div
-        ref={(el) => (sectionRefs.current[2] = el)}
-        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#0e111a] via-[#0b0c12] to-[#050609] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
+    <div ref={containerRef} className="relative w-full h-screen bg-[#0B0F19] overflow-hidden select-none">
+      
+      {/* Slide 1: EXPERIENCE */}
+      <div 
+        ref={slide1Ref} 
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1a2333] via-[#0f1522] to-[#0a0d16]"
         style={{ zIndex: 30 }}
       >
-        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
-          {/* Mockup Browser Tab Bar */}
-          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
-            <div className="flex gap-1.5 flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+        <div 
+          id="zoom-container-1" 
+          className="relative w-full h-full flex items-center justify-center transform-gpu"
+        >
+          {/* Central text & image split - Starts fully closed with gap-0 */}
+          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+            <span>EXPER</span>
+            <div 
+              ref={imgWrapper1Ref} 
+              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
+              style={{ width: "0vw" }}
+            >
+              <img 
+                ref={img1Ref}
+                src="/used/experience-desktop-2.webp" 
+                className="w-full h-full object-contain rounded-xl" 
+              />
             </div>
-            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
-              hoppingminds.com
-            </div>
+            <span>IENCE</span>
           </div>
-          {/* Mockup Web View Area */}
-          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
-            <img
-              src="/used/experience-desktop-1.webp"
-              alt="Hopping Minds Website"
-              className="w-full h-full object-contain"
-            />
+
+          {/* Scattered background images */}
+          <div 
+            ref={bgImages1Ref} 
+            className="absolute inset-0 pointer-events-none z-10 opacity-0"
+          >
+            {/* Top Left */}
+            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Left */}
+            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Bottom Left */}
+            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Top Right */}
+            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Right */}
+            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Top Right */}
+            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 4. Indiefluence Panel */}
-      <div
-        ref={(el) => (sectionRefs.current[3] = el)}
-        className="w-full h-screen relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#111624] via-[#0d101a] to-[#06070b] px-6 sm:px-12 md:px-20 lg:px-32 py-10"
-        style={{ zIndex: 40 }}
+      {/* Slide 2: HOPPING MINDS */}
+      <div 
+        ref={slide2Ref} 
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#161a29] via-[#0e111d] to-[#06080e] opacity-0"
+        style={{ zIndex: 20 }}
       >
-        <div className="gsap-card w-full max-w-5xl h-auto max-h-[75vh] md:max-h-[80vh] aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)] relative bg-[#0a0d14] flex flex-col items-stretch">
-          {/* Mockup Browser Tab Bar */}
-          <div className="h-10 bg-slate-900 border-b border-white/5 flex items-center px-4 gap-2 flex-shrink-0">
-            <div className="flex gap-1.5 flex-shrink-0">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+        <div 
+          id="zoom-container-2" 
+          className="relative w-full h-full flex items-center justify-center transform-gpu"
+        >
+          {/* Central text & image split - Starts fully closed with gap-0 */}
+          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+            <span>HOPPIN</span>
+            <div 
+              ref={imgWrapper2Ref} 
+              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
+              style={{ width: "0vw" }}
+            >
+              <img 
+                ref={img2Ref}
+                src="/used/experience-desktop-1.webp" 
+                className="w-full h-full object-contain rounded-xl" 
+              />
             </div>
-            <div className="mx-auto bg-slate-950/60 text-white/30 text-[10px] sm:text-xs px-8 sm:px-16 py-1 rounded-md border border-white/5 select-none tracking-wider font-light max-w-[200px] sm:max-w-xs truncate">
-              indiefluence.com
-            </div>
+            <span>GMINDS</span>
           </div>
-          {/* Mockup Web View Area */}
-          <div className="flex-1 w-full relative overflow-hidden bg-slate-950 flex items-center justify-center">
-            <img
-              src="/used/experience-desktop-3.webp"
-              alt="Indiefluence Website"
-              className="w-full h-full object-contain"
-            />
+
+          {/* Scattered background images */}
+          <div 
+            ref={bgImages2Ref} 
+            className="absolute inset-0 pointer-events-none z-10 opacity-0"
+          >
+            {/* Top Left */}
+            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Left */}
+            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Bottom Left */}
+            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Top Right */}
+            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Right */}
+            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Top Right */}
+            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Slide 3: INDIEFLUENCE */}
+      <div 
+        ref={slide3Ref} 
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1b2536] via-[#101726] to-[#0a0f1b] opacity-0"
+        style={{ zIndex: 10 }}
+      >
+        <div 
+          id="zoom-container-3" 
+          className="relative w-full h-full flex items-center justify-center transform-gpu"
+        >
+          {/* Central text & image split - Starts fully closed with gap-0 */}
+          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+            <span>INDIEF</span>
+            <div 
+              ref={imgWrapper3Ref} 
+              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
+              style={{ width: "0vw" }}
+            >
+              <img 
+                ref={img3Ref}
+                src="/used/experience-desktop-3.webp" 
+                className="w-full h-full object-contain rounded-xl" 
+              />
+            </div>
+            <span>LUENCE</span>
+          </div>
+
+          {/* Scattered background images */}
+          <div 
+            ref={bgImages3Ref} 
+            className="absolute inset-0 pointer-events-none z-10 opacity-0"
+          >
+            {/* Top Left */}
+            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Left */}
+            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Bottom Left */}
+            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Top Right */}
+            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Bottom Right */}
+            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+            {/* Center Top Right */}
+            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
+              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
