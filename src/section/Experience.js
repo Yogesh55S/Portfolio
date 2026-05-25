@@ -309,11 +309,6 @@ const DesktopGSAPScroll = () => {
   const img2Ref = useRef(null);
   const img3Ref = useRef(null);
 
-  // Refs for the scattered background side images wrapper
-  const bgImages1Ref = useRef(null);
-  const bgImages2Ref = useRef(null);
-  const bgImages3Ref = useRef(null);
-
   useLayoutEffect(() => {
     if (!containerRef.current) return;
 
@@ -340,10 +335,9 @@ const DesktopGSAPScroll = () => {
       { scale: 1, duration: 1.0, ease: "power2.inOut" },
       "<"
     );
-    // At the exact same time, fade in the scattered background side images as the split opens!
-    tl.fromTo(bgImages1Ref.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+    // At the exact same time, smoothly transition the background color of Slide 1 based on the image theme
+    tl.to(slide1Ref.current,
+      { backgroundColor: "#FAF5EC", duration: 1.0, ease: "power2.inOut" },
       "<"
     );
     // 2. Once the image is perfectly centered at its natural size, perform the dramatic telescope zoom
@@ -376,10 +370,9 @@ const DesktopGSAPScroll = () => {
       { scale: 1, duration: 1.0, ease: "power2.inOut" },
       "<"
     );
-    // At the exact same time, fade in the scattered background side images as the split opens!
-    tl.fromTo(bgImages2Ref.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+    // At the exact same time, smoothly transition the background color of Slide 2 based on the image theme
+    tl.to(slide2Ref.current,
+      { backgroundColor: "#EAF5EE", duration: 1.0, ease: "power2.inOut" },
       "<"
     );
     // 3. Perform the telescope zoom for Slide 2
@@ -412,10 +405,9 @@ const DesktopGSAPScroll = () => {
       { scale: 1, duration: 1.0, ease: "power2.inOut" },
       "<"
     );
-    // At the exact same time, fade in the scattered background side images as the split opens!
-    tl.fromTo(bgImages3Ref.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.0, ease: "power2.inOut" },
+    // At the exact same time, smoothly transition the background color of Slide 3 based on the image theme
+    tl.to(slide3Ref.current,
+      { backgroundColor: "#EBF3FC", duration: 1.0, ease: "power2.inOut" },
       "<"
     );
     // 3. Perform the telescope zoom for Slide 3
@@ -430,12 +422,12 @@ const DesktopGSAPScroll = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-[#0B0F19] overflow-hidden select-none">
+    <div ref={containerRef} className="relative w-full h-screen bg-white overflow-hidden select-none">
       
       {/* Slide 1: EXPERIENCE */}
       <div 
         ref={slide1Ref} 
-        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1a2333] via-[#0f1522] to-[#0a0d16]"
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-white"
         style={{ zIndex: 30 }}
       >
         <div 
@@ -443,12 +435,11 @@ const DesktopGSAPScroll = () => {
           className="relative w-full h-full flex items-center justify-center transform-gpu"
         >
           {/* Central text & image split - Starts fully closed with gap-0 */}
-          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+          <div className="flex items-center justify-center gap-0 z-20 text-[#0F172A] font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
             <span>EXPER</span>
             <div 
               ref={imgWrapper1Ref} 
-              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
-              style={{ width: "0vw" }}
+              className="relative h-[15vw] opacity-0"  style={{ width: "0vw" }}
             >
               <img 
                 ref={img1Ref}
@@ -458,44 +449,13 @@ const DesktopGSAPScroll = () => {
             </div>
             <span>IENCE</span>
           </div>
-
-          {/* Scattered background images */}
-          <div 
-            ref={bgImages1Ref} 
-            className="absolute inset-0 pointer-events-none z-10 opacity-0"
-          >
-            {/* Top Left */}
-            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Left */}
-            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Bottom Left */}
-            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Top Right */}
-            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Right */}
-            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Top Right */}
-            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-2.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Slide 2: HOPPING MINDS */}
       <div 
         ref={slide2Ref} 
-        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#161a29] via-[#0e111d] to-[#06080e] opacity-0"
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-white opacity-0"
         style={{ zIndex: 20 }}
       >
         <div 
@@ -503,11 +463,11 @@ const DesktopGSAPScroll = () => {
           className="relative w-full h-full flex items-center justify-center transform-gpu"
         >
           {/* Central text & image split - Starts fully closed with gap-0 */}
-          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+          <div className="flex items-center justify-center gap-0 z-20 text-[#0F172A] font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
             <span>HOPPIN</span>
             <div 
               ref={imgWrapper2Ref} 
-              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
+              className="relative h-[15vw] overflow-hidden flex-shrink-0 opacity-0"
               style={{ width: "0vw" }}
             >
               <img 
@@ -518,44 +478,13 @@ const DesktopGSAPScroll = () => {
             </div>
             <span>GMINDS</span>
           </div>
-
-          {/* Scattered background images */}
-          <div 
-            ref={bgImages2Ref} 
-            className="absolute inset-0 pointer-events-none z-10 opacity-0"
-          >
-            {/* Top Left */}
-            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Left */}
-            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Bottom Left */}
-            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Top Right */}
-            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Right */}
-            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Top Right */}
-            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-1.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Slide 3: INDIEFLUENCE */}
       <div 
         ref={slide3Ref} 
-        className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-[#1b2536] via-[#101726] to-[#0a0f1b] opacity-0"
+        className="absolute inset-0 w-full h-full flex items-center justify-center bg-white opacity-0"
         style={{ zIndex: 10 }}
       >
         <div 
@@ -563,11 +492,11 @@ const DesktopGSAPScroll = () => {
           className="relative w-full h-full flex items-center justify-center transform-gpu"
         >
           {/* Central text & image split - Starts fully closed with gap-0 */}
-          <div className="flex items-center justify-center gap-0 z-20 text-white font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
+          <div className="flex items-center justify-center gap-0 z-20 text-[#0F172A] font-black text-6xl sm:text-7xl md:text-[5vw] tracking-tighter uppercase font-sans">
             <span>INDIEF</span>
             <div 
               ref={imgWrapper3Ref} 
-              className="relative h-[15vw] rounded-xl overflow-hidden shadow-2xl flex-shrink-0 bg-[#0B0F19] opacity-0"
+              className="relative h-[15vw]  overflow-hidden flex-shrink-0 opacity-0"
               style={{ width: "0vw" }}
             >
               <img 
@@ -577,37 +506,6 @@ const DesktopGSAPScroll = () => {
               />
             </div>
             <span>LUENCE</span>
-          </div>
-
-          {/* Scattered background images */}
-          <div 
-            ref={bgImages3Ref} 
-            className="absolute inset-0 pointer-events-none z-10 opacity-0"
-          >
-            {/* Top Left */}
-            <div className="absolute left-[8vw] top-[10vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Left */}
-            <div className="absolute left-[4vw] top-[62vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Bottom Left */}
-            <div className="absolute left-[26vw] top-[74vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Top Right */}
-            <div className="absolute right-[8vw] top-[14vh] w-[15vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Bottom Right */}
-            <div className="absolute right-[6vw] top-[66vh] w-[16vw] h-[10vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
-            {/* Center Top Right */}
-            <div className="absolute right-[28vw] top-[6vh] w-[14vw] h-[9vw] rounded-lg overflow-hidden border border-white/10 shadow-lg bg-black/40">
-              <img src="/used/experience-desktop-3.webp" className="w-full h-full object-cover opacity-60" />
-            </div>
           </div>
         </div>
       </div>
