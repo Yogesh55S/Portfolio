@@ -1,9 +1,9 @@
 "use client";
-import React, { useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // Import the hooks needed for scroll-linked animations
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 
 // Register ScrollTrigger safely
 if (typeof window !== 'undefined') {
@@ -11,45 +11,49 @@ if (typeof window !== 'undefined') {
 }
 
 const experiences = [
-  
   {
     role: "Full-Stack Developer",
     company: "Indiefluence, Kurukshetra",
-    date: "2025 - Present",
-    description: "Working on full-stack web applications with modern frameworks like Next.js, Supabase, and TailwindCSS.",
-    tech: ["Html","Css","Javascript","React Js","Bootstrap","Node js","Mongo DB","Next.js", "Supabase", "TailwindCSS"],
+    date: "2025 – Present",
+    description: "Architecting and shipping production-grade web products end-to-end — from pixel-perfect interfaces to scalable APIs. Every feature I build solves a real user problem and ships with intention.",
+    highlights: [
+      "Designed and launched client-facing platforms with complex real-time workflows",
+      "Owned the full product cycle — ideation, development, deployment, and iteration",
+      "Introduced design systems that brought consistency and speed to the team",
+    ],
     status: "current"
   },
   {
     role: "Full-Stack Intern",
     company: "Hopping Minds, Mohali",
-    date: "Jul 2023 - Aug 2023",
-    description: "Built full-stack applications using React.js, Node.js, and MongoDB, gaining experience in scalable architectures.",
-    tech: ["React.js", "Node.js", "MongoDB"],
+    date: "Jul 2023 – Aug 2023",
+    description: "My first step into real-world software development. Learned what it truly means to write code that ships — readable, maintainable, and built for scale.",
+    highlights: [
+      "Understood how professional teams collaborate and deliver under deadlines",
+      "Learned component-driven architecture and clean separation of concerns",
+      "Built and consumed REST APIs in a live production environment",
+    ],
     status: "completed"
   },
   {
-    role: "Web Developer Trainee",
+    role: "Multi-Domain Trainee",
     company: "Achievers Technologies, Kurukshetra",
-    date: "Aug 2021 - Oct 2021",
-    description: "Worked with HTML, CSS, JavaScript, and PHP to design responsive websites and integrate databases.",
-    tech: ["HTML", "CSS", "JavaScript", "PHP"],
-    status: "completed"
-  },
-  {
-    role: "PHP Developer",
-    company: "Achievers Technologies, Kurukshetra",
-    date: "Aug 2021 - Oct 2021",
-    description: "Developed backend APIs and dynamic modules with PHP and MySQL.",
-    tech: ["PHP", "MySQL","Xampp"],
-    status: "completed"
-  },
-  {
-    role: "Python with Database Trainee",
-    company: "Achievers Technologies, Kurukshetra",
-    date: "Aug 2021 - Oct 2021",
-    description: "Worked with Python and MySQL to design database-driven applications.",
-    tech: ["Python", "MySQL","Xampp"],
+    date: "Aug 2021 – Oct 2021",
+    description: "An intensive multi-discipline bootcamp that forged my foundation. Simultaneously trained across web, backend, and data — learning by building, not just reading.",
+    subtasks: [
+      {
+        label: "Web Development",
+        description: "Crafted responsive, accessible websites from scratch — learning the art of translating design into living, breathing interfaces."
+      },
+      {
+        label: "PHP & Backend",
+        description: "Built server-driven modules and dynamic pages — understanding how the web truly works beneath the surface."
+      },
+      {
+        label: "Python & Databases",
+        description: "Wrote data-driven Python apps and learned SQL from first principles — turning raw data into meaningful output."
+      }
+    ],
     status: "completed"
   },
 ];
@@ -204,94 +208,216 @@ const DesktopExperienceItem = ({ exp, index, isLast }) => {
   );
 };
 
-// --- MobileExperienceItem Component (Unchanged) ---
-const MobileExperienceItem = ({ exp, index, isLast }) => {
+
+// ── Image Lightbox ─────────────────────────────────────────────────────────
+const ImageLightbox = ({ src, alt, onClose }) => (
+  <motion.div
+    className="fixed inset-0 z-[9998] flex items-center justify-center p-4"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.25 }}
+    onClick={onClose}
+  >
+    {/* Backdrop */}
+    <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" />
+
+    {/* Image */}
+    <motion.div
+      className="relative z-10 max-w-[92vw] max-h-[85vh]"
+      initial={{ scale: 0.88, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.88, opacity: 0 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      onClick={e => e.stopPropagation()}
+    >
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain rounded-sm shadow-2xl"
+        style={{ maxHeight: '85vh' }}
+      />
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute -top-3 -right-3 w-8 h-8 bg-white text-black flex items-center justify-center font-bold text-sm shadow-lg"
+        aria-label="Close image"
+      >
+        ✕
+      </button>
+    </motion.div>
+  </motion.div>
+);
+
+// ── Mobile Experience Item ─────────────────────────────────────────────────
+const MobileExperienceItem = ({ exp, index, isLast, imageSrc, onImageClick }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [expandedSubtask, setExpandedSubtask] = useState(null);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 60 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: 0.1 * index, ease: [0.21, 0.47, 0.32, 0.98] }}
+      transition={{ duration: 0.75, delay: 0.05 * index, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className="relative"
     >
-      <div className="relative">
-        {/* Connection line */}
-        {!isLast && (
-          <div className="absolute left-6 top-full h-12 w-px bg-gradient-to-b from-gray-300 to-transparent"></div>
+      {/* Vertical connector */}
+      {!isLast && (
+        <div className="absolute left-5 top-full h-10 w-px bg-gradient-to-b from-gray-400 to-transparent z-10" />
+      )}
+
+      <div className="bg-white border-2 border-gray-200 relative overflow-hidden">
+
+        {/* ── Clickable image strip ─────────────────────────────── */}
+        {imageSrc && (
+          <motion.button
+            className="w-full overflow-hidden block relative cursor-zoom-in"
+            style={{ height: '150px' }}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.15 + 0.05 * index }}
+            onClick={() => onImageClick(imageSrc, exp.company)}
+            aria-label={`View ${exp.company} image`}
+          >
+            <motion.img
+              src={imageSrc}
+              alt={exp.company}
+              className="w-full h-full object-cover"
+              initial={{ scale: 1.08 }}
+              animate={isInView ? { scale: 1 } : {}}
+              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            />
+            {/* Dark overlay + zoom hint */}
+            <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200">
+              <span className="text-white text-xs font-bold tracking-[0.2em] uppercase bg-black/60 px-3 py-1.5">
+                Tap to Expand
+              </span>
+            </div>
+          </motion.button>
         )}
 
-        <div className="flex gap-4 sm:gap-6">
-          {/* Timeline marker */}
-          <div className="flex-shrink-0 relative">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 border-3 border-black bg-white relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xs font-bold text-black">
-                  {String(index + 1).padStart(2, '0')}
+        {/* ── Card body ─────────────────────────────────────────── */}
+        <div className="p-5 sm:p-7 relative">
+
+          {/* Ghost index */}
+          <span
+            className="absolute top-3 right-4 font-black text-gray-100 select-none pointer-events-none"
+            style={{ fontSize: 'clamp(3rem, 14vw, 5rem)', lineHeight: 1 }}
+          >
+            {String(index + 1).padStart(2, '0')}
+          </span>
+
+          {/* Date + Active badge */}
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gray-400">
+              {exp.date}
+            </span>
+            {exp.status === 'current' && (
+              <div className="flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-black" />
                 </span>
+                <span className="text-[10px] font-bold tracking-[0.2em] uppercase">Active</span>
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Content Card */}
-          <div className="flex-1 bg-white/80 backdrop-blur-sm border-2 border-gray-300 p-6 sm:p-8">
-            {/* Header */}
-            <div className="mb-6 pb-5 border-b-2 border-gray-200">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500">
-                  {exp.date}
-                </span>
-                {exp.status === 'current' && (
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
-                    </span>
-                    <span className="text-xs font-bold tracking-[0.15em] uppercase">
-                      Active
-                    </span>
-                  </div>
-                )}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">
-                {exp.role}
-              </h3>
-              <p className="text-base sm:text-lg font-semibold text-gray-600">
-                {exp.company}
-              </p>
-            </div>
+          {/* Role */}
+          <h3
+            className="font-black text-gray-900 tracking-tighter leading-none mb-1"
+            style={{ fontSize: 'clamp(1.35rem, 5.5vw, 1.9rem)' }}
+          >
+            {exp.role}
+          </h3>
 
-            {/* Description */}
-            <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6">
-              {exp.description}
-            </p>
+          {/* Company */}
+          <p className="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-4">
+            {exp.company}
+          </p>
 
-            {/* Tech Stack */}
-            <div>
-              <div className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-3">
-                Tech Stack
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {exp.tech.map((tech, techIndex) => (
-                  <span
-                    key={techIndex}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
+          <div className="w-full h-px bg-gray-100 mb-4" />
+
+          {/* Description */}
+          <p className="text-gray-600 text-sm leading-relaxed mb-5">
+            {exp.description}
+          </p>
+
+          {/* Highlights (bullet points) */}
+          {exp.highlights && (
+            <ul className="space-y-2 mb-2">
+              {exp.highlights.map((h, i) => (
+                <li key={i} className="flex items-start gap-2">
+                  <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 flex-shrink-0" />
+                  <span className="text-gray-500 text-xs leading-relaxed">{h}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Subtasks Accordion (for Achievers Technologies) */}
+          {exp.subtasks && (
+            <div className="space-y-2 mt-2">
+              {exp.subtasks.map((sub, i) => {
+                const isExpanded = expandedSubtask === i;
+                return (
+                  <div 
+                    key={i} 
+                    className="border border-gray-150 bg-gray-50/30 hover:bg-gray-50/70 transition-all duration-300 relative overflow-hidden"
                   >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
+                    <button
+                      onClick={() => setExpandedSubtask(isExpanded ? null : i)}
+                      className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer focus:outline-none"
+                    >
+                      <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-gray-900 font-space-grotesk">
+                        {sub.label}
+                      </span>
+                      {/* Interactive toggle indicator */}
+                      <span className="text-xs font-bold text-gray-400 transition-transform duration-300">
+                        {isExpanded ? "−" : "+"}
+                      </span>
+                    </button>
 
-            {/* Decorative corners */}
-            <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-gray-300 -mt-px -mr-px"></div>
-          </div>
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 pb-3.5 pt-0.5 border-t border-gray-100 bg-white">
+                            <p className="text-gray-500 text-xs leading-relaxed font-inter">
+                              {sub.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {/* Decorative corners */}
+        <div className="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-gray-300 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-gray-300 pointer-events-none" />
       </div>
     </motion.div>
   );
 };
+
+// Map experiences to images (now 3 entries after merging Achievers)
+const mobileImages = [
+  '/used/experience-desktop-3.webp',   // Indiefluence
+  '/used/experience-desktop-1.webp',   // Hopping Minds
+  '/used/experience-desktop-2.webp',   // Achievers Technologies
+];
 
 
 const DesktopGSAPScroll = () => {
@@ -516,86 +642,89 @@ const DesktopGSAPScroll = () => {
 
 // --- Main Component ---
 export default function Experience() {
+  const [lightbox, setLightbox] = useState(null); // { src, alt }
+
   return (
     <>
       {/* Desktop Version (GSAP Overlay Scroll) */}
-      <div className="hidden md:block w-full">
+      <div className="hidden lg:block w-full">
         <DesktopGSAPScroll />
       </div>
 
-      {/* Mobile Version (Timeline View - Unchanged) */}
-      <div className="md:hidden min-h-screen bg-white relative overflow-hidden">
-        {/* Background patterns (Unchanged) */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 opacity-[0.02]" style={{
-            backgroundImage: `repeating-linear-gradient(45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px),
-                              repeating-linear-gradient(-45deg, transparent, transparent 60px, #9ca3af 60px, #9ca3af 61px)`
-          }}></div>
-          <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: `radial-gradient(circle, #9ca3af 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
-          }}></div>
-          <div className="absolute -top-64 -right-64 w-[600px] h-[600px] border border-gray-200 rounded-full"></div>
-          <div className="absolute -bottom-48 -left-48 w-96 h-96 border border-gray-200 rotate-45"></div>
-          <div className="absolute top-1/3 -right-32 w-64 h-64 border border-gray-200"></div>
-        </div>
+      {/* ── Mobile Version ──────────────────────────────────────────── */}
+      <div className="lg:hidden bg-white relative overflow-hidden">
 
-        {/* Main content */}
-        <div className="relative z-10 py-16 sm:py-20 lg:py-32 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
+        {/* Subtle grid background */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+          }}
+        />
 
-            {/* Header Section (Unchanged) */}
-            <AnimatedSection className="mb-20 sm:mb-28 lg:mb-36">
-              <div className="max-w-4xl">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-px bg-black"></div>
-                  <span className="text-gray-500 text-xs tracking-[0.4em] font-semibold uppercase">
-                    Professional Journey
-                  </span>
-                </div>
-                <h1 className="text-gray-900 font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tighter mb-6">
-                  Experience
-                </h1>
-                <p className="text-gray-600 text-lg sm:text-xl max-w-2xl leading-relaxed">
-                  A chronicle of growth, learning, and building impactful digital solutions across various technologies and platforms.
-                </p>
-              </div>
-            </AnimatedSection>
+        <div className="relative z-10 px-4 sm:px-6 pt-16 pb-20">
 
-            {/* Mobile/Tablet View (Unchanged) */}
-            <div className="space-y-12">
-              {experiences.map((exp, index) => (
-                <MobileExperienceItem
-                  key={index}
-                  exp={exp}
-                  index={index}
-                  isLast={index === experiences.length - 1}
-                />
-              ))}
+          {/* ── Section header ──────────────────────────────────────── */}
+          <AnimatedSection className="mb-12">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-8 h-px bg-black" />
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-gray-400">
+                Professional Journey
+              </span>
             </div>
+            <h2
+              className="font-black text-gray-900 tracking-tighter leading-none mb-4"
+              style={{ fontSize: 'clamp(2.8rem, 14vw, 5rem)' }}
+            >
+              EXPERI<br />ENCE
+            </h2>
+            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+              A chronicle of growth, learning, and building impactful digital solutions.
+            </p>
+          </AnimatedSection>
 
-            {/* Footer Section (Unchanged) */}
-            <AnimatedSection className="mt-28 sm:mt-36 lg:mt-44 border-t-2 border-gray-200 pt-12">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                <div>
-                  <div className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400 mb-2">
-                    Looking Forward
-                  </div>
-                  <p className="text-gray-700 text-lg sm:text-xl font-medium max-w-2xl">
-                    Continuously evolving, learning new technologies, and creating meaningful digital experiences
-                  </p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-px bg-gray-300"></div>
-                  <span className="text-6xl font-bold text-gray-100 tracking-tighter">
-                    {new Date().getFullYear()}
-                  </span>
-                </div>
-              </div>
-            </AnimatedSection>
+          {/* ── Cards ───────────────────────────────────────────────── */}
+          <div className="space-y-8">
+            {experiences.map((exp, index) => (
+              <MobileExperienceItem
+                key={index}
+                exp={exp}
+                index={index}
+                isLast={index === experiences.length - 1}
+                imageSrc={mobileImages[index]}
+                onImageClick={(src, alt) => setLightbox({ src, alt })}
+              />
+            ))}
           </div>
+
+          {/* ── Footer ──────────────────────────────────────────────── */}
+          <AnimatedSection className="mt-16 pt-8 border-t-2 border-gray-200">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-500 text-sm font-medium max-w-[200px] leading-relaxed">
+                Continuously evolving &amp; creating meaningful digital experiences
+              </p>
+              <span
+                className="font-black text-gray-100 tracking-tighter select-none"
+                style={{ fontSize: 'clamp(2.5rem, 10vw, 4rem)', lineHeight: 1 }}
+              >
+                {new Date().getFullYear()}
+              </span>
+            </div>
+          </AnimatedSection>
+
         </div>
       </div>
+
+      {/* ── Image Lightbox (portal-style overlay) ───────────────── */}
+      {lightbox && (
+        <ImageLightbox
+          src={lightbox.src}
+          alt={lightbox.alt}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </>
   );
 }

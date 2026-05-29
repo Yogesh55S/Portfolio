@@ -5,6 +5,7 @@ export const metadata = {
 
 import "./globals.css";
 import { Outfit } from "next/font/google";
+import LoaderWrapper from "@/components/LoaderWrapper";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
@@ -12,7 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={outfit.className}>
-        {children}
+        <LoaderWrapper>
+          {children}
+        </LoaderWrapper>
       </body>
     </html>
   );

@@ -109,7 +109,9 @@ export default function MinimalNavbar() {
         animate={{ y: isVisible ? 0 : -100 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-black/10 backdrop-blur-lg border-b border-white/10' : 'bg-transparent'
+          scrolled 
+            ? 'bg-white/70 backdrop-blur-xl border-b border-gray-200/40 shadow-sm' 
+            : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
@@ -120,12 +122,12 @@ export default function MinimalNavbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleLogoClick}
-              className="relative cursor-pointer group"
+              className="relative cursor-pointer group flex items-center"
             >
               {logoSrc ? (
-                <img src={logoSrc} alt="Logo" className="h-8 w-auto" />
+                <img src={logoSrc} alt="Logo" className="h-8 w-auto filter invert-0 transition-all" />
               ) : (
-                <span className="text-xl font-bold text-white">YOGESH</span>
+                <span className="text-xl font-extrabold text-gray-900 tracking-tighter font-montserrat">YOGESH</span>
               )}
             </motion.div>
 
@@ -140,14 +142,14 @@ export default function MinimalNavbar() {
                     className="relative cursor-pointer group"
                     whileHover={{ y: -2 }}
                   >
-                    <span className={`text-sm font-medium tracking-wider uppercase transition-colors duration-300 ${
-                      isActive ? 'text-black' : 'text-gray-600 group-hover:text-gray-900'
+                    <span className={`text-sm font-semibold tracking-widest uppercase transition-colors duration-300 font-space-grotesk ${
+                      isActive ? 'text-black font-bold' : 'text-gray-500 hover:text-gray-955'
                     }`}>
                       {item.name}
                     </span>
                     {isActive && (
                       <motion.div
-                        className="absolute -bottom-2 left-0 w-full h-0.5 bg-blue-500"
+                        className="absolute -bottom-2 left-0 w-full h-[2px] bg-black"
                         layoutId="underline"
                         initial={false}
                       />
@@ -157,25 +159,29 @@ export default function MinimalNavbar() {
               })}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - High Contrast Monochrome Hamburger */}
             <motion.button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative z-50 p-2 lg:hidden group"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+              className="relative z-50 p-2.5 lg:hidden flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Toggle navigation menu"
             >
-              <div className="w-6 h-5 flex flex-col justify-between items-center">
+              <div className="w-6 h-4 flex flex-col justify-between items-center relative">
                 <motion.div
-                  className="w-full h-0.5 bg-white rounded-full"
+                  className="w-full h-[2px] bg-black rounded-full"
                   animate={{ rotate: isMenuOpen ? 45 : 0, y: isMenuOpen ? 7 : 0 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 22 }}
                 />
                 <motion.div
-                  className="w-full h-0.5 bg-white rounded-full"
-                  animate={{ opacity: isMenuOpen ? 0 : 1 }}
+                  className="w-full h-[2px] bg-black rounded-full"
+                  animate={{ opacity: isMenuOpen ? 0 : 1, scale: isMenuOpen ? 0 : 1 }}
+                  transition={{ duration: 0.15 }}
                 />
                 <motion.div
-                  className="w-full h-0.5 bg-white rounded-full"
+                  className="w-full h-[2px] bg-black rounded-full"
                   animate={{ rotate: isMenuOpen ? -45 : 0, y: isMenuOpen ? -7 : 0 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 22 }}
                 />
               </div>
             </motion.button>
@@ -183,47 +189,89 @@ export default function MinimalNavbar() {
         </div>
       </motion.nav>
 
-      {/* --- Full-Screen Mobile Menu --- */}
+      {/* --- Full-Screen Mobile Menu Overlay - Premium Minimalist Luxury Design --- */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 lg:hidden flex flex-col items-center justify-center space-y-8"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            style={{
-              background: 'radial-gradient(circle, rgba(10,10,25,0.98) 0%, rgba(5,5,15,1) 100%)',
-              backdropFilter: 'blur(10px)',
-            }}
+            className="fixed inset-0 z-40 lg:hidden flex flex-col justify-center px-10 sm:px-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, ease: "easeInOut" }}
           >
-            {navItems.map((item, i) => (
-              <motion.div
-                key={item.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.08, ease: "easeOut" }}
-                onClick={() => handleNavigation(item)}
-                className="text-3xl font-light text-gray-300 hover:text-white transition-colors cursor-pointer"
-              >
-                {item.name}
-              </motion.div>
-            ))}
+            {/* White-Frosted Backdrop */}
+            <div className="absolute inset-0 bg-white/98 backdrop-blur-2xl z-0" />
+
+            {/* Subtle Drafting Blueprint grid overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.025] z-0">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.8) 1px, transparent 1px),
+                                  linear-gradient(90deg, rgba(0,0,0,0.8) 1px, transparent 1px)`,
+                backgroundSize: '36px 36px'
+              }} />
+            </div>
+
+            {/* Soft decorative light silver glow orb behind the text */}
+            <div className="absolute top-[45%] left-1/4 w-80 h-80 rounded-full bg-slate-300/10 blur-[80px] pointer-events-none select-none z-0" />
+
+            {/* Navigation Links list - Left-Aligned for structured high-fashion elegance */}
+            <div className="flex flex-col items-start justify-center space-y-6 relative z-10 w-full">
+              {navItems.map((item, i) => {
+                const isActive = activeSection === (item.href === "/" ? "home" : item.href.substring(1));
+                return (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ delay: i * 0.05, duration: 0.4, ease: [0.215, 0.610, 0.355, 1.000] }}
+                    onClick={() => handleNavigation(item)}
+                    className="group relative flex items-center justify-start gap-4 cursor-pointer py-1.5 text-left"
+                  >
+                    {/* Index Counter */}
+                    <span className="text-[10px] font-bold text-gray-300 font-space-grotesk tracking-widest mt-1.5 transition-colors duration-300 group-hover:text-black">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Nav Item Title */}
+                    <span className={`text-4.5xl sm:text-5xl font-black uppercase tracking-tight font-montserrat transition-all duration-300 ${
+                      isActive 
+                        ? 'text-black translate-x-2' 
+                        : 'text-gray-400 group-hover:text-gray-900 group-hover:translate-x-2'
+                    }`}>
+                      {item.name}
+                    </span>
+
+                    {/* Underline active indicator */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="mobileActiveMenuIndicator"
+                        className="absolute -bottom-0.5 left-6 right-0 h-[3px] bg-black"
+                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                      />
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* LinkedIn Connection Trigger - Left-Aligned */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + navItems.length * 0.08, ease: "easeOut" }}
-              className="pt-8"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ delay: navItems.length * 0.05 + 0.1, duration: 0.35 }}
+              className="pt-10 relative z-10 self-start"
             >
-                <button
-                    onClick={openLinkedIn}
-                    className="flex items-center space-x-2 px-6 py-3 border border-white/20 rounded-full text-white/80 hover:bg-white/10 hover:border-white/40 transition-all duration-300"
-                >
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                    <span>Let's Connect</span>
-                </button>
+              <button
+                onClick={openLinkedIn}
+                className="flex items-center space-x-3 px-8 py-3.5 bg-black text-white rounded-full font-space-grotesk font-bold text-xs uppercase tracking-widest hover:bg-gray-900 hover:shadow-xl transition-all duration-300 cursor-pointer border border-black"
+              >
+                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                <span>Let's Connect</span>
+              </button>
             </motion.div>
           </motion.div>
         )}

@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Projects from "@/section/Projects";
 import Experience from "@/section/Experience";
 import Achievements from "@/section/Achievements";
+import Testimonials from "@/section/Testimonials";
 import Contact from "@/section/Contact";
 import About from "@/section/about";
 
@@ -34,6 +35,10 @@ export default function Home() {
 
       <section id="achievements">
         <Achievements />
+      </section>
+
+      <section id="testimonials">
+        <Testimonials />
       </section>
  
       <section id="contact">
