@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useUser, useClerk } from "@clerk/nextjs";
+import { LogOut, Shield, ChevronDown } from "lucide-react";
 
 // Replace with your actual logo path in the /public folder
 const logoSrc = "/used/logo.png"; 
@@ -25,6 +27,11 @@ export default function MinimalNavbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollYRef = useRef(0);
+  
+  const { user, isSignedIn, isLoaded } = useUser();
+  const { openSignIn, signOut } = useClerk();
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress?.toLowerCase() === "yogesharma914@gmail.com";
   
   const router = useRouter();
   const pathname = usePathname();
@@ -70,25 +77,34 @@ export default function MinimalNavbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [pathname]);
 
+  // Auto-redirect removed — handled via forceRedirectUrl in openSignIn()
+
   // --- Handlers for Navigation and UI Actions ---
   const handleNavigation = (item) => {
     setIsMenuOpen(false);
-    if (item.type === "page" && pathname !== item.href) {
-      router.push(item.href);
-    } else {
-      const element = document.querySelector(item.href);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (item.type === "page") {
+      if (pathname !== item.href) {
+        router.push(item.href);
+      } else {
+        // Already on this page — scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+      return;
+    }
+    // Scroll-type nav items
+    const element = document.querySelector(item.href);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   const handleLogoClick = () => {
     setIsMenuOpen(false);
-    if (pathname === "/") {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!isSignedIn) {
+      // forceRedirectUrl ensures Clerk sends the user to /admin after Google OAuth
+      openSignIn({ forceRedirectUrl: "/admin" });
     } else {
-      router.push("/");
+      setIsProfileMenuOpen(!isProfileMenuOpen);
     }
   };
   
@@ -117,19 +133,80 @@ export default function MinimalNavbar() {
         <div className="max-w-7xl mx-auto px-6 sm:px-8">
           <div className="flex items-center justify-between h-20">
             
-            {/* Logo */}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleLogoClick}
-              className="relative cursor-pointer group flex items-center"
-            >
-              {logoSrc ? (
-                <img src={logoSrc} alt="Logo" className="h-8 w-auto filter invert-0 transition-all" />
-              ) : (
-                <span className="text-xl font-extrabold text-gray-900 tracking-tighter font-montserrat">YOGESH</span>
-              )}
-            </motion.div>
+            {/* Logo & Profile Dropdown */}
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogoClick}
+                className="relative cursor-pointer group flex items-center gap-2"
+              >
+                {logoSrc ? (
+                  <img src={logoSrc} alt="Logo" className="h-8 w-auto filter invert-0 transition-all" />
+                ) : (
+                  <span className="text-xl font-extrabold text-gray-900 tracking-tighter font-montserrat">YOGESH</span>
+                )}
+                {user && (
+                  <motion.div
+                    animate={{ rotate: isProfileMenuOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="w-4 h-4 text-gray-900" />
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {/* Profile Dropdown Menu */}
+              <AnimatePresence>
+                {isProfileMenuOpen && isSignedIn && user && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-10" 
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    />
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
+                      className="absolute left-0 mt-3 w-64 bg-white border border-gray-200 shadow-xl rounded-sm p-4 z-20 font-space-grotesk"
+                    >
+                      <div className="border-b border-gray-100 pb-3 mb-3">
+                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Signed In As</div>
+                        <div className="text-sm font-bold text-gray-900 truncate">{user.fullName || user.primaryEmailAddress?.emailAddress}</div>
+                        <div className="text-xs text-gray-500 truncate">{user.primaryEmailAddress?.emailAddress}</div>
+                      </div>
+
+                      <div className="space-y-1">
+                        {isAdmin && (
+                          <button
+                            onClick={() => {
+                              setIsProfileMenuOpen(false);
+                              router.push('/admin');
+                            }}
+                            className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-semibold text-gray-700 hover:text-black hover:bg-gray-50 rounded-sm transition-colors text-left"
+                          >
+                            <Shield className="w-4 h-4 text-black" />
+                            <span>ADMIN PORTAL</span>
+                          </button>
+                        )}
+                        <button
+                          onClick={async () => {
+                            setIsProfileMenuOpen(false);
+                            await signOut();
+                            router.push('/');
+                          }}
+                          className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-sm transition-colors text-left"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          <span>SIGN OUT</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
