@@ -8,7 +8,6 @@ const isMissingCredentials = !supabaseUrl || !supabaseAnonKey;
 if (isMissingCredentials) {
   console.warn('Supabase credentials missing! Please check your .env.local file.');
 }
-
 // Guard against throwing during SSR/prerender when credentials are absent
 export const supabase = isMissingCredentials
   ? null
