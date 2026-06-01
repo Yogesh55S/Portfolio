@@ -8,7 +8,6 @@ export default function Contact() {
     subject: '',
     message: ''
   });
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
