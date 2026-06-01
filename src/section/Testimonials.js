@@ -28,6 +28,11 @@ export default function Testimonials() {
 
   // Fetch only approved testimonials from Supabase
   const fetchTestimonials = async () => {
+    if (!supabase) {
+      setDbLoading(false);
+      setHasTestimonials(false);
+      return;
+    }
     try {
       setDbLoading(true);
       const { data, error } = await supabase
@@ -93,6 +98,8 @@ export default function Testimonials() {
       const initials = names.length > 1 
         ? `${names[0][0]}${names[names.length - 1][0]}`.toUpperCase()
         : submitName.slice(0, 2).toUpperCase();
+
+      if (!supabase) throw new Error('Database not configured.');
 
       const { error } = await supabase
         .from('testimonials')

@@ -27,6 +27,11 @@ export default function AdminPage() {
     try {
       setLoading(true);
       setErrorMessage(null);
+      if (!supabase) {
+        setErrorMessage('Database not configured. Please check your .env.local file.');
+        setLoading(false);
+        return;
+      }
       const { data, error } = await supabase
         .from('testimonials')
         .select('*')
