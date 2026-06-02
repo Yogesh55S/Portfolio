@@ -968,7 +968,7 @@ export default function HiddenReveal() {
               <SparklesCinemaIcon />
             </div>
             <h1 className="font-cinzel text-3xl md:text-5xl lg:text-6.5xl font-bold tracking-[0.12em] text-[#1e293b] uppercase mt-8 shadow-glow-cinema max-w-[20ch] leading-snug">
-              picture abhi baaki hai mere dost
+              Make it work, make it right, make it fast.
             </h1>
             <span className="w-max border-t border-[#c5a880]/30 pt-4 mt-8 px-6 text-[#c5a880] text-xs font-bold uppercase tracking-[0.25em] font-montserrat">
               The Story Continues
