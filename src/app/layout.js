@@ -5,7 +5,6 @@ export const metadata = {
 
 import "./globals.css";
 import { Outfit } from "next/font/google";
-import LoaderWrapper from "@/components/LoaderWrapper";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const outfit = Outfit({ subsets: ["latin"] });
@@ -15,9 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={outfit.className}>
         <ClerkProvider>
-          <LoaderWrapper>
-            {children}
-          </LoaderWrapper>
+          {children}
         </ClerkProvider>
       </body>
     </html>
