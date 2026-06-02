@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Shield, Home, LogOut, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-const ADMIN_EMAIL = 'yogesharma914@gmail.com';
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
 
 export default function AdminLayout({ children }) {
   const { user, isLoaded, isSignedIn } = useUser();

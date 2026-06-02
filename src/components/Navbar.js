@@ -31,7 +31,7 @@ export default function MinimalNavbar() {
   const { user, isSignedIn, isLoaded } = useUser();
   const { openSignIn, signOut } = useClerk();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress?.toLowerCase() === "yogesharma914@gmail.com";
+  const isAdmin = isSignedIn && user?.primaryEmailAddress?.emailAddress?.toLowerCase() === process.env.NEXT_PUBLIC_ADMIN_EMAIL;
   
   const router = useRouter();
   const pathname = usePathname();
