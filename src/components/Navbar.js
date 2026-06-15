@@ -324,7 +324,7 @@ export default function MinimalNavbar() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col overflow-hidden"
+            className="fixed inset-0 z-50 bg-[#0a0a0a] flex flex-col overflow-y-auto overscroll-contain"
           >
             {/* ── Subtle noise texture ── */}
             <div
@@ -338,10 +338,10 @@ export default function MinimalNavbar() {
             <div className="absolute top-[88px] md:top-[96px] left-6 sm:left-10 lg:left-14 right-6 sm:right-10 lg:right-14 h-[1px] bg-white/10" />
 
             {/* ── Main content area ── */}
-            <div className="flex flex-col justify-between h-full pt-[88px] md:pt-[96px] pb-10 px-6 sm:px-10 lg:px-14 max-w-[1400px] mx-auto w-full">
+            <div className="flex flex-col justify-between min-h-[100dvh] pt-[88px] md:pt-[96px] pb-10 px-6 sm:px-10 lg:px-14 max-w-[1400px] mx-auto w-full">
 
               {/* ── NAV LINKS ── */}
-              <nav className="flex flex-col justify-center flex-1 py-8 lg:py-12">
+              <nav className="flex flex-col justify-center flex-1 py-4 md:py-8 lg:py-12">
                 {navItems.map((item, i) => {
                   const isActive =
                     activeSection ===
@@ -358,16 +358,16 @@ export default function MinimalNavbar() {
                         animate="visible"
                         exit="exit"
                         onClick={() => handleNavigation(item)}
-                        className="group flex items-center justify-between py-4 md:py-5 lg:py-6 cursor-pointer"
+                        className="group flex items-center justify-between py-2 md:py-4 lg:py-5 cursor-pointer"
                       >
                         {/* Left: index + name */}
-                        <div className="flex items-baseline gap-4 lg:gap-6">
-                          <span className="text-[11px] md:text-[12px] text-white/25 font-space-grotesk font-medium tracking-widest tabular-nums">
+                        <div className="flex items-baseline gap-3 md:gap-4 lg:gap-6">
+                          <span className="text-[10px] md:text-[12px] text-white/25 font-space-grotesk font-medium tracking-widest tabular-nums">
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span
                             className={`font-montserrat font-black uppercase leading-none tracking-tight transition-colors duration-200
-                              text-[clamp(2.2rem,6vw,5.5rem)]
+                              text-[clamp(1.4rem,4.5vw,3.2rem)]
                               ${isActive ? "text-white" : "text-white/40 group-hover:text-white"}
                             `}
                           >
@@ -382,7 +382,7 @@ export default function MinimalNavbar() {
                           whileInView={{ x: 0, opacity: 1 }}
                         >
                           <svg
-                            className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 -rotate-45 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
+                            className="w-5 h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 -rotate-45 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -405,7 +405,7 @@ export default function MinimalNavbar() {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-6 border-t border-white/10"
+                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:gap-6 pt-4 md:pt-6 border-t border-white/10"
                 >
                   {/* LinkedIn CTA */}
                   <button

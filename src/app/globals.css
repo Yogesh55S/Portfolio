@@ -1,8 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Edo';
+  src: url('/used/edosz.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 /* --- Brand Typography Classes --- */
+.font-edo {
+  font-family: 'Edo', sans-serif;
+}
 .font-space-grotesk {
   font-family: 'Space Grotesk', sans-serif;
 }
