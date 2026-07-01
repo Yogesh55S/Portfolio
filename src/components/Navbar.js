@@ -10,7 +10,7 @@ const logoSrc = "/used/logo.png";
 
 const navItems = [
   { name: "Home",         href: "/",            type: "page"   },
-  { name: "About",        href: "#about",        type: "scroll" },
+  { name: "About",        href: "/about",        type: "page"   },
   { name: "Skills",       href: "#skills",       type: "scroll" },
   { name: "Projects",     href: "#projects",     type: "scroll" },
   { name: "Experience",   href: "#experience",   type: "scroll" },
