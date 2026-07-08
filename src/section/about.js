@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 
 // --- SVG Icon Components ---
 const FaGithub = ({ className }) => (
@@ -57,17 +58,18 @@ export default function About() {
                                     Hello, I'm Yogesh.
                                 </h2>
                                 <p className="text-base sm:text-lg text-slate-600 leading-relaxed my-6">
-                                    A passionate Developer with a love for building web applications. My journey started with a critical mindset, a curiosity which quickly grew into the work to drive to create seamless creativity where we meet user-friendly digital experiences.
+                                    I didn't start my journey as a developer just to write code. I started because I wanted to solve real problems and build things that actually matter. Want to know more about my story, the tech I use, and how I turn ideas into shipped products?
                                 </p>
                                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                    <a 
-                                        href="/used/Yogesh_Resume.pdf" 
-                                        download
+                                    <Link 
+                                        href="/about" 
                                         className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold py-3 px-8 rounded-full hover:bg-slate-700 transition-all duration-300 ease-in-out hover:-translate-y-0.5 shadow-lg text-sm uppercase tracking-widest"
                                     >
-                                        <FaDownload className="w-4 h-4" />
-                                        Download CV
-                                    </a>
+                                        Read My Story
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </Link>
                                     <div className="flex items-center gap-2">
                                         <a href={socialLinks.github} aria-label="GitHub" target="_blank" rel="noopener noreferrer" className="w-11 h-11 flex items-center justify-center bg-slate-100 rounded-full text-slate-600 hover:text-white hover:bg-slate-800 transition-all duration-300">
                                             <FaGithub className="w-5 h-5" />

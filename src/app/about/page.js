@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -103,17 +103,22 @@ function SkillTag({ children }) {
         color: 'var(--ink)',
         display: 'inline-block',
         cursor: 'default',
-        transition: 'transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease',
+        position: 'relative',
+        top: 0,
+        left: 0,
+        transition: 'top 0.15s ease, left 0.15s ease, box-shadow 0.15s ease, background 0.15s ease',
         boxShadow: '3px 3px 0 var(--ink)',
         letterSpacing: '0.5px',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.transform = 'translate(-1px, -1px)';
+        e.currentTarget.style.top = '-1px';
+        e.currentTarget.style.left = '-1px';
         e.currentTarget.style.boxShadow = '4px 4px 0 var(--ink)';
         e.currentTarget.style.background = 'var(--pop-yellow)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.transform = 'none';
+        e.currentTarget.style.top = '0';
+        e.currentTarget.style.left = '0';
         e.currentTarget.style.boxShadow = '3px 3px 0 var(--ink)';
         e.currentTarget.style.background = 'rgba(255,255,255,0.6)';
       }}
@@ -179,6 +184,7 @@ const SKILL_GROUPS = [
   },
 ];
 
+const COMIC_PAGES = [2, 3, 4, 5, 6, 7, 8];
 
 /* ═══════════════════════════════════════════════════════════════
    MAIN PAGE
@@ -188,8 +194,29 @@ export default function AboutPage() {
   const containerRef = useRef(null);
   const heroRef = useRef(null);
   const [activeSection, setActiveSection] = useState(0);
+  const [showMore, setShowMore] = useState(false);
 
   /* ─── GSAP ANIMATIONS ──────────────────────────────────────── */
+  useGSAP(
+    () => {
+      if (showMore) {
+        gsap.fromTo(
+          '.comic-panel-extra',
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.6,
+            ease: 'power3.out',
+            onComplete: () => ScrollTrigger.refresh(),
+          }
+        );
+      }
+    },
+    { scope: containerRef, dependencies: [showMore] }
+  );
+
   useGSAP(
     () => {
       const prefersReducedMotion =
@@ -198,7 +225,7 @@ export default function AboutPage() {
 
       if (prefersReducedMotion) {
         gsap.set(
-          '.panel-reveal, .hero-name, .hero-role, .skill-tag',
+          '.panel-reveal, .hero-name, .hero-role, .skill-tag, .comic-panel',
           { opacity: 1, y: 0, x: 0, rotate: 0, scale: 1 }
         );
         return;
@@ -206,7 +233,6 @@ export default function AboutPage() {
 
       const mm = gsap.matchMedia();
 
-      /* ── Hero Pin ───────────────────────────────────────────── */
       mm.add(
         {
           isDesktop: '(min-width: 769px)',
@@ -215,73 +241,84 @@ export default function AboutPage() {
         (context) => {
           const { isDesktop } = context.conditions;
 
-          /* ── Hero Pin (Just pinning, no scrubbed text hiding) ── */
-          gsap.timeline({
-            scrollTrigger: {
-              trigger: heroRef.current,
-              start: 'top top',
-              end: isDesktop ? '+=150%' : '+=80%',
-              scrub: 1,
-              pin: true,
-              anticipatePin: 1,
-            },
-          });
-
-          /* ── Hero Intro (Plays on load) ───────────────────────── */
+          /* ── Hero intro (plays on load) ───────────────────── */
           const introTl = gsap.timeline();
-
           introTl
-            .from(
-              '.hero-name',
-              {
-                y: 100,
-                opacity: 0,
-                scale: 0.9,
-                duration: 1,
-                ease: 'power3.out',
-                delay: 0.2,
-              }
-            )
+            .from('.hero-name', {
+              y: 100,
+              opacity: 0,
+              scale: 0.9,
+              duration: 1,
+              ease: 'power3.out',
+              delay: 0.2,
+            })
             .from(
               '.hero-role',
-              {
-                y: 40,
-                opacity: 0,
-                duration: 0.8,
-                ease: 'power3.out',
-              },
+              { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out' },
               '-=0.6'
             );
 
-          /* ── Section reveals (sections 1–4) ─────────────────── */
+          /* ── Panel reveals (fromTo keeps "to" explicit so
+               stale inline styles after navigation don't break it) */
           const panels = gsap.utils.toArray('.panel-reveal');
           panels.forEach((el) => {
-            gsap.from(el, {
-              opacity: 0,
-              y: 48,
-              rotate: isDesktop ? -1.5 : -0.5,
-              duration: 0.8,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-            });
+            gsap.fromTo(
+              el,
+              { opacity: 0, y: 48, rotate: isDesktop ? -1.5 : -0.5 },
+              {
+                opacity: 1,
+                y: 0,
+                rotate: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: el,
+                  start: 'top 85%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            );
           });
 
-          /* ── Skill tags batch stagger ───────────────────────── */
+          /* ── Comic panels staggered drop-in ──────────────── */
+          gsap.set('.comic-panel', { opacity: 0, y: 70, scale: 0.97 });
+          gsap.utils.toArray('.comic-panel').forEach((panel, i) => {
+            gsap.fromTo(
+              panel,
+              { opacity: 0, y: 70, scale: 0.97 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.9,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: panel,
+                  start: 'top 90%',
+                  toggleActions: 'play none none reverse',
+                },
+                delay: i === 0 ? 0 : 0,
+              }
+            );
+          });
+
+          /* ── Skill tags batch stagger (fromTo so "to" is
+               always explicit — safe after client-side nav) ── */
+          gsap.set('.skill-tag', { opacity: 0, y: 30, scale: 0.9 });
           ScrollTrigger.batch('.skill-tag', {
             start: 'top 88%',
             onEnter: (batch) =>
-              gsap.from(batch, {
-                opacity: 0,
-                y: 30,
-                scale: 0.9,
-                duration: 0.5,
-                ease: 'power3.out',
-                stagger: 0.06,
-              }),
+              gsap.fromTo(
+                batch,
+                { opacity: 0, y: 30, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power3.out', stagger: 0.06 }
+              ),
+            onEnterBack: (batch) =>
+              gsap.fromTo(
+                batch,
+                { opacity: 0, y: 30, scale: 0.9 },
+                { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'power3.out', stagger: 0.06 }
+              ),
             onLeaveBack: (batch) =>
               gsap.to(batch, {
                 opacity: 0,
@@ -292,7 +329,7 @@ export default function AboutPage() {
               }),
           });
 
-          /* ── Halftone parallax drift ────────────────────────── */
+          /* ── Halftone parallax drift ────────────────────── */
           gsap.utils.toArray('.halftone-texture').forEach((tex) => {
             gsap.to(tex, {
               y: -60,
@@ -306,8 +343,8 @@ export default function AboutPage() {
             });
           });
 
-          /* ── Active section tracking for scroll dots ────────── */
-          for (let i = 0; i < 5; i++) {
+          /* ── Active section tracking for scroll dots ──────── */
+          for (let i = 0; i < 6; i++) {
             const el = document.getElementById(`kp-section-${i}`);
             if (el) {
               ScrollTrigger.create({
@@ -319,8 +356,6 @@ export default function AboutPage() {
               });
             }
           }
-
-          /* ── Now Building blink handled via CSS ─────────────── */
         }
       );
     },
@@ -348,6 +383,9 @@ export default function AboutPage() {
           .hero-name {
              font-size: clamp(48px, 15vw, 80px) !important;
           }
+          .comic-cover img {
+            max-width: 88vw !important;
+          }
         }
 
         /* ── Blink cursor animation ─────────────────────────── */
@@ -374,11 +412,40 @@ export default function AboutPage() {
           color: transparent;
           text-shadow: 2px 2px 0px rgba(255, 214, 10, 0.5), -1px -1px 0px rgba(255, 255, 255, 0.1);
         }
+
+        /* ── Comic section ──────────────────────────────────── */
+        .comic-panel img, .comic-panel-extra img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .comic-page-panel {
+          border: 4px solid #fff;
+          box-shadow: 8px 8px 0 rgba(255, 214, 10, 0.4);
+          overflow: hidden;
+          line-height: 0;
+        }
+        .comic-cover {
+          display: flex;
+          justify-content: center;
+        }
+        .comic-cover img {
+          max-width: min(560px, 100%);
+          border: 4px solid #fff;
+          box-shadow: 10px 10px 0 var(--pop-yellow);
+        }
+        @keyframes comicPulse {
+          0%, 100% { box-shadow: 10px 10px 0 var(--pop-yellow); }
+          50%       { box-shadow: 10px 10px 0 rgba(255,214,10,0.5); }
+        }
+        .comic-cover img:hover {
+          animation: comicPulse 1.6s ease-in-out infinite;
+        }
       `}</style>
 
       <Navbar />
-      <ScrollDots activeIndex={activeSection} total={5} />
-      
+      <ScrollDots activeIndex={activeSection} total={6} />
+
       {/* ═══════════════════════════════════════════════════════
           SECTION 0 — HERO (Cold Open)
           ═══════════════════════════════════════════════════════ */}
@@ -398,7 +465,6 @@ export default function AboutPage() {
       >
         <Halftone color="rgba(0,0,0,0.4)" opacity={0.04} size={12} />
 
-        {/* Grid background lines */}
         <div
           style={{
             position: 'absolute',
@@ -411,7 +477,6 @@ export default function AboutPage() {
           }}
         />
 
-        {/* Hero text */}
         <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', width: '100%', padding: '0 24px' }}>
           <h1
             className="hero-name"
@@ -443,7 +508,6 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div
           style={{
             position: 'absolute',
@@ -480,52 +544,192 @@ export default function AboutPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 1 — ORIGIN (The Pitch)
+          SECTION 1 — THE STORY (Comic Book Journey)
           ═══════════════════════════════════════════════════════ */}
-      <Section id="kp-section-1" bg="night">
-        <SectionTitle color="var(--pop-yellow)">The Origin</SectionTitle>
+      <section
+        id="kp-section-1"
+        style={{
+          background: '#0d0d0d',
+          position: 'relative',
+          padding: 'clamp(56px, 8vw, 96px) 0',
+        }}
+      >
+        {/* Subtle halftone on dark bg */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px)',
+            backgroundSize: '14px 14px',
+            opacity: 0.025,
+            pointerEvents: 'none',
+          }}
+        />
 
-        <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', gap: 32, maxWidth: 760 }}>
-          <p
-            className="panel-reveal"
+        {/* Section header */}
+        <div
+          style={{
+            textAlign: 'center',
+            marginBottom: 'clamp(40px, 6vw, 72px)',
+            padding: '0 24px',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <div
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(16px, 2.2vw, 20px)',
-              lineHeight: 1.8,
-              color: 'rgba(232, 245, 233, 0.9)',
-              margin: 0,
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 12,
+              color: 'var(--pop-yellow)',
+              letterSpacing: 4,
+              textTransform: 'uppercase',
+              marginBottom: 16,
             }}
           >
-            I didn't start my journey as a developer just to write code. I started because I wanted to solve real problems and build things that actually matter. Code is just the tool; the product is the goal.
-          </p>
-
-          <p
-            className="panel-reveal"
+            {'// origin story'}
+          </div>
+          <h2
             style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(15px, 2vw, 18px)',
-              lineHeight: 1.8,
-              color: 'rgba(232, 245, 233, 0.75)',
+              fontFamily: "'Edo', Impact, sans-serif",
+              fontSize: 'clamp(36px, 8vw, 80px)',
+              textTransform: 'uppercase',
+              color: '#fff',
               margin: 0,
+              letterSpacing: 2,
+              lineHeight: 1,
+              textShadow: '5px 5px 0 var(--pop-yellow)',
             }}
           >
-            My expertise lies in bridging the gap between a great idea and a shipped product. I specialize in the modern web stack—React, Next.js, Node, and cloud infrastructure. But more importantly, I specialize in understanding the user, the business logic, and how to deliver value without getting bogged down in endless technical debates.
-          </p>
+            The First Commit
+          </h2>
+          <div
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 'clamp(11px, 1.5vw, 14px)',
+              color: 'rgba(255,255,255,0.35)',
+              letterSpacing: 3,
+              marginTop: 14,
+              textTransform: 'uppercase',
+            }}
+          >
+            Volume 1 &nbsp;·&nbsp; A Developer&apos;s Journey
+          </div>
+        </div>
 
-          {/* Highlighted quote — the one yellow moment in this section */}
+        {/* Comic panels */}
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: '0 clamp(16px, 4vw, 48px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'clamp(18px, 2.5vw, 30px)',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          {/* Opening cover — 1.png (portrait) */}
+          <div className="comic-panel comic-cover">
+            <img src="/used/1.png" alt="The First Commit — Cover" />
+          </div>
+
+          {!showMore && (
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
+              <button
+                onClick={() => setShowMore(true)}
+                style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: 16,
+                  color: 'var(--ink)',
+                  background: 'var(--pop-yellow)',
+                  border: 'none',
+                  padding: '16px 32px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                  fontWeight: 'bold',
+                  letterSpacing: 1,
+                  boxShadow: '4px 4px 0 rgba(255, 255, 255, 0.4)',
+                  transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translate(-2px, -2px)';
+                  e.currentTarget.style.boxShadow = '6px 6px 0 rgba(255, 255, 255, 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '4px 4px 0 rgba(255, 255, 255, 0.4)';
+                }}
+                onMouseDown={(e) => {
+                  e.currentTarget.style.transform = 'translate(2px, 2px)';
+                  e.currentTarget.style.boxShadow = '2px 2px 0 rgba(255, 255, 255, 0.4)';
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = 'translate(-2px, -2px)';
+                  e.currentTarget.style.boxShadow = '6px 6px 0 rgba(255, 255, 255, 0.5)';
+                }}
+              >
+                Read the full comic
+              </button>
+            </div>
+          )}
+
+          {showMore && (
+            <>
+              {/* Chapter spreads — 2.png to 8.png (landscape) */}
+              {COMIC_PAGES.map((n) => (
+                <div key={n} className="comic-panel-extra comic-page-panel">
+                  <img src={`/used/${n}.png`} alt={`Story — Page ${n}`} />
+                </div>
+              ))}
+
+              {/* Closing cover — 9.png (portrait) */}
+              <div className="comic-panel-extra comic-cover">
+                <img src="/used/9.png" alt="The Next Commit — Closing Cover" />
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Bottom divider */}
+        <div
+          style={{
+            marginTop: 'clamp(48px, 6vw, 80px)',
+            height: 4,
+            background: 'linear-gradient(90deg, transparent, var(--pop-yellow), transparent)',
+            opacity: 0.6,
+          }}
+        />
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          SECTION 2 — ORIGIN (The Pitch)
+          ═══════════════════════════════════════════════════════ */}
+      <Section 
+        id="kp-section-2" 
+        bg="night"
+        style={{
+          borderTop: '3px solid var(--pop-yellow)',
+          borderBottom: '3px solid var(--pop-yellow)',
+        }}
+      >
+
+        <div style={{ margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        
+
           <blockquote
             className="panel-reveal origin-highlight"
             style={{
               fontFamily: "'Edo', Impact, sans-serif",
-              fontSize: 'clamp(24px, 4vw, 36px)',
+              fontSize: 'clamp(40px, 8vw, 80px)',
               color: '#E8F5E9',
               textTransform: 'uppercase',
-              lineHeight: 1.3,
-              margin: '32px 0',
-              padding: '24px 0',
-              borderBottom: '3px solid var(--pop-yellow)',
-              borderTop: '3px solid var(--pop-yellow)',
+              lineHeight: 1.1,
+              margin: 0,
+              padding: 0,
               position: 'relative',
+              textAlign: 'center',
             }}
           >
             I build things that ship.
@@ -533,25 +737,13 @@ export default function AboutPage() {
             <span style={{ color: 'var(--pop-yellow)' }}>Not things that demo.</span>
           </blockquote>
 
-          <p
-            className="panel-reveal"
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: 'clamp(15px, 2vw, 18px)',
-              lineHeight: 1.8,
-              color: 'rgba(232, 245, 233, 0.65)',
-              margin: 0,
-            }}
-          >
-            Whether it's migrating a massive e-commerce storefront, setting up a real-time chat backend, or designing a complex user interface from scratch, I thrive on taking ownership of the entire process. I'm happiest when I'm the one person who can talk to the designer, build the API, fix the deployment, and explain the trade-offs to the stakeholders.
-          </p>
         </div>
       </Section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 2 — THE ARSENAL (Stack)
+          SECTION 3 — THE ARSENAL (Stack)
           ═══════════════════════════════════════════════════════ */}
-      <Section id="kp-section-2" bg="paper">
+      <Section id="kp-section-3" bg="paper">
         <SectionTitle color="var(--ink)">The Arsenal</SectionTitle>
 
         <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', gap: 40 }}>
@@ -586,9 +778,9 @@ export default function AboutPage() {
       </Section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 3 — NOW BUILDING
+          SECTION 4 — NOW BUILDING
           ═══════════════════════════════════════════════════════ */}
-      <Section id="kp-section-3" bg="paper" style={{ minHeight: 'auto' }}>
+      <Section id="kp-section-4" bg="paper" style={{ minHeight: 'auto' }}>
         <div
           className="panel-reveal"
           style={{
@@ -623,9 +815,9 @@ export default function AboutPage() {
       </Section>
 
       {/* ═══════════════════════════════════════════════════════
-          SECTION 4 — CTA / FOOTER
+          SECTION 5 — CTA / FOOTER
           ═══════════════════════════════════════════════════════ */}
-      <Section id="kp-section-4" bg="night" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+      <Section id="kp-section-5" bg="night" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
         <div
           style={{
             textAlign: 'center',
@@ -646,7 +838,7 @@ export default function AboutPage() {
               textTransform: 'uppercase',
             }}
           >
-            it's just a start
+            it&apos;s just a start
           </div>
           <h2
             className="panel-reveal scratch-text"
@@ -658,6 +850,9 @@ export default function AboutPage() {
               lineHeight: 1.1,
               margin: '0 0 48px 0',
               fontWeight: 'normal',
+              textDecoration: 'line-through',
+              textDecorationColor: 'var(--pop-yellow)',
+              textDecorationThickness: 'clamp(2px, 0.5vw, 4px)',
             }}
           >
             End of Issue
