@@ -46,3 +46,6 @@ next-env.d.ts
 
 # unused assets
 /public/unused/
+
+# clerk configuration (can include secrets)
+/.clerk/
