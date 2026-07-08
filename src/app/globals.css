@@ -1,8 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Edo';
+  src: url('/used/edosz.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @import "tailwindcss";
 
 /* --- Brand Typography Classes --- */
+.font-edo {
+  font-family: 'Edo', sans-serif;
+}
 .font-space-grotesk {
   font-family: 'Space Grotesk', sans-serif;
 }
@@ -18,11 +29,22 @@
 .font-montserrat {
   font-family: 'Montserrat', sans-serif;
 }
+.font-jetbrains-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
 
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Kinetic Panels — About Page Tokens */
+  --paper: #E8F5E9;
+  --night: #14231A;
+  --ink: #111111;
+  --forest: #2E7D32;
+  --pop-yellow: #FFD60A;
+  --pop-red: #E63946;
 }
 
 @theme inline {

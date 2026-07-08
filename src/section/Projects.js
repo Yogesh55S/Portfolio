@@ -40,11 +40,7 @@ const LeafIcon = () => (
   </svg>
 );
 
-const SparklesCinemaIcon = () => (
-  <svg className="w-12 h-12 text-[#c5a880] animate-pulse" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21m0 0l-.813-5.096L3 15l5.096-.813L9 9l.813 5.096L15 15l-5.187.904zM18 9.75L16.5 12M16.5 12L15 9.75M16.5 12L18 12.75M16.5 12L15 12.75M18 4.5L17.25 6M17.25 6L16.5 4.5M17.25 6L18 6.75M17.25 6L16.5 6.75" />
-  </svg>
-);
+
 
 export default function HiddenReveal() {
   const containerRef = useRef(null);
@@ -898,7 +894,7 @@ export default function HiddenReveal() {
             {/* Left Panel: Typographic Brand Panel */}
             <div className="panel-half panel-half-img bg-[#ffffff] flex flex-col items-center justify-center relative overflow-hidden pointer-events-auto">
               <img
-                src="/used/pawgloo-paw.png"
+                src="/used/logo.svg"
                 alt="Pawgloo Pet Booking Interface"
                 className="absolute w-[80%] h-[80%] object-contain select-none transition-transform duration-700 hover:scale-105"
               />
@@ -948,26 +944,17 @@ export default function HiddenReveal() {
             ========================================== */}
         <div
           ref={sec7Ref}
-          className="s-section bg-gradient-to-br from-[#fdfbf7] via-[#faf6ed] to-[#f4ebe1] text-center"
+          className="s-section bg-white text-center"
           style={{
             zIndex: 7,
             transform: 'translateX(-100%)'
           }}
         >
-          <div className="w-full max-w-4xl px-8 select-text relative z-10 flex flex-col items-center">
-            <div className="mb-2">
-              <SparklesCinemaIcon />
-            </div>
-            <h1 className="font-cinzel text-3xl md:text-5xl lg:text-6.5xl font-bold tracking-[0.12em] text-[#1e293b] uppercase mt-8 shadow-glow-cinema max-w-[20ch] leading-snug">
-              picture abhi baaki hai mere dost
-            </h1>
-            <span className="w-max border-t border-[#c5a880]/30 pt-4 mt-8 px-6 text-[#c5a880] text-xs font-bold uppercase tracking-[0.25em] font-montserrat">
-              The Story Continues
-            </span>
-            <p className="font-cormorant text-neutral-600 italic text-base md:text-xl tracking-widest mt-3 max-w-[50ch] font-light">
-              More high-end web experiences, digital crafts, and advanced architectural integrations are actively in the pipeline.
-            </p>
-          </div>
+          <img
+            src="/used/projects-coming-soon.png"
+            alt="Projects 2026 coming soon"
+            className="w-full h-full object-contain max-w-6xl mx-auto select-none"
+          />
         </div>
 
       </div>
