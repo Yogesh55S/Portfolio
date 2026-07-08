@@ -170,8 +170,8 @@ export default function MinimalNavbar() {
             className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-300/70 to-transparent pointer-events-none"
           />
 
-          <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-14">
-            <div className="flex items-center justify-between h-[72px] md:h-[80px] lg:h-[88px]">
+          <div className="max-w-[1400px] mx-auto px-4 sm:px-10 lg:px-14">
+            <div className="flex items-center justify-between h-[64px] sm:h-[72px] md:h-[80px] lg:h-[88px]">
 
               {/* ── LOGO ── */}
               <div className="relative z-[61]">
@@ -187,7 +187,7 @@ export default function MinimalNavbar() {
                   <img
                     src={logoSrc}
                     alt="Logo"
-                    className={`h-9 md:h-10 lg:h-11 w-auto transition-all duration-300 ${
+                    className={`h-8 sm:h-9 md:h-10 lg:h-11 w-auto transition-all duration-300 ${
                       isMenuOpen ? "brightness-0 invert" : ""
                     }`}
                   />
@@ -218,7 +218,7 @@ export default function MinimalNavbar() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
                         transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute left-0 mt-3 w-64 bg-white/95 backdrop-blur-xl border border-gray-100 shadow-2xl rounded-xl p-4 z-20 font-space-grotesk"
+                        className="absolute left-0 mt-3 w-[min(16rem,calc(100vw-2rem))] bg-white/95 backdrop-blur-xl border border-gray-100 shadow-2xl rounded-xl p-4 z-20 font-space-grotesk"
                       >
                         <div className="border-b border-gray-100 pb-3 mb-3">
                           <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
@@ -335,13 +335,13 @@ export default function MinimalNavbar() {
             />
 
             {/* ── Thin horizontal rule ── */}
-            <div className="absolute top-[88px] md:top-[96px] left-6 sm:left-10 lg:left-14 right-6 sm:right-10 lg:right-14 h-[1px] bg-white/10" />
+            <div className="absolute top-[64px] sm:top-[72px] md:top-[80px] lg:top-[88px] left-4 sm:left-10 lg:left-14 right-4 sm:right-10 lg:right-14 h-[1px] bg-white/10" />
 
             {/* ── Main content area ── */}
-            <div className="flex flex-col justify-between min-h-[100dvh] pt-[88px] md:pt-[96px] pb-10 px-6 sm:px-10 lg:px-14 max-w-[1400px] mx-auto w-full">
+            <div className="flex flex-col justify-between min-h-[100dvh] pt-[64px] sm:pt-[72px] md:pt-[80px] lg:pt-[88px] pb-8 sm:pb-10 px-4 sm:px-10 lg:px-14 max-w-[1400px] mx-auto w-full">
 
               {/* ── NAV LINKS ── */}
-              <nav className="flex flex-col justify-center flex-1 py-4 md:py-8 lg:py-12">
+              <nav className="flex flex-col justify-center flex-1 py-2 sm:py-4 md:py-8 lg:py-12">
                 {navItems.map((item, i) => {
                   const isActive =
                     activeSection ===
@@ -358,16 +358,16 @@ export default function MinimalNavbar() {
                         animate="visible"
                         exit="exit"
                         onClick={() => handleNavigation(item)}
-                        className="group flex items-center justify-between py-2 md:py-4 lg:py-5 cursor-pointer"
+                        className="group flex items-center justify-between py-[26px] sm:py-3 md:py-4 lg:py-5 cursor-pointer"
                       >
                         {/* Left: index + name */}
-                        <div className="flex items-baseline gap-3 md:gap-4 lg:gap-6">
-                          <span className="text-[10px] md:text-[12px] text-white/25 font-space-grotesk font-medium tracking-widest tabular-nums">
+                        <div className="flex items-baseline gap-2 sm:gap-4 lg:gap-6">
+                          <span className="text-[9px] sm:text-[10px] md:text-[12px] text-white/25 font-space-grotesk font-medium tracking-widest tabular-nums">
                             {String(i + 1).padStart(2, "0")}
                           </span>
                           <span
                             className={`font-montserrat font-black uppercase leading-none tracking-tight transition-colors duration-200
-                              text-[clamp(1.4rem,4.5vw,3.2rem)]
+                              text-[clamp(1.35rem,6vw,3.2rem)]
                               ${isActive ? "text-white" : "text-white/40 group-hover:text-white"}
                             `}
                           >
@@ -377,12 +377,12 @@ export default function MinimalNavbar() {
 
                         {/* Right arrow — slides in on hover */}
                         <motion.div
-                          className="text-white/0 group-hover:text-white/60 transition-colors duration-200 flex-shrink-0 ml-4"
+                          className="text-white/0 group-hover:text-white/60 transition-colors duration-200 flex-shrink-0 ml-2 sm:ml-4"
                           initial={{ x: -8, opacity: 0 }}
                           whileInView={{ x: 0, opacity: 1 }}
                         >
                           <svg
-                            className="w-5 h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 -rotate-45 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
+                            className="w-4 h-4 sm:w-5 sm:h-5 md:w-8 md:h-8 lg:w-10 lg:h-10 -rotate-45 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -405,15 +405,15 @@ export default function MinimalNavbar() {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:gap-6 pt-4 md:pt-6 border-t border-white/10"
+                  className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 sm:gap-6 pt-4 md:pt-6 border-t border-white/10"
                 >
                   {/* LinkedIn CTA */}
                   <button
                     onClick={openLinkedIn}
-                    className="group flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/50 font-space-grotesk font-semibold text-[12px] uppercase tracking-[0.12em] transition-all duration-300"
+                    className="group flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/50 font-space-grotesk font-semibold text-[11px] sm:text-[12px] uppercase tracking-[0.12em] transition-all duration-300"
                   >
                     <svg
-                      className="w-4 h-4 flex-shrink-0"
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -430,7 +430,7 @@ export default function MinimalNavbar() {
                       initial="hidden"
                       animate="visible"
                       exit="exit"
-                      className="text-white/30 font-space-grotesk text-[11px] tracking-widest uppercase hidden sm:block"
+                      className="text-white/30 font-space-grotesk text-[10px] sm:text-[11px] tracking-widest uppercase"
                     >
                       © 2025 Yogesh Kumar
                     </motion.span>
