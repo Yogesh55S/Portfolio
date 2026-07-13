@@ -55,6 +55,7 @@ export default function HiddenReveal() {
   const sec5RightRef = useRef(null);
   const sec6Ref = useRef(null);
   const sec7Ref = useRef(null);
+  const sec8Ref = useRef(null);
 
   // --- Shadow DOM Refs ---
   const shadow1Ref = useRef(null);
@@ -68,6 +69,7 @@ export default function HiddenReveal() {
   const shadow5RightRef = useRef(null);
   const shadow6LeftRef = useRef(null);
   const shadow6RightRef = useRef(null);
+  const shadow7Ref = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -114,6 +116,7 @@ export default function HiddenReveal() {
           const p4 = Math.max(0, Math.min(1, (localScroll - 3 * height) / height));
           const p5 = Math.max(0, Math.min(1, (localScroll - 4 * height) / height));
           const p6 = Math.max(0, Math.min(1, (localScroll - 5 * height) / height));
+          const p7 = Math.max(0, Math.min(1, (localScroll - 6 * height) / height));
 
           // 1. Slide 2: House of Aerawat (Horizontal split entering from left & right)
           if (sec2LeftRef.current) {
@@ -149,9 +152,14 @@ export default function HiddenReveal() {
             sec6Ref.current.style.transform = `translateX(${100 * (1 - p5)}%)`;
           }
 
-          // 6. Slide 7: Bollywood Ending (Entire section slides in from the left)
+          // 6. Slide 7: Sanskriti (Entire section slides in from the bottom)
           if (sec7Ref.current) {
-            sec7Ref.current.style.transform = `translateX(${-100 * (1 - p6)}%)`;
+            sec7Ref.current.style.transform = `translateY(${100 * (1 - p6)}%)`;
+          }
+
+          // 7. Slide 8: Bollywood Ending (Entire section slides in from the left)
+          if (sec8Ref.current) {
+            sec8Ref.current.style.transform = `translateX(${-100 * (1 - p7)}%)`;
           }
 
           // --- Direct Opacity Dampening for Shadow Overlays (Soft White/Grey Dimming) ---
@@ -188,6 +196,9 @@ export default function HiddenReveal() {
           if (shadow6RightRef.current) {
             shadow6RightRef.current.style.opacity = p6 * 0.35;
           }
+          if (shadow7Ref.current) {
+            shadow7Ref.current.style.opacity = p7 * 0.35;
+          }
         }
       }
 
@@ -211,7 +222,7 @@ export default function HiddenReveal() {
     <div
       ref={containerRef}
       className="s__main hidden-reveal-wrapper w-full relative"
-      style={{ height: '700vh' }}
+      style={{ height: '800vh' }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -940,13 +951,74 @@ export default function HiddenReveal() {
         </div>
 
         {/* ==========================================
-            SLIDE 7: Bollywood Ending Screen (Slides from Left, Champagne Gold)
+            SLIDE 7: Sanskriti Retails (Slides up from bottom)
             ========================================== */}
         <div
           ref={sec7Ref}
-          className="s-section bg-white text-center"
+          className="s-section bg-transparent pointer-events-none"
           style={{
             zIndex: 7,
+            transform: 'translateY(100%)'
+          }}
+        >
+          <div className="flex flex-col lg:flex-row-reverse w-full h-full pointer-events-none">
+            {/* Right Panel: Image */}
+            <div className="panel-half panel-half-img bg-[#ffffff] flex flex-col items-center justify-center relative overflow-hidden pointer-events-auto">
+              <img
+                src="/used/sanskriti.png"
+                alt="Sanskriti Retails Logo"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div
+                ref={shadow7Ref}
+                className="s-shadow"
+              />
+            </div>
+
+            {/* Left Panel: Content */}
+            <div className="panel-half panel-half-content bg-gradient-to-br from-[#ffffff] via-[#fdfaf6] to-[#faebd7] text-left pointer-events-auto">
+              <div className="w-full max-w-xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+                <span className="project-tag text-[#c5a880]/95">
+                  <SparkleIcon /> Premium Shopify Experience
+                </span>
+                <h2 className="font-space responsive-title text-4xl lg:text-5xl font-bold text-[#4a2e1b] tracking-wider uppercase mt-1">
+                  SANSKRITI RETAILS
+                </h2>
+                <p className="font-montserrat responsive-subtitle text-neutral-500 text-xs font-semibold tracking-widest uppercase mt-2">
+                  Ethnic Wear E-Commerce
+                </p>
+                <p className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6">
+                  A high-end Shopify e-commerce platform dedicated to premium traditional Indian clothing. Features a clean, modern aesthetic with vibrant but mature color palettes to highlight beautiful silk sarees and elegant ethnic wear.
+                </p>
+
+                <div className="tech-badges">
+                  <span className="tech-badge">Shopify Plus</span>
+                  <span className="tech-badge">Liquid</span>
+                  <span className="tech-badge">JavaScript</span>
+                  <span className="tech-badge">Tailwind CSS</span>
+                </div>
+
+                <a
+                  href="https://sanskriti-retails-2.myshopify.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-btn border border-[#c5a880]/30 hover:border-[#c5a880] text-[#c5a880] hover:bg-[#c5a880]/5 mt-4"
+                >
+                  Visit Store <ExternalLinkIcon />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ==========================================
+            SLIDE 8: Bollywood Ending Screen (Slides from Left, Champagne Gold)
+            ========================================== */}
+        <div
+          ref={sec8Ref}
+          className="s-section bg-white text-center"
+          style={{
+            zIndex: 8,
             transform: 'translateX(-100%)'
           }}
         >
