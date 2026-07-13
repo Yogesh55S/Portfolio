@@ -618,6 +618,7 @@ export default function Skills() {
             dragElastic={0.25}
             dragMomentum={true}
             whileDrag={{ scale: 1.35, zIndex: 100 }}
+            whileTap={{ scale: 0.9, rotate: -2, zIndex: 50 }}
             onDragStart={() => setActiveDragIndex(index)}
             onDragEnd={() => setActiveDragIndex(null)}
             onMouseEnter={() => !isMobile && setHoveredIndex(index)}
@@ -642,8 +643,8 @@ export default function Skills() {
             {/* Premium Direct Tooltip (Centered directly over the active icon) */}
             <div className={`absolute bottom-[115%] left-1/2 -translate-x-1/2 mb-2 w-48 md:w-60 bg-white/95 backdrop-blur-md border border-slate-200/60 p-2.5 md:p-3.5 rounded-xl shadow-xl transition-all duration-300 transform z-50 text-left flex flex-col gap-0.5 select-none ${
               isHovered && !isFormingCircle
-                ? 'opacity-100 pointer-events-auto translate-y-0' 
-                : 'opacity-0 pointer-events-none translate-y-2'
+                ? 'opacity-100 pointer-events-auto translate-y-0 scale-100' 
+                : 'opacity-0 pointer-events-none translate-y-2 scale-95'
             }`}>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -658,32 +659,17 @@ export default function Skills() {
 
             {/* Glowing child float container so float oscillations do not override drag coordinates! */}
             <motion.div
-              className="w-full h-full flex items-center justify-center relative"
-              animate={{
-                y: isHovered || isFormingCircle || isDragging ? 0 : [0, -15, 0],
-                rotate: isHovered || isFormingCircle || isDragging ? 0 : [0, 4, 0]
-              }}
-              transition={{
-                y: {
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  duration: 4,
-                  ease: "easeInOut",
-                  delay: index * 0.15
-                },
-                rotate: {
-                  repeat: Infinity,
-                  repeatType: "mirror",
-                  duration: 4,
-                  ease: "easeInOut",
-                  delay: index * 0.15
-                }
+              className={`w-full h-full flex items-center justify-center relative transition-transform duration-300 ${
+                !(isHovered || isFormingCircle || isDragging) ? "animate-float" : "scale-110"
+              }`}
+              style={{
+                animationDelay: `${index * 0.15}s`
               }}
             >
               {/* Glowing halo behind hovered icon */}
               <div 
-                className={`absolute inset-0 rounded-full blur-xl scale-120 transition-all duration-500 pointer-events-none ${
-                  isHovered && !isFormingCircle ? 'opacity-20' : 'opacity-0'
+                className={`absolute inset-0 rounded-full blur-xl scale-120 transition-all duration-300 pointer-events-none ${
+                  isHovered && !isFormingCircle ? 'opacity-30' : 'opacity-0'
                 }`}
                 style={{ backgroundColor: pos.color }}
               />
@@ -692,14 +678,14 @@ export default function Skills() {
                 <img 
                   src={pos.icon} 
                   alt="" 
-                  className="w-full h-full object-contain filter drop-shadow-2xl opacity-80 hover:opacity-100 transition-all duration-300 pointer-events-auto select-none" 
+                  className="w-full h-full object-contain filter drop-shadow-xl opacity-90 hover:opacity-100 transition-all duration-300 pointer-events-auto select-none" 
                   draggable="false" // Prevents default browser image drag from interfering with Framer Motion drag!
                 />
               ) : (
                 <div className="w-full h-full p-2 flex items-center justify-center bg-white/10 hover:bg-white/40 rounded-2xl border border-transparent hover:border-slate-200/30 transition-all duration-300 shadow-sm hover:shadow-md pointer-events-auto">
                   <CustomIcon 
                     name={pos.icon} 
-                    className="w-full h-full filter drop-shadow-2xl opacity-80 hover:opacity-100 transition-all duration-300" 
+                    className="w-full h-full filter drop-shadow-xl opacity-90 hover:opacity-100 transition-all duration-300" 
                     color={pos.color} 
                   />
                 </div>
@@ -730,44 +716,27 @@ export default function Skills() {
       </div>
 
       <style jsx>{`
+        .animate-float {
+          animation: floatIcon 4s ease-in-out infinite alternate;
+        }
+
         @keyframes floatIcon {
-          0%, 100% {
+          0% {
             transform: translateY(0px) rotate(0deg);
           }
-          50% {
-            transform: translateY(-20px) rotate(8deg);
-          }
-        }
-        
-        @keyframes leafFloat {
-          0%, 100% {
-            transform: translateX(-50%) translateY(0px) rotate(0deg);
-          }
-          25% {
-            transform: translateX(-50%) translateY(-8px) rotate(-5deg);
-          }
-          75% {
-            transform: translateX(-50%) translateY(-5px) rotate(5deg);
-          }
-        }
-        
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.2;
-          }
-          50% {
-            opacity: 0.3;
+          100% {
+            transform: translateY(-15px) rotate(5deg);
           }
         }
         
         /* Mobile optimizations */
         @media (max-width: 640px) {
           @keyframes floatIcon {
-            0%, 100% {
+            0% {
               transform: translateY(0px) rotate(0deg);
             }
-            50% {
-              transform: translateY(-12px) rotate(4deg);
+            100% {
+              transform: translateY(-8px) rotate(3deg);
             }
           }
         }

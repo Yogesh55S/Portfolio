@@ -257,60 +257,42 @@ export default function PortfolioHero() {
         </motion.div>
         
         {/* Comic signature handwriting watermark behind the image */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-[56%] md:top-[61%] lg:top-[63%] xl:top-[66%] -translate-y-1/2 z-0 pointer-events-none select-none w-full max-w-[90vw] px-4 flex items-center justify-center transition-all duration-700 ease-[0.16,1,0.3,1]">
+        <div className="absolute left-1/2 -translate-x-1/2 top-[45%] md:top-[50%] lg:top-[58%] xl:top-[62%] -translate-y-1/2 z-0 pointer-events-none select-none w-full flex items-center justify-center transition-all duration-700 ease-[0.16,1,0.3,1] overflow-hidden">
           <div
-            className="flex flex-wrap items-center justify-center text-center font-bold select-none leading-none tracking-wider text-gray-500/40"
-            style={{ fontSize: "clamp(1.5rem, 6.5vw, 5.5rem)" }}
+            className="flex flex-nowrap whitespace-nowrap items-center justify-center text-center select-none leading-none tracking-widest font-bebas-neue"
+            style={{ fontSize: "clamp(2rem, 6vw, 7rem)" }}
           >
             {(() => {
               const chars = "FULLSTACK DEVELOPER".split("");
               
-              const renderChar = (char, index) => {
-                const delay = index * 0.15;
-                return (
-                  <span 
-                    key={index} 
-                    className="relative inline-block" 
-                    style={{ 
-                      width: char === " " ? "0.3em" : "auto",
-                      marginLeft: index === 0 || char === " " || chars[index - 1] === " " ? "0" : "-0.05em"
-                    }}
-                  >
-                    {char !== " " && (
-                      <span className="relative block">
-                        <svg className="absolute inset-0 w-full h-full" style={{ overflow: "visible" }}>
-                          <text
-                            x="0"
-                            y="0"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeDasharray="1000"
-                            strokeDashoffset="1000"
-                            style={{
-                              fontFamily: "'Edo', sans-serif",
-                              animationName: startSignatureAnim ? "drawLetter" : "none",
-                              animationDuration: "1.8s",
-                              animationTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
-                              animationFillMode: "forwards",
-                              animationDelay: `${delay}s`
-                            }}
-                          >
-                            {char}
-                          </text>
-                        </svg>
-                        <span className="opacity-0 select-none pointer-events-none">{char}</span>
-                      </span>
-                    )}
-                  </span>
-                );
-              };
-
               return (
                 <>
-                  {chars.map((char, i) => renderChar(char, i))}
+                  {chars.map((char, index) => {
+                    const delay = index * 0.08;
+                    return (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                        animate={{ 
+                          opacity: startSignatureAnim ? 0.35 : 0, 
+                          y: startSignatureAnim ? 0 : 30,
+                          scale: startSignatureAnim ? 1 : 0.8
+                        }}
+                        transition={{ 
+                          duration: 0.6, 
+                          ease: [0.22, 1, 0.36, 1], 
+                          delay: startSignatureAnim ? delay : 0 
+                        }}
+                        className="inline-block text-gray-500/40"
+                        style={{ 
+                          width: char === " " ? "0.35em" : "auto",
+                          letterSpacing: "0.08em"
+                        }}
+                      >
+                        {char === " " ? "\u00A0" : char}
+                      </motion.span>
+                    );
+                  })}
                 </>
               );
             })()}
@@ -332,7 +314,7 @@ export default function PortfolioHero() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: loaderComplete ? 1 : 0, y: loaderComplete ? 0 : 50 }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-          className="absolute w-full text-center z-20 pointer-events-none top-[55%] md:top-[60%] lg:top-[62%] xl:top-[65%] left-1/2 -translate-x-1/2 mix-blend-difference flex flex-col items-center transition-all duration-700 ease-[0.16,1,0.3,1]"
+          className="absolute w-full text-center z-20 pointer-events-none top-[61%] md:top-[66%] lg:top-[63%] xl:top-[72%] left-1/2 -translate-x-1/2 mix-blend-difference flex flex-col items-center transition-all duration-700 ease-[0.16,1,0.3,1]"
         >
           <div className="relative inline-block text-left">
             <h1 
