@@ -163,21 +163,27 @@ export default function PortfolioHero() {
       <div className="md:hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('/used/man.png')` }}
+          style={{ backgroundImage: `url('/used/man.webp')` }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
         </div>
-        <div className="relative z-20 flex flex-col justify-center items-center h-screen p-6 text-center">
+        <div className="relative z-20 flex flex-col justify-center items-end h-screen p-8 text-right">
           <motion.div
-              className="flex flex-col items-center"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 40 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-end"
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: isLoaded ? 1 : 0, x: isLoaded ? 0 : 40 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
           >
-              <h1 className="text-7xl font-extrabold text-white uppercase my-2 tracking-tight drop-shadow-lg">
+              <h1 className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 uppercase tracking-tighter drop-shadow-xl font-space-grotesk leading-none mb-3">
                   Yogesh
               </h1>
-              <p className="text-gray-300 tracking-[0.4em] text-xs font-medium">FULLSTACK DEVELOPER</p>
+              <div className="w-12 h-1 bg-[#c5a880] mb-4"></div>
+              <p className="text-[#c5a880] tracking-[0.3em] text-sm font-bold">
+                  FULLSTACK
+              </p>
+              <p className="text-gray-300 tracking-[0.4em] text-xs font-medium mt-1">
+                  DEVELOPER
+              </p>
           </motion.div>
         </div>
       </div>
