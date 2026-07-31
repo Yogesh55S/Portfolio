@@ -136,8 +136,13 @@ export default function MinimalNavbar() {
 
   const handleLogoClick = () => {
     setIsMenuOpen(false);
-    if (!isSignedIn) openSignIn({ forceRedirectUrl: "/admin" });
-    else setIsProfileMenuOpen((p) => !p);
+    if (!isSignedIn) {
+      openSignIn({ forceRedirectUrl: "/admin" });
+    } else if (isAdmin) {
+      setIsProfileMenuOpen((p) => !p);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const openLinkedIn = () => {
@@ -191,7 +196,7 @@ export default function MinimalNavbar() {
                       isMenuOpen ? "brightness-0 invert" : ""
                     }`}
                   />
-                  {user && (
+                  {user && isAdmin && (
                     <motion.div
                       animate={{ rotate: isProfileMenuOpen ? 180 : 0 }}
                       transition={{ duration: 0.22 }}
@@ -207,7 +212,7 @@ export default function MinimalNavbar() {
 
                 {/* Profile dropdown */}
                 <AnimatePresence>
-                  {isProfileMenuOpen && isSignedIn && user && (
+                  {isProfileMenuOpen && isSignedIn && isAdmin && (
                     <>
                       <div
                         className="fixed inset-0 z-10"

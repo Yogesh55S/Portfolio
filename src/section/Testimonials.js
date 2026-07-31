@@ -82,6 +82,9 @@ export default function Testimonials() {
   const handleAddTestimonialClick = () => {
     if (!isSignedIn) {
       setPendingFormOpen(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('pendingTestimonial', 'true');
+      }
       openSignIn();
     } else {
       openTestimonialForm();
@@ -89,13 +92,19 @@ export default function Testimonials() {
   };
 
   // Once a signed-out visitor finishes logging in, automatically continue
-  // straight into the testimonial popup instead of making them click again.
+  // straight into the testimonial popup (handles both modals and page redirects).
   useEffect(() => {
-    if (isSignedIn && pendingFormOpen) {
-      setPendingFormOpen(false);
-      openTestimonialForm();
+    if (isSignedIn && user) {
+      const isPendingStorage = typeof window !== 'undefined' ? localStorage.getItem('pendingTestimonial') : null;
+      if (isPendingStorage === 'true' || pendingFormOpen) {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('pendingTestimonial');
+        }
+        setPendingFormOpen(false);
+        openTestimonialForm();
+      }
     }
-  }, [isSignedIn, pendingFormOpen]);
+  }, [isSignedIn, user, pendingFormOpen]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
