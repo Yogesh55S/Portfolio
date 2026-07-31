@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/lib/supabase';
 import { useUser, useClerk } from "@clerk/nextjs";
 import { Loader2, Plus, X, MessageSquare, Check } from 'lucide-react';
+import { submitTestimonialAction } from '@/app/actions';
 
 
 export default function Testimonials() {
@@ -19,6 +20,7 @@ export default function Testimonials() {
 
   // Form states
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [pendingFormOpen, setPendingFormOpen] = useState(false);
   const [submitName, setSubmitName] = useState('');
   const [submitRole, setSubmitRole] = useState('');
   const [submitQuote, setSubmitQuote] = useState('');
@@ -68,18 +70,32 @@ export default function Testimonials() {
     fetchTestimonials();
   }, []);
 
+  const openTestimonialForm = () => {
+    setSubmitName(user?.fullName || '');
+    setSubmitRole('');
+    setSubmitQuote('');
+    setIsFormOpen(true);
+    setSubmitSuccess(false);
+    setSubmitError(null);
+  };
+
   const handleAddTestimonialClick = () => {
     if (!isSignedIn) {
+      setPendingFormOpen(true);
       openSignIn();
     } else {
-      setSubmitName(user?.fullName || '');
-      setSubmitRole('');
-      setSubmitQuote('');
-      setIsFormOpen(true);
-      setSubmitSuccess(false);
-      setSubmitError(null);
+      openTestimonialForm();
     }
   };
+
+  // Once a signed-out visitor finishes logging in, automatically continue
+  // straight into the testimonial popup instead of making them click again.
+  useEffect(() => {
+    if (isSignedIn && pendingFormOpen) {
+      setPendingFormOpen(false);
+      openTestimonialForm();
+    }
+  }, [isSignedIn, pendingFormOpen]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -101,18 +117,16 @@ export default function Testimonials() {
 
       if (!supabase) throw new Error('Database not configured.');
 
-      const { error } = await supabase
-        .from('testimonials')
-        .insert({
-          name: submitName,
-          role: submitRole || 'Client',
-          quote: submitQuote,
-          initials,
-          approved: false, // Requires admin verification
-          user_id: user.id
-        });
+      // Convert Clerk's string ID (e.g., 'user_...') into a valid UUID format for Supabase
+      const res = await submitTestimonialAction({
+        name: submitName,
+        role: submitRole || 'Client',
+        quote: submitQuote,
+        initials,
+        user_id: user.id
+      });
 
-      if (error) throw error;
+      if (!res.success) throw new Error(res.error);
 
       setSubmitSuccess(true);
       setTimeout(() => {

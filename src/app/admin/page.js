@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { deleteTestimonialAction, approveTestimonialAction, updateTestimonialAction } from './actions';
+import { deleteTestimonialAction, approveTestimonialAction, updateTestimonialAction, fetchTestimonialsAction } from './actions';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Check, Trash2, Clock, CheckCircle, 
@@ -27,21 +27,13 @@ export default function AdminPage() {
     try {
       setLoading(true);
       setErrorMessage(null);
-      if (!supabase) {
-        setErrorMessage('Database not configured. Please check your .env.local file.');
-        setLoading(false);
-        return;
-      }
-      const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('created_at', { ascending: false });
+      const res = await fetchTestimonialsAction();
 
-      if (error) throw error;
-      setTestimonials(data || []);
+      if (!res.success) throw new Error(res.error);
+      setTestimonials(res.data || []);
     } catch (err) {
       console.error('Error fetching admin data:', err);
-      setErrorMessage('Could not load testimonials. Please check database permissions.');
+      setErrorMessage(err.message || 'Could not load testimonials.');
     } finally {
       setLoading(false);
     }

@@ -82,3 +82,20 @@ export async function updateTestimonialAction(id, updateData) {
     return { success: false, error: error.message };
   }
 }
+
+export async function fetchTestimonialsAction() {
+  try {
+    await verifyAdmin();
+    const supabaseAdmin = getAdminSupabase();
+    const { data, error } = await supabaseAdmin
+      .from('testimonials')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (error) {
+    console.error('fetchTestimonialsAction error:', error);
+    return { success: false, error: error.message };
+  }
+}
