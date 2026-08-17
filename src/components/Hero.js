@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
 import { VscGithubAlt } from "react-icons/vsc";
+import { SiLeetcode } from "react-icons/si";
 
 const loaderItems = [
   { letter: "P", tech: "Python" },
@@ -191,7 +192,17 @@ export default function PortfolioHero() {
 
 
       {/* --- START: DESKTOP-ONLY SECTION --- */}
-      <div className="hidden md:block">
+      <div className="hidden md:block relative min-h-screen">
+        {/* Hero Character Image — desktop wide version */}
+        <motion.img 
+          src="/used/hero-desktop.png"
+          alt="Anime character of Yogesh" 
+          initial={{ opacity: 0, y: 120 }}
+          animate={{ opacity: loaderComplete ? 1 : 0, y: loaderComplete ? 0 : 120 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+          className="absolute left-1/2 -translate-x-1/2 bottom-[-5vh] z-[1] w-auto h-[110vh] md:h-[105vh] max-w-none pointer-events-none select-none object-contain"
+        />
+
         {/* Left Social Links with Rope Lines */}
         <motion.div 
           initial={{ opacity: 0, x: -40 }}
@@ -203,13 +214,14 @@ export default function PortfolioHero() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
           className="fixed left-6 md:left-10 lg:left-14 xl:left-[70px] top-1/2 -translate-y-1/2 z-30 flex flex-col items-center"
         >
-          <div className="flex flex-col space-y-8">
+          <div className="flex flex-col space-y-7">
             {/* GitHub */}
             <a 
               href="https://github.com/Yogesh55S" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="relative text-gray-400 hover:text-[#333333] transition-colors duration-300"
+              aria-label="GitHub Profile"
             >
               <VscGithubAlt size={24} />
             </a>
@@ -219,8 +231,19 @@ export default function PortfolioHero() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="relative text-gray-400 hover:text-[#0A66C2] transition-colors duration-300"
+              aria-label="LinkedIn Profile"
             >
               <FaLinkedinIn size={24} />
+            </a>
+            {/* LeetCode */}
+            <a 
+              href="https://leetcode.com/u/Yogeshkumar55/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="relative text-gray-400 hover:text-[#FFA116] transition-colors duration-300"
+              aria-label="LeetCode Profile"
+            >
+              <SiLeetcode size={22} />
             </a>
             {/* WhatsApp */}
             <a 
@@ -228,6 +251,7 @@ export default function PortfolioHero() {
               target="_blank" 
               rel="noopener noreferrer" 
               className="relative text-gray-400 hover:text-[#25D366] transition-colors duration-300"
+              aria-label="WhatsApp Contact"
             >
               <FaWhatsapp size={24} />
             </a>
@@ -261,66 +285,38 @@ export default function PortfolioHero() {
             className="w-px bg-gray-300 mt-6"
           />
         </motion.div>
-        
-        {/* Comic signature handwriting watermark behind the image */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-[45%] md:top-[50%] lg:top-[58%] xl:top-[62%] -translate-y-1/2 z-0 pointer-events-none select-none w-full flex items-center justify-center transition-all duration-700 ease-[0.16,1,0.3,1] overflow-hidden">
-          <div
-            className="flex flex-nowrap whitespace-nowrap items-center justify-center text-center select-none leading-none tracking-widest font-bebas-neue"
-            style={{ fontSize: "clamp(2rem, 6vw, 7rem)" }}
-          >
-            {(() => {
-              const chars = "FULLSTACK DEVELOPER".split("");
-              
-              return (
-                <>
-                  {chars.map((char, index) => {
-                    const delay = index * 0.08;
-                    return (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 30, scale: 0.8 }}
-                        animate={{ 
-                          opacity: startSignatureAnim ? 0.35 : 0, 
-                          y: startSignatureAnim ? 0 : 30,
-                          scale: startSignatureAnim ? 1 : 0.8
-                        }}
-                        transition={{ 
-                          duration: 0.6, 
-                          ease: [0.22, 1, 0.36, 1], 
-                          delay: startSignatureAnim ? delay : 0 
-                        }}
-                        className="inline-block text-gray-500/40"
-                        style={{ 
-                          width: char === " " ? "0.35em" : "auto",
-                          letterSpacing: "0.08em"
-                        }}
-                      >
-                        {char === " " ? "\u00A0" : char}
-                      </motion.span>
-                    );
-                  })}
-                </>
-              );
-            })()}
-          </div>
-        </div>
 
-        {/* Anime Character of Yogesh */}
-        <motion.img 
-          src="/used/back.png"
-          alt="Anime character of Yogesh" 
-          initial={{ opacity: 0, y: 120 }}
-          animate={{ opacity: loaderComplete ? 1 : 0, y: loaderComplete ? 0 : 120 }}
-          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="absolute left-1/2 -translate-x-1/2 bottom-[-5vh] z-10 w-auto h-[110vh] md:h-[105vh] max-w-none pointer-events-none select-none"
-        />
+        {/* Architectural Editorial Typography Watermark behind the image */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: startSignatureAnim ? 1 : 0, scale: startSignatureAnim ? 1 : 0.95 }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute left-1/2 -translate-x-1/2 top-[38%] md:top-[42%] lg:top-[46%] -translate-y-1/2 z-[2] pointer-events-none select-none w-full max-w-[62vw] lg:max-w-[65vw] flex flex-col items-center justify-center text-center px-4 overflow-hidden"
+        >
+          {/* Big Architectural Background Watermark */}
+          <span 
+            className="font-montserrat font-black uppercase text-neutral-900/[0.08] leading-none tracking-[0.18em] md:tracking-[0.25em] lg:tracking-[0.28em] select-none pointer-events-none whitespace-nowrap block truncate w-full"
+            style={{ fontSize: "clamp(2rem, 7vw, 7.5rem)" }}
+          >
+            FULLSTACK
+          </span>
+
+          {/* Luxury Gold Divider & Tag Subtitle */}
+          <div className="flex items-center gap-4 mt-2 sm:mt-4">
+            <div className="w-12 sm:w-20 h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent"></div>
+            <span className="font-space-grotesk font-bold text-xs sm:text-sm md:text-base tracking-[0.5em] md:tracking-[0.6em] text-[#c5a880] uppercase whitespace-nowrap">
+              DEVELOPER
+            </span>
+            <div className="w-12 sm:w-20 h-px bg-gradient-to-r from-transparent via-[#c5a880]/60 to-transparent"></div>
+          </div>
+        </motion.div>
 
         {/* Name and Title */}
         <motion.div 
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: loaderComplete ? 1 : 0, y: loaderComplete ? 0 : 50 }}
           transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-          className="absolute w-full text-center z-20 pointer-events-none top-[61%] md:top-[66%] lg:top-[63%] xl:top-[72%] left-1/2 -translate-x-1/2 mix-blend-difference flex flex-col items-center transition-all duration-700 ease-[0.16,1,0.3,1]"
+          className="absolute w-full text-center z-[5] pointer-events-none top-[61%] md:top-[66%] lg:top-[63%] xl:top-[72%] left-1/2 -translate-x-1/2 mix-blend-difference flex flex-col items-center transition-all duration-700 ease-[0.16,1,0.3,1]"
         >
           <div className="relative inline-block text-left">
             <h1 
