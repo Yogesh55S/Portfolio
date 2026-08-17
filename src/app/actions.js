@@ -18,18 +18,28 @@ function getAdminSupabase() {
 
 export async function submitTestimonialAction(data) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      throw new Error('You must be signed in to submit a testimonial.');
+    const { name, role, quote, initials, user_id } = data || {};
+
+    if (!name || !name.trim() || !quote || !quote.trim()) {
+      throw new Error('Name and review quote are required.');
+    }
+
+    const payload = {
+      name: name.trim(),
+      role: (role && role.trim()) || 'Client',
+      quote: quote.trim(),
+      initials: initials || name.trim().slice(0, 2).toUpperCase(),
+      approved: false,
+    };
+
+    if (user_id) {
+      payload.user_id = user_id;
     }
 
     const supabaseAdmin = getAdminSupabase();
     const { error } = await supabaseAdmin
       .from('testimonials')
-      .insert({
-        ...data,
-        approved: false,
-      });
+      .insert(payload);
 
     if (error) throw error;
     return { success: true };
