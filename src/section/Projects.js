@@ -55,7 +55,9 @@ export default function HiddenReveal() {
   const sec5RightRef = useRef(null);
   const sec6Ref = useRef(null);
   const sec7Ref = useRef(null);
-  const sec8Ref = useRef(null);
+  const sec8LeftRef = useRef(null);
+  const sec8RightRef = useRef(null);
+  const sec9Ref = useRef(null);
 
   // --- Shadow DOM Refs ---
   const shadow1Ref = useRef(null);
@@ -70,6 +72,8 @@ export default function HiddenReveal() {
   const shadow6LeftRef = useRef(null);
   const shadow6RightRef = useRef(null);
   const shadow7Ref = useRef(null);
+  const shadow8LeftRef = useRef(null);
+  const shadow8RightRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -117,6 +121,7 @@ export default function HiddenReveal() {
           const p5 = Math.max(0, Math.min(1, (localScroll - 4 * height) / height));
           const p6 = Math.max(0, Math.min(1, (localScroll - 5 * height) / height));
           const p7 = Math.max(0, Math.min(1, (localScroll - 6 * height) / height));
+          const p8 = Math.max(0, Math.min(1, (localScroll - 7 * height) / height));
 
           // 1. Slide 2: House of Aerawat (Horizontal split entering from left & right)
           if (sec2LeftRef.current) {
@@ -157,9 +162,17 @@ export default function HiddenReveal() {
             sec7Ref.current.style.transform = `translateY(${100 * (1 - p6)}%)`;
           }
 
-          // 7. Slide 8: Bollywood Ending (Entire section slides in from the left)
-          if (sec8Ref.current) {
-            sec8Ref.current.style.transform = `translateX(${-100 * (1 - p7)}%)`;
+          // 7. Slide 8: Lukewarm (Horizontal split entering from left & right)
+          if (sec8LeftRef.current) {
+            sec8LeftRef.current.style.transform = `translateX(${-100 * (1 - p7)}%)`;
+          }
+          if (sec8RightRef.current) {
+            sec8RightRef.current.style.transform = `translateX(${100 * (1 - p7)}%)`;
+          }
+
+          // 8. Slide 9: Coming Soon (Entire section slides in from the left)
+          if (sec9Ref.current) {
+            sec9Ref.current.style.transform = `translateX(${-100 * (1 - p8)}%)`;
           }
 
           // --- Direct Opacity Dampening for Shadow Overlays (Soft White/Grey Dimming) ---
@@ -199,6 +212,12 @@ export default function HiddenReveal() {
           if (shadow7Ref.current) {
             shadow7Ref.current.style.opacity = p7 * 0.35;
           }
+          if (shadow8LeftRef.current) {
+            shadow8LeftRef.current.style.opacity = p8 * 0.35;
+          }
+          if (shadow8RightRef.current) {
+            shadow8RightRef.current.style.opacity = p8 * 0.35;
+          }
         }
       }
 
@@ -222,7 +241,7 @@ export default function HiddenReveal() {
     <div
       ref={containerRef}
       className="s__main hidden-reveal-wrapper w-full relative"
-      style={{ height: '800vh' }}
+      style={{ height: '900vh' }}
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
@@ -713,10 +732,17 @@ export default function HiddenReveal() {
               className="panel-half-h panel-half-h-img bg-[#f4f7f5] border-b border-[#cbdad2] text-center relative pointer-events-auto overflow-hidden"
               style={{ transform: 'translateY(-100%)' }}
             >
+              {/* Mobile View Image */}
               <img
                 src="/used/nidas-new.png"
                 alt="Nidas Pure Ayurvedic Soap and Face Oil"
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover block lg:hidden"
+              />
+              {/* Desktop View Image */}
+              <img
+                src="/used/nidas-desktop.png"
+                alt="Nidas Pure Botanical Apothecary Logo"
+                className="absolute inset-0 w-full h-full object-cover hidden lg:block"
               />
               <div
                 ref={shadow4TopRef}
@@ -1012,13 +1038,92 @@ export default function HiddenReveal() {
         </div>
 
         {/* ==========================================
-            SLIDE 8: Bollywood Ending Screen (Slides from Left, Champagne Gold)
+            SLIDE 8: Lukewarm (Light luxury blue-grey theme)
             ========================================== */}
         <div
-          ref={sec8Ref}
+          className="s-section bg-transparent pointer-events-none"
+          style={{ zIndex: 8 }}
+        >
+          <div className="flex flex-col lg:flex-row w-full h-full pointer-events-none">
+            {/* Left Panel: App Screenshot (Slides from Left) */}
+            <div
+              ref={sec8LeftRef}
+              className="panel-half panel-half-img relative bg-[#f1f5f9] border-r border-neutral-100 pointer-events-auto overflow-hidden"
+              style={{ transform: 'translateX(-100%)' }}
+            >
+              <img
+                src="/used/lukewarm-new.png"
+                alt="Lukewarm Business Card Scan Platform"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#f1f5f9]/10" />
+              <div
+                ref={shadow8LeftRef}
+                className="s-shadow"
+              />
+            </div>
+
+            {/* Right Panel: Project Details (Slides from Right) */}
+            <div
+              ref={sec8RightRef}
+              className="panel-half panel-half-content bg-gradient-to-br from-[#ffffff] to-[#f8fafc] text-left pointer-events-auto"
+              style={{ transform: 'translateX(100%)' }}
+            >
+              <div className="w-full max-w-2xl px-6 lg:px-12 py-8 lg:py-0 select-text z-10 relative">
+                <span className="project-tag text-sky-700">
+                  <SparkleIcon className="w-4 h-4 text-sky-600" /> React Native Android App
+                </span>
+                <h2 className="font-space responsive-title text-4xl lg:text-5xl font-bold text-[#0f172a] tracking-wider uppercase shadow-glow-blue mt-1">
+                  LUKEWARM
+                </h2>
+                <p className="font-montserrat responsive-subtitle text-neutral-500 text-xs font-semibold tracking-widest uppercase mt-2">
+                  Mobile Contact Intelligence & Scanner
+                </p>
+                <div className="font-cormorant responsive-desc text-neutral-600 text-base lg:text-lg font-light leading-relaxed mt-4 lg:mt-6 space-y-3 lg:space-y-4">
+                  <p>
+                    Lukewarm is a premium Android application engineered to convert physical business cards into structured digital contact intelligence. Built for modern networking, the app features sub-second OCR scanning and smart AI voice memos to automate lead management directly from your mobile device.
+                  </p>
+                  <p>
+                    The mobile codebase is written in React Native and styled with Tailwind CSS, powered by a local Drizzle ORM database layer for instant offline search and synchronization. It incorporates a robust device-side scanner pipeline that crops and parses contact fields with high precision, alongside custom Android native integrations for calendar event scheduling.
+                  </p>
+                </div>
+
+                <div className="tech-badges mt-5 lg:mt-6">
+                  <span className="tech-badge">React Native</span>
+                  <span className="tech-badge">Android SDK</span>
+                  <span className="tech-badge">Tailwind CSS</span>
+                  <span className="tech-badge">Drizzle ORM</span>
+                  <span className="tech-badge">SQLite</span>
+                  <span className="tech-badge">OCR Scan Engine</span>
+                  <span className="tech-badge">Voice AI</span>
+                  <span className="tech-badge">Google Sync</span>
+                </div>
+
+                <a
+                  href="https://business-card-web-pi.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="project-btn border border-sky-700/30 hover:border-sky-700 text-sky-700 hover:bg-sky-50 mt-5"
+                >
+                  Explore App Specs <ExternalLinkIcon />
+                </a>
+              </div>
+              <div
+                ref={shadow8RightRef}
+                className="s-shadow"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ==========================================
+            SLIDE 9: Bollywood Ending Screen (Slides from Left, Champagne Gold)
+            ========================================== */}
+        <div
+          ref={sec9Ref}
           className="s-section bg-white text-center"
           style={{
-            zIndex: 8,
+            zIndex: 9,
             transform: 'translateX(-100%)'
           }}
         >

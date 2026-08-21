@@ -39,7 +39,7 @@ export default function About() {
   return (
     <section 
       id="about" 
-      className="relative min-h-screen w-full bg-[#fcfbf9] text-gray-900 font-sans py-20 sm:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-fit w-full bg-[#fcfbf9] text-gray-900 font-sans py-12 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       {/* Subtle blueprint line texture */}
       <div className="absolute inset-0 opacity-[0.025] pointer-events-none">
@@ -55,7 +55,7 @@ export default function About() {
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Section Header Tag */}
-        <div className="flex items-center gap-4 mb-12 sm:mb-16">
+        <div className="flex items-center gap-4 mb-8 sm:mb-10">
           <div className="w-12 h-px bg-gray-900"></div>
           <span className="text-gray-600 text-xs tracking-[0.3em] font-bold uppercase font-space-grotesk">
             // About The Developer
@@ -141,50 +141,47 @@ export default function About() {
             </p>
 
             {/* Organic Feature Badges (Physical Paper Tags) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 font-space-grotesk">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3 gap-4 mb-10 font-space-grotesk">
               
-              <div className="p-4 bg-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
-                <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center mb-3">
-                  <Smartphone className="w-4 h-4 text-gray-900" />
+              <div className="p-3.5 bg-white/90 border border-stone-200/60 border-l-4 border-l-[#c5a880] shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 flex items-center gap-4 group rounded-sm">
+                <div className="w-9 h-9 rounded-full bg-stone-100/80 border border-stone-200/50 flex items-center justify-center text-stone-600 group-hover:bg-[#c5a880]/10 group-hover:text-[#c5a880] transition-colors shrink-0">
+                  <Smartphone className="w-4 h-4" />
                 </div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-gray-900 mb-1">Mobile Dev</h4>
-                <p className="text-[11px] text-gray-500 font-light">React Native, iOS & Android MVP Builds</p>
+                <div>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-stone-900 mb-0.5">Mobile Dev</h4>
+                  <p className="text-[11px] text-stone-500 font-light leading-snug font-inter">React Native, iOS & Android MVP Builds</p>
+                </div>
               </div>
 
-              <div className="p-4 bg-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
-                <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center mb-3">
-                  <Code2 className="w-4 h-4 text-gray-900" />
+              <div className="p-3.5 bg-white/90 border border-stone-200/60 border-l-4 border-l-[#c5a880] shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 flex items-center gap-4 group rounded-sm">
+                <div className="w-9 h-9 rounded-full bg-stone-100/80 border border-stone-200/50 flex items-center justify-center text-stone-600 group-hover:bg-[#c5a880]/10 group-hover:text-[#c5a880] transition-colors shrink-0">
+                  <Code2 className="w-4 h-4" />
                 </div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-gray-900 mb-1">Next.js & React</h4>
-                <p className="text-[11px] text-gray-500 font-light">Modern Web, SSR, Turbopack & GSAP</p>
+                <div>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-stone-900 mb-0.5">Next.js & React</h4>
+                  <p className="text-[11px] text-stone-500 font-light leading-snug font-inter">Modern Web, SSR, Turbopack & GSAP</p>
+                </div>
               </div>
 
-              <div className="p-4 bg-white border-2 border-gray-900 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
-                <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center mb-3">
-                  <Terminal className="w-4 h-4 text-gray-900" />
+              <div className="p-3.5 bg-white/90 border border-stone-200/60 border-l-4 border-l-[#c5a880] shadow-sm hover:shadow-md hover:bg-white transition-all duration-300 flex items-center gap-4 group rounded-sm">
+                <div className="w-9 h-9 rounded-full bg-stone-100/80 border border-stone-200/50 flex items-center justify-center text-stone-600 group-hover:bg-[#c5a880]/10 group-hover:text-[#c5a880] transition-colors shrink-0">
+                  <Terminal className="w-4 h-4" />
                 </div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-gray-900 mb-1">Backend & Cloud</h4>
-                <p className="text-[11px] text-gray-500 font-light">Python, AWS Lambda, Supabase & Mongo</p>
+                <div>
+                  <h4 className="font-bold text-xs uppercase tracking-wider text-stone-900 mb-0.5">Backend & Cloud</h4>
+                  <p className="text-[11px] text-stone-500 font-light leading-snug font-inter">Python, AWS Lambda, Supabase & Mongo</p>
+                </div>
               </div>
 
             </div>
 
             {/* Action Buttons & Socials */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2 border-t border-gray-200 font-space-grotesk">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4 border-t border-gray-200 font-space-grotesk">
               
-              {/* Trigger Modal */}
-              <button 
-                onClick={() => setIsModalOpen(true)}
-                className="px-6 py-4 bg-black text-white hover:bg-gray-900 transition-all font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2.5 cursor-pointer border border-black shadow-md hover:shadow-lg rounded-sm"
-              >
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>View Graphic Resume</span>
-              </button>
-
               {/* Read Story */}
               <Link 
                 href="/about" 
-                className="px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors border-2 border-gray-900 rounded-sm"
+                className="px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors border-2 border-gray-900 rounded-sm flex-1 sm:flex-none"
               >
                 <BookOpen className="w-4 h-4" />
                 <span>Read Full Story</span>
